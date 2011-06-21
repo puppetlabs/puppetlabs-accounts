@@ -30,17 +30,21 @@ class accounts (
   validate_bool($manage_groups)
   $manage_groups_real = $manage_groups
 
+  # Make sure to evaluate the data namespace before trying to pull
+  # data from it.
+  include "${data_namespace_real}"
+
   # This section of the code is repsonsible for pulling in the data we need.
-  $groups_hash = lookupvar("${data_namespace_real}::groups_hash")
+  $groups_hash = getvar("${data_namespace_real}::groups_hash")
 
   debug("ACCOUNTS: groups_pash = $groups_hash")
 
   anchor { "accounts::begin": }
   anchor { "accounts::end": }
 
-  if $manage_groups_real {
-    class { 'accounts::groups': }
-  }
+  # if $manage_groups_real {
+  #   class { 'accounts::groups': }
+  # }
 
 
 }
