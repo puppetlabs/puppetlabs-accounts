@@ -49,9 +49,10 @@ class accounts (
 
     class { 'accounts::groups':
       groups_hash => $groups_hash,
-      require     => Anchor['accounts::begin'],
-      before      => Anchor['accounts::end'],
     }
+
+    Anchor['accounts::begin'] -> Class['accounts::groups']
+    Class['accounts::groups'] -> Anchor['accounts::end']
 
   }
 
@@ -61,9 +62,10 @@ class accounts (
 
     class { 'accounts::users':
       users_hash => $users_hash,
-      require     => Anchor['accounts::begin'],
-      before      => Anchor['accounts::end'],
     }
+
+    Anchor['accounts::begin'] -> Class['accounts::users']
+    Class['accounts::users'] -> Anchor['accounts::end']
 
     if $manage_groups_real {
       Class['accounts::groups'] -> Class['accounts::users']
