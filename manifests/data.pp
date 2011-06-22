@@ -40,34 +40,40 @@ class accounts::data {
   }
   # These are the actual accounts on the system to manage
 
-  $users_hash_default = {
-    'ensure' => 'present',
-    'shell'  => '/bin/bash',
-    'shadow' => '!!',
-  }
+  # FIXME We don't have a hash merge function yet
+  # FIXME We don't have any way to pass data that's not
+  # directly usable by the type.
+  # Idea: filter_type_hash('user', $users_hash)
+  # Which would remove keys like "sshkey"
+  $users_hash_default = { }
 
   $users_hash = {
     'jeff' => {
-      'home'      => '/home/jeff',
-      'shell'     => '/bin/zsh',
-      'comment'   => 'Jeff McCune',
-      'uid'       => '1112',
-      'gid'       => '1112',
-      'sshpubkey' => 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAzlnWpbiDfBLJWWh3xEIMo3QJhB+/TucyWtqTB3B3np1LHi7/zJW9L5KwqgCPfcCSPKY4ekW4K5DwZgXufM74+acBJqAIioJby5AVlkYtRMuJItzRYfkClN0Ex/8rCc/y8T+Wa5Q7Kyy73312xxqbeO8nzNkDO2Zx2oxxHVDSeThX5+Tk1lFj3LpsWbuTsImK9KsVPX50M6uNQxSt4ASx0SDe0MDLC5uzbGYtjqkZQYEYguo7O64t81+C3JK3BHDPsL5G5H7g2qwPJ7ola1sV1wDCGE9ago09QZvYpOacPbtbesFhbwKP31eDz2PWGSJ4DCIoLKhmfpEuDpiih649VQ== jeff@puppetlabs.com'
+      'ensure'   => 'present',
+      'home'     => '/home/jeff',
+      'shell'    => '/bin/zsh',
+      'comment'  => 'Jeff McCune',
+      'password' => '!!',
+      'uid'      => '1112',
+      'gid'      => '1112',
     },
     'dan' => {
-      'home'      => '/home/dan',
-      'comment'   => 'Dan Bode',
-      'uid'       => '1109',
-      'gid'       => '1109',
-      'sshpubkey' => '# UNKNOWN',
+      'ensure'   => 'present',
+      'home'     => '/home/dan',
+      'shell'    => '/bin/bash',
+      'comment'  => 'Dan Bode',
+      'password' => '!!',
+      'uid'      => '1109',
+      'gid'      => '1109',
     },
     'nigel' => {
-      'home'      => '/home/nigel',
-      'comment'   => 'Nigel Kersten',
-      'uid'       => '2001',
-      'gid'       => '2001',
-      'sshpubkey' => '# UNKNOWN',
+      'ensure'   => 'present',
+      'home'     => '/home/nigel',
+      'shell'    => '/bin/bash',
+      'comment'  => 'Nigel Kersten',
+      'password' => '!!',
+      'uid'      => '2001',
+      'gid'      => '2001',
     }
   }
 
