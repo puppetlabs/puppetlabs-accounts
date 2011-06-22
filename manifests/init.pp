@@ -21,14 +21,17 @@
 # Sample Usage:
 #
 class accounts (
-  $data_namespace = 'accounts::data',
-  $manage_groups  = true
+  $manage_groups  = true,
+  $manage_users   = true,
+  $data_namespace = 'accounts::data'
 ) {
 
   validate_re($data_namespace, '::data$')
   $data_namespace_real = $data_namespace
   validate_bool($manage_groups)
   $manage_groups_real = $manage_groups
+  validate_bool($manage_users)
+  $manage_users_real = $manage_users
 
   # Make sure to evaluate the data namespace before trying to pull
   # data from it.
@@ -48,6 +51,22 @@ class accounts (
       groups_hash => $groups_hash,
       require     => Anchor['accounts::begin'],
       before      => Anchor['accounts::end'],
+    }
+
+  }
+
+  if $manage_users_real {
+    # This section of the code is repsonsible for pulling in the data we need.
+    $users_hash = getvar("${data_namespace_real}::users_hash")
+
+    class { 'accounts::users':
+      users_hash => $users_hash,
+      require     => Anchor['accounts::begin'],
+      before      => Anchor['accounts::end'],
+    }
+
+    if $manage_groups_real {
+      Class['accounts::groups'] -> Class['accounts::users']
     }
 
   }

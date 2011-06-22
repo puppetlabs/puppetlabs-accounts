@@ -38,4 +38,37 @@ class accounts::data {
     'sudo_nopw' => { gid => '3002' },
     'developer' => { gid => '3003' },
   }
+  # These are the actual accounts on the system to manage
+
+  $users_hash_default = {
+    'ensure' => 'present',
+    'shell'  => '/bin/bash',
+    'shadow' => '!!',
+  }
+
+  $users_hash = {
+    'jeff' => {
+      'home'      => '/home/jeff',
+      'shell'     => '/bin/zsh',
+      'comment'   => 'Jeff McCune',
+      'uid'       => '1112',
+      'gid'       => '1112',
+      'sshpubkey' => 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAzlnWpbiDfBLJWWh3xEIMo3QJhB+/TucyWtqTB3B3np1LHi7/zJW9L5KwqgCPfcCSPKY4ekW4K5DwZgXufM74+acBJqAIioJby5AVlkYtRMuJItzRYfkClN0Ex/8rCc/y8T+Wa5Q7Kyy73312xxqbeO8nzNkDO2Zx2oxxHVDSeThX5+Tk1lFj3LpsWbuTsImK9KsVPX50M6uNQxSt4ASx0SDe0MDLC5uzbGYtjqkZQYEYguo7O64t81+C3JK3BHDPsL5G5H7g2qwPJ7ola1sV1wDCGE9ago09QZvYpOacPbtbesFhbwKP31eDz2PWGSJ4DCIoLKhmfpEuDpiih649VQ== jeff@puppetlabs.com'
+    },
+    'dan' => {
+      'home'      => '/home/dan',
+      'comment'   => 'Dan Bode',
+      'uid'       => '1109',
+      'gid'       => '1109',
+      'sshpubkey' => '# UNKNOWN',
+    },
+    'nigel' => {
+      'home'      => '/home/nigel',
+      'comment'   => 'Nigel Kersten',
+      'uid'       => '2001',
+      'gid'       => '2001',
+      'sshpubkey' => '# UNKNOWN',
+    }
+  }
+
 }
