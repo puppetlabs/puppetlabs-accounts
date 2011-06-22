@@ -34,17 +34,19 @@ class accounts (
   # data from it.
   include "${data_namespace_real}"
 
-  # This section of the code is repsonsible for pulling in the data we need.
-  $groups_hash = getvar("${data_namespace_real}::groups_hash")
-
-  debug("ACCOUNTS: groups_pash = $groups_hash")
-
   anchor { "accounts::begin": }
   anchor { "accounts::end": }
 
-  # if $manage_groups_real {
-  #   class { 'accounts::groups': }
-  # }
+  if $manage_groups_real {
+    # This section of the code is repsonsible for pulling in the data we need.
+    $groups_hash = getvar("${data_namespace_real}::groups_hash")
 
+    class { 'accounts::groups':
+      groups_hash => $groups_hash,
+      require     => Anchor['accounts::begin'],
+      before      => Anchor['accounts::end'],
+    }
+
+  }
 
 }
