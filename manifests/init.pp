@@ -37,6 +37,9 @@ class accounts (
   anchor { "accounts::begin": }
   anchor { "accounts::end": }
 
+  # FIXME: We need to do a hash merge of the groups_hash and groups_hash_default
+  # FIXME: We need to do a hash merge of the users_hash and users_hash_default
+
   if $manage_groups_real {
     # This section of the code is repsonsible for pulling in the data we need.
     $groups_hash = getvar("${data_namespace_real}::groups_hash")

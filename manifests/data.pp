@@ -24,9 +24,18 @@
 # }
 #
 class accounts::data {
+  # If the groups_hash does not specify these keys, then they will be
+  # merged into the resource declaration
+  # FIXME: Unimplemented
+  /*$groups_hash_default {*/
+  /*  'ensure' => 'present',*/
+  /*}*/
+
+  # The groups_hash defines "shared" supplementary groups.
   $groups_hash = {
     'admin'     => { gid => '3000' },
     'sudo'      => { gid => '3001' },
     'sudo_nopw' => { gid => '3002' },
+    'developer' => { gid => '3003' },
   }
 }
