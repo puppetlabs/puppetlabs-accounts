@@ -45,33 +45,30 @@ class accounts::data {
   # directly usable by the type.
   # Idea: filter_type_hash('user', $users_hash)
   # Which would remove keys like "sshkey"
-  $users_hash_default = { }
+  $users_hash_default = {
+    password => '!!',
+    shell    => '/bin/bash',
+    ensure   => 'present',
+    home     => '/home/#{title}'
+  }
 
   $users_hash = {
     'jeff' => {
-      'ensure'   => 'present',
-      'home'     => '/home/jeff',
       'shell'    => '/bin/zsh',
       'comment'  => 'Jeff McCune',
       'password' => '!!',
       'uid'      => '1112',
       'gid'      => '1112',
+      'sshkey'   => 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAzlnWpbiDfBLJWWh3xEIMo3QJhB+/TucyWtqTB3B3np1LHi7/zJW9L5KwqgCPfcCSPKY4ekW4K5DwZgXufM74+acBJqAIioJby5AVlkYtRMuJItzRYfkClN0Ex/8rCc/y8T+Wa5Q7Kyy73312xxqbeO8nzNkDO2Zx2oxxHVDSeThX5+Tk1lFj3LpsWbuTsImK9KsVPX50M6uNQxSt4ASx0SDe0MDLC5uzbGYtjqkZQYEYguo7O64t81+C3JK3BHDPsL5G5H7g2qwPJ7ola1sV1wDCGE9ago09QZvYpOacPbtbesFhbwKP31eDz2PWGSJ4DCIoLKhmfpEuDpiih649VQ== jeff@puppetlabs.com'
     },
     'dan' => {
-      'ensure'   => 'present',
-      'home'     => '/home/dan',
-      'shell'    => '/bin/bash',
       'comment'  => 'Dan Bode',
-      'password' => '!!',
       'uid'      => '1109',
       'gid'      => '1109',
     },
     'nigel' => {
-      'ensure'   => 'present',
-      'home'     => '/home/nigel',
       'shell'    => '/bin/bash',
       'comment'  => 'Nigel Kersten',
-      'password' => '!!',
       'uid'      => '2001',
       'gid'      => '2001',
     }
