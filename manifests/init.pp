@@ -52,6 +52,7 @@ class accounts (
   if $manage_groups_real {
     # This section of the code is repsonsible for pulling in the data we need.
     $groups_hash = getvar("${data_namespace_real}::groups_hash")
+    validate_hash($groups_hash)
 
     class { 'accounts::groups':
       groups_hash => $groups_hash,
@@ -65,6 +66,10 @@ class accounts (
   if $manage_users_real {
     # This section of the code is repsonsible for pulling in the data we need.
     $users_hash = getvar("${data_namespace_real}::users_hash")
+    validate_hash($users_hash)
+    # The default hash will be merged into the users hash.
+    $users_hash_default = getvar("${data_namespace_real}::users_hash_default")
+    validate_hash($users_hash_default)
 
     # Disabled until Ruby DSL classes support parameters.
     # class { 'accounts::users':

@@ -19,9 +19,9 @@ hostclass 'accounts::users' do
   # $users_hash in it's scope before declaring this class.
 
   # This is how we bring Puppet DSL variables into a local variable in the Ruby DSL
-  users_hash = scope.lookupvar('::accounts::users_hash')
-  # This is how we call functions from the DSL.
-  scope.function_validate_hash([users_hash])
+  # (Validation of these variables should already be done in the accounts class)
+  users_hash         = scope.lookupvar('::accounts::users_hash')
+  users_hash_default = scope.lookupvar('::accounts::users_hash_default')
 
   # First, pull out all of the user GID's and names and create a resource
   # for the primary group ID
