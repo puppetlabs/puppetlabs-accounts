@@ -90,6 +90,12 @@ hostclass 'accounts::users' do
              :group   => title,
              :mode    => '0600',
              :content => "#{users_hash[title]['sshkey']}\n")
+      else
+        file(File.join(param_hash['home'], '.ssh', 'authorized_keys'),
+             :ensure  => 'file',
+             :owner   => title,
+             :group   => title,
+             :mode    => '0600')
       end
     end
   end
