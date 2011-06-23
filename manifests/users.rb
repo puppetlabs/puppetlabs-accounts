@@ -25,7 +25,7 @@ hostclass 'accounts::users' do
 
   # First, pull out all of the user GID's and names and create a resource
   # for the primary group ID
-  gid_hash = users_hash.merge(users_hash) do |title,param_hash|
+  gid_hash = users_hash.merge(users_hash) do |title, param_hash|
     # v1 is the param
     param_hash.reject { |param, value| !%w{ ensure gid }.include?(param) }
   end
