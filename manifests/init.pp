@@ -9,11 +9,17 @@
 #  [*data_namespace*] The Puppet namespace to find data.  Override the default
 #  of 'accounts::data' with your own namespace.  The string must end with
 #  ::data.  site::accounts::data is a good choice.
+#  This class will automatically be included for you.  The class should not
+#  be a parameterized class.
 #
 #  [*manage_groups*] Whether or not this module manages a set of default shared
-#  groups.  These groups must be defined in the $groups hash in the
+#  groups.  These groups must be defined in the $groups_hash hash in the
 #  _data_namespace_
 #
+#  [*manage_users*] Whether or not this module manages a set of default shared
+#  users.  These users must be defined in the $users_hash in the
+#  _data_namespace_
+
 # Actions:
 #
 # Requires:
