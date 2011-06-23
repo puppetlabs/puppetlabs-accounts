@@ -20,6 +20,6 @@ class accounts::groups (
   # JJM FIXME This will need to be re-factored
   # When Puppet 2.7 is included in PE since the create_resources
   # function will be part of core.
-  create_resources('group', $groups_hash)
+  create_resources('group', $groups_hash_real)
 
 }
