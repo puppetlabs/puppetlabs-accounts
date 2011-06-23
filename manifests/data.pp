@@ -35,7 +35,7 @@ class accounts::data {
   $groups_hash = {
     'admin'     => { gid => '3000' },
     'sudo'      => { gid => '3001' },
-    'sudo_nopw' => { gid => '3002' },
+    'sudonopw'  => { gid => '3002' },
     'developer' => { gid => '3003' },
   }
   # These are the actual accounts on the system to manage
