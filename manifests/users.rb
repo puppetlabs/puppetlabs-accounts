@@ -55,7 +55,10 @@ hostclass 'accounts::users' do
     param_hash.reject! { |param, value| !valid_user_params.include?(param) }
     # FIXME Interpolate all string values (This may be a HORRIBLE idea)
     # It may be better to ONLY interpolate the home directory or something
-    param_hash.merge(param_hash) { |param, value| eval('"' + value + '"') }
+    if param_hash.has_key?('home') then
+      param_hash['home'] = eval('"' << param_hash['home'] << '"')
+    end
+    param_hash
   end
   # Create the user resources
   scope.function_create_resources(['user', users_rsrc_hash])

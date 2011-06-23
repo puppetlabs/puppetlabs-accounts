@@ -56,6 +56,7 @@ class accounts::data {
     'jeff' => {
       'shell'    => '/bin/zsh',
       'comment'  => 'Jeff McCune',
+      'groups'   => [ admin, sudonopw, ],
       'password' => '!!',
       'uid'      => '1112',
       'gid'      => '1112',
