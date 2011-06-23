@@ -41,4 +41,27 @@ hostclass 'accounts::users' do
   # And the user resources
   scope.function_create_resources(['user', users_hash])
 
+  # Manage the home directory
+  users_hash.each do |title, param_hash|
+    if param_hash.has_key?('home') then
+      # JJM I'm not sure if it's best to call
+      # the create_resources() function or declare the resource
+      # directly from the DSL.
+      file(param_hash['home'],
+           :ensure => 'directory',
+           :owner  => title,
+           :group  => title,
+           :mode   => '0700')
+      # And some nice sub-directories
+      %w{ .ssh .vim }.each do |subdir|
+        file(File.join(param_hash['home'], subdir),
+             :ensure => 'directory',
+             :owner  => title,
+             :group  => title,
+             :mode   => '0700')
+      end
+    end
+  end
+
+
 end
