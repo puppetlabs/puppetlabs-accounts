@@ -75,8 +75,13 @@ class accounts (
     # when this class is declared.
     class { 'accounts::users': }
 
+    # FIXME See #8050, Puppet does not allow a before metaparameter and -> to be used at the same time.
+    # class { 'accounts::users':
+    #   before => Anchor['accounts::end'],
+    # }
+
+    Class['accounts::users']  -> Anchor['accounts::end']
     Anchor['accounts::begin'] -> Class['accounts::users']
-    Class['accounts::users'] -> Anchor['accounts::end']
 
     if $manage_groups_real {
       Class['accounts::groups'] -> Class['accounts::users']
