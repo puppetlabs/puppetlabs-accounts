@@ -1,2 +1,5 @@
+2011-06-23 Jeff McCune <jeff@puppetlabs.com> - 0.0.2
+* Basic group and account management
+
 2011-06-21 Jeff McCune <jeff@puppetlabs.com> - 0.0.1
 * This module does nothing.  Initial release. =)
