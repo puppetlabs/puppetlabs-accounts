@@ -60,9 +60,14 @@ class accounts (
     # This section of the code is repsonsible for pulling in the data we need.
     $users_hash = getvar("${data_namespace_real}::users_hash")
 
-    class { 'accounts::users':
-      users_hash => $users_hash,
-    }
+    # Disabled until Ruby DSL classes support parameters.
+    # class { 'accounts::users':
+    #   users_hash => $users_hash,
+    # }
+
+    # FIXME We're relying on $users_hash being in scope
+    # when this class is declared.
+    class { 'accounts::users': }
 
     Anchor['accounts::begin'] -> Class['accounts::users']
     Class['accounts::users'] -> Anchor['accounts::end']
