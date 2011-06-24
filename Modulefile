@@ -1,5 +1,5 @@
 name    'puppetlabs-accounts'
-version '0.0.2'
+version '0.0.3'
 source 'git@github.com:puppetlabs/puppetlabs-accounts.git'
 author 'puppetlabs'
 license 'FIXME: Commercial'
