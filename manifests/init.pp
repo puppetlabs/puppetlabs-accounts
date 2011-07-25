@@ -27,7 +27,13 @@
 #
 #  [*data_store*] Where the data specifying accounts and groups live.  This setting
 #  may be 'yaml' or 'namespace'.  When set to namespace the puppet class specified
-#  with the data_namespace class parameter will be used.
+#  with the data_namespace class parameter will be used.  YAML data store is the default.
+#  Examples of these configuration files are located in the ext/data/ directory of this
+#  module.  These files should be copied to a data directory inside Puppet's confdir.
+#  For example:
+#   * /etc/puppet/data/accounts_users_hash.yaml
+#   * /etc/puppet/data/accounts_users_default_hash.yaml
+#   * /etc/puppet/data/accounts_groups_hash.yaml
 #
 # Actions:
 #
