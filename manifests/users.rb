@@ -18,6 +18,9 @@ hostclass 'accounts::users' do
   # As a result, I'm relying on the fact the accounts class sets
   # $users_hash in it's scope before declaring this class.
 
+  # pre-load create_resources function
+  Puppet::Parser::Functions.function(:create_resources)
+
   # We need this list to filter out keys from the resource hashes we're dealing with.
   valid_metaparams = %w{ require before subscribe notify tag }
 
