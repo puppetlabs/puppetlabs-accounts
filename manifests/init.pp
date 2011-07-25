@@ -2,7 +2,9 @@
 #
 #   This module manages accounts on a Puppet managed system.
 #
-#   FIXME: Add more information here
+#   The goal of this module is to provide effective user and group management
+#   without having to modify any Puppet Code.  Users and Groups may be configured
+#   using simple data files or variables in a Puppet manifest.
 #
 # Parameters:
 #
@@ -14,17 +16,32 @@
 #
 #  [*manage_groups*] Whether or not this module manages a set of default shared
 #  groups.  These groups must be defined in the $groups_hash hash in the
-#  _data_namespace_
+#  _data_namespace_.  Please see the accounts::data class included in this module
+#  for an example.
 #
 #  [*manage_users*] Whether or not this module manages a set of default shared
 #  users.  These users must be defined in the $users_hash in the
-#  _data_namespace_
-
+#  _data_namespace_.  Configuration values that apply to all users should be
+#  in the $users_hash_default variable.  Please see the accounts::data class
+#  included in this module for an example.
+#
 # Actions:
 #
 # Requires:
 #
+#   Puppet Labs 'stdlib' Module more recent than 0.0.4
+#   http://forge.puppetlabs.com/puppetlabs/stdlib
+#
 # Sample Usage:
+#
+#   node default {
+#     notify { 'alpha': }
+#     ->
+#     class  { 'accounts':
+#     }
+#     ->
+#     notify { 'omega': }
+#   }
 #
 class accounts (
   $manage_groups  = true,
