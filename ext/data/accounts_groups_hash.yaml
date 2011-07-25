@@ -1,0 +1,9 @@
+--- 
+developer: 
+  gid: "3003"
+sudonopw: 
+  gid: "3002"
+sudo: 
+  gid: "3001"
+admin: 
+  gid: "3000"

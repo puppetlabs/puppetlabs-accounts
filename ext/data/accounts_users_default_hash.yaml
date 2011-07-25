@@ -1,0 +1,5 @@
+--- 
+  password: '!!'
+  shell: /bin/bash
+  ensure: present
+  home: '/home/#{title}'
