@@ -82,14 +82,27 @@ hostclass 'accounts::users' do
              :group  => title,
              :mode   => '0700')
       end
-      # Check for an sshkey
-      if users_hash[title].has_key?('sshkey') then
-        file(File.join(param_hash['home'], '.ssh', 'authorized_keys'),
-             :ensure  => 'file',
-             :owner   => title,
-             :group   => title,
-             :mode    => '0600',
-             :content => "#{users_hash[title]['sshkey']}\n")
+      # Check for sshkeys in the user supplied hash.  We do this because this
+      # key will be stripped out when merging keys for use with create_resources()
+      if users_hash[title].has_key?('sshkeys') then
+        # We expect this to be an user-defined array of keys that have simply been copied
+        # directly from the public key file.  e.g. pbcopy < ~/.ssh/id_dsa.pub
+        # We're going to use the native ssh_authorized_key type to manage these.
+        users_hash[title]['sshkeys'].each do |keyline|
+          # Split up the raw key file the user provided in the data file.
+          (my_type, my_key, my_name)  = keyline.split(' ', 3)
+          # Derive the target from the home directory attribute of the account we're managing.
+          my_target = File.join(param_hash['home'], '.ssh', 'authorized_keys')
+          # Declare the key resource in the catlog
+          ssh_authorized_key("#{title}_#{my_type}_#{my_name}",
+                             :ensure  => 'present',
+                             :user    => title,
+                             :name    => my_name,
+                             :key     => my_key,
+                             :type    => my_type,
+                             :target  => my_target,
+                             :require => [ "File[#{File.join(param_hash['home'], '.ssh')}]" ])
+        end
       else
         file(File.join(param_hash['home'], '.ssh', 'authorized_keys'),
              :ensure  => 'file',
