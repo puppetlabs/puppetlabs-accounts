@@ -64,7 +64,7 @@ hostclass 'accounts::users' do
       when /debian|ubuntu/i
         param_hash['shell'] = '/usr/sbin/nologin'
       when /solaris/i
-        param_hash['shell'] = '/dev/null'
+        param_hash['shell'] = '/usr/bin/false'
       else
         param_hash['shell'] = '/sbin/nologin'
       end
