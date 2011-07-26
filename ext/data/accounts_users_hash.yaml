@@ -1,4 +1,10 @@
 --- 
+  puppet:
+    locked: true
+    comment: Puppet Service Account
+    home: /var/lib/puppet
+    uid: '52'
+    gid: '52'
   sysop:
     locked: false
     comment: System Operator
