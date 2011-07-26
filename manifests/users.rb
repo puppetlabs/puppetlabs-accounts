@@ -93,6 +93,18 @@ hostclass 'accounts::users' do
              :group  => title,
              :mode   => '0700')
       end
+      # Basic customization (#8582)
+      # Bash configuration
+      %w{ .bashrc .bash_profile }.each do |rcfile|
+        file(File.join(param_hash['home'], rcfile),
+             :ensure  => 'file',
+             :owner   => title,
+             :group   => title,
+             :mode    => '0644',
+             :replace => false,
+             :source  => "puppet:///modules/accounts/shell/#{rcfile.gsub('.','')}")
+      end
+
       # Check for sshkeys in the user supplied hash.  We do this because this
       # key will be stripped out when merging keys for use with create_resources()
       if users_hash[title].has_key?('sshkeys') then
