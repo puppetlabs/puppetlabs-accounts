@@ -4,6 +4,25 @@ FIXME TBD
 
  * [#8001](https://projects.puppetlabs.com/issues/8001)
 
+# Locking Accounts #
+
+Accounts managed with this module may be easily locked by setting the "locked"
+property of an account to true.
+
+For example:
+
+    --- 
+      villain:
+        comment: Bad Person
+        locked: true
+
+The accounts module will set the account to an invalid shell appropriate for
+the system Puppet is managing.
+
+    $ ssh villain@centos56
+    This account is currently not available.
+    Connection to 172.16.214.129 closed.
+
 # SSH Key Management #
 
 SSH Keys may be managed using the "sshkeys" attribute of each user in the
