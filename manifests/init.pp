@@ -25,6 +25,11 @@
 #  in the $users_hash_default variable.  Please see the accounts::data class
 #  included in this module for an example.
 #
+#  [*manage_sudoers*] Whether or not this module should add sudo rules to the sudoers
+#  file of the client. If specified as true, it will add groups %sudo and %sudonopw
+#  and give them full sudo and full passwordless sudo privileges respectively.
+#  Defaults to true.
+#
 #  [*data_store*] Where the data specifying accounts and groups live.  This setting
 #  may be 'yaml' or 'namespace'.  When set to namespace the puppet class specified
 #  with the data_namespace class parameter will be used.  YAML data store is the default.
@@ -34,6 +39,9 @@
 #   * /etc/puppet/data/accounts_users_hash.yaml
 #   * /etc/puppet/data/accounts_users_default_hash.yaml
 #   * /etc/puppet/data/accounts_groups_hash.yaml
+#
+#  [*sudoers_path*] Location of sudoers file on client systems.
+#  defaults to /etc/sudoers
 #
 # Actions:
 #
@@ -55,12 +63,16 @@
 #   }
 #
 class accounts (
-  $manage_groups  = true,
-  $manage_users   = true,
-  $data_store     = 'yaml',
-  $data_namespace = 'accounts::data'
+  $manage_groups   = true,
+  $manage_users    = true,
+  $manage_sudoers  = true,
+  $data_store      = 'yaml',
+  $data_namespace  = 'accounts::data',
+  $sudoers_path    = '/etc/sudoers'
 ) {
 
+  validate_re($sudoers_path, '\/\S+')
+  validate_bool($manage_sudoers)
   validate_re($data_store, '^namespace$|^yaml$')
   $data_store_real = $data_store
   validate_re($data_namespace, '::data$')
@@ -140,6 +152,17 @@ class accounts (
       Class['accounts::groups'] -> Class['accounts::users']
     }
 
+  }
+
+  if $manage_sudoers {
+    append_line { 'sudo_rules':
+      path => $sudoers_path,
+      line => '%sudo ALL=(ALL) ALL',
+    }
+    append_line { 'sudonopw_rules':
+      path => $sudoers_path,
+      line => '%sudonopw ALL=NOPASSWD: ALL'
+    }
   }
 
 }
