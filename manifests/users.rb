@@ -37,6 +37,8 @@ hostclass 'accounts::users' do
   # Add the before relationship to the User resource
   gid_hash.each do |title, param_hash|
     param_hash['before'] = "User[#{title}]"
+    # Ensure the primary group is present
+    param_hash['ensure'] = 'present'
   end
 
   # Now, add the group resources to the catalog:
