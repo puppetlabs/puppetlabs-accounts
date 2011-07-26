@@ -58,6 +58,17 @@ hostclass 'accounts::users' do
     if param_hash.has_key?('home') then
       param_hash['home'] = eval('"' << param_hash['home'] << '"')
     end
+    # Check if the account is locked or not.
+    if users_hash[title]['locked'] then
+      case scope.lookupvar('::operatingsystem').downcase
+      when /debian|ubuntu/i
+        param_hash['shell'] = '/usr/sbin/nologin'
+      when /solaris/i
+        param_hash['shell'] = '/dev/null'
+      else
+        param_hash['shell'] = '/sbin/nologin'
+      end
+    end
     param_hash
   end
   # Create the user resources
