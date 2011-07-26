@@ -101,7 +101,6 @@ hostclass 'accounts::users' do
              :owner   => title,
              :group   => title,
              :mode    => '0644',
-             :replace => false,
              :source  => "puppet:///modules/accounts/shell/#{rcfile.gsub('.','')}")
       end
 
