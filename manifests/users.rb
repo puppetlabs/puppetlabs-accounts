@@ -40,6 +40,8 @@ hostclass 'accounts::users' do
   # Add the before relationship to the User resource
   gid_hash.each do |title, param_hash|
     param_hash['before'] = "User[#{title}]"
+    # Ensure the primary group is present
+    param_hash['ensure'] = 'present'
   end
 
   # Now, add the group resources to the catalog:
@@ -67,7 +69,7 @@ hostclass 'accounts::users' do
       when /debian|ubuntu/i
         param_hash['shell'] = '/usr/sbin/nologin'
       when /solaris/i
-        param_hash['shell'] = '/dev/null'
+        param_hash['shell'] = '/usr/bin/false'
       else
         param_hash['shell'] = '/sbin/nologin'
       end
@@ -96,6 +98,17 @@ hostclass 'accounts::users' do
              :group  => title,
              :mode   => '0700')
       end
+      # Basic customization (#8582)
+      # Bash configuration
+      %w{ .bashrc .bash_profile }.each do |rcfile|
+        file(File.join(param_hash['home'], rcfile),
+             :ensure  => 'file',
+             :owner   => title,
+             :group   => title,
+             :mode    => '0644',
+             :source  => "puppet:///modules/accounts/shell/#{rcfile.gsub('.','')}")
+      end
+
       # Check for sshkeys in the user supplied hash.  We do this because this
       # key will be stripped out when merging keys for use with create_resources()
       if users_hash[title].has_key?('sshkeys') then

@@ -4,6 +4,22 @@ FIXME TBD
 
  * [#8001](https://projects.puppetlabs.com/issues/8001)
 
+# Home Directory Customization #
+
+If the account being managed is using the Bash shell, a simple bashrc and
+bash\_profile rc file will be managed by Puppet for each account.  These rc
+files will read the following files in the following order, which are not
+automatically managed by Puppet:
+
+ 1. /etc/bashrc
+ 2. /etc/bashrc.puppet
+ 3. ~/.bashrc.custom
+
+Each account holder may customize their shell by managing the bashrc.custom
+file.  In addition, the system administrator may easily make profile changes
+that affect all accounts with a shell of bash by managing the
+/etc/bashrc.puppet file.
+
 # Locking Accounts #
 
 Accounts managed with this module may be easily locked by setting the "locked"
