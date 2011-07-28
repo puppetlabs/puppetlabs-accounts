@@ -1,8 +1,39 @@
 # Overview #
 
-FIXME TBD
+This module manages many of the resources related to login and service accounts
+on Puppet managed systems.  Unlike other Puppet Modules, this module allows you
+to specify users and groups using a simple Hash data structure.  This Hash may
+be defined in a Puppet module of your choice (e.g. site::accounts) or in a
+simple YAML file on disk.
 
- * [#8001](https://projects.puppetlabs.com/issues/8001)
+# Installation #
+
+This module should be placed in your module search path.  The module is
+designed to be automatically updated with Puppet Enterprise updates and should
+not be modified.  Customization of the module behavior is intended to be done
+in a namespace outside of the accounts module or using a YAML data file outside
+of the module directory structure.
+
+# Quick Start #
+
+Example YAML files are provided in the ext/data/ directory in this module.
+These examples should be copied to $confdir/data, e.g. /etc/puppet/data/ or
+/etc/puppetlabs/puppet/data for Puppet Enterprise.
+
+For example:
+
+    $ mkdir $(puppet --configprint confdir)/data
+    $ cp ext/data/*.yaml $(puppet --configprint confdir)/data/
+
+Then, simply declare the accounts class in a Puppet managed node's catalog:
+
+    # site.pp
+    node default {
+      class  { accounts: data_store => yaml }
+    }
+
+The above example will load the YAML files in /etc/puppet/data/ and create
+accounts, home directories, and groups based on the data provided in the files.
 
 # Home Directory Customization #
 
@@ -50,7 +81,8 @@ For example, on Mac OS X:
 
     $ pbcopy < ~/.ssh/id_dsa.pub
 
-Once copied, I can add the key to my account by simply setting the sshkeys attribute in the `accounts_users_hash.yaml` date file:
+Once copied, I can add the key to my account by simply setting the sshkeys
+attribute in the `accounts_users_hash.yaml` date file:
 
     # /etc/puppet/data/accounts_users_hash.yaml
     --- 
