@@ -28,8 +28,7 @@
 #  [*manage_sudoers*] Whether or not this module should add sudo rules to the sudoers
 #  file of the client. If specified as true, it will add groups %sudo and %sudonopw
 #  and give them full sudo and full passwordless sudo privileges respectively.
-#  Defaults to true.  Note, this option does not manage Sudo on Solaris since Solaris
-#  does not ship with sudo by default.
+#  Defaults to true.
 #
 #  [*data_store*] Where the data specifying accounts and groups live.  This setting
 #  may be 'yaml' or 'namespace'.  When set to namespace the puppet class specified
@@ -144,15 +143,6 @@ class accounts (
   if $manage_users_real {
     # FIXME We're relying on $users_hash being in scope
     # when this class is declared.
-    class { 'accounts::users': }
-
-    Class['accounts::users']  -> Anchor['accounts::end']
-    Anchor['accounts::begin'] -> Class['accounts::users']
-
-    if $manage_groups_real {
-      Class['accounts::groups'] -> Class['accounts::users']
-    }
-
     create_resources('accounts::user', $users_hash)
   }
 
