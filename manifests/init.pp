@@ -153,6 +153,7 @@ class accounts (
       Class['accounts::groups'] -> Class['accounts::users']
     }
 
+    create_resources('accounts::user', $users_hash)
   }
 
   if $manage_sudoers {
