@@ -10,6 +10,9 @@ define accounts::home_dir(
   $ssh_keys = []
 ) {
 
+  # manage ssh_keys if they were specified
+  $key_file = "${name}/.ssh/authorized_keys"
+
   File { owner => $user, group => $user, mode => '0644' }
 
   file { [$name, "${name}/.ssh", "${name}/.vim"]:
@@ -26,16 +29,15 @@ define accounts::home_dir(
     source  => "puppet:///modules/accounts/shell/bash_profile",
   }
 
-  # manage ssh_keys if they were specified
-  $key_file = "${name}/.ssh/authorized_keys"
   if $ssh_keys == [] {
     file { $key_file:
      mode => '0600',
     }
   } else {
     accounts::manage_keys { $ssh_keys:
-      user    => $user,
+      user     => $user,
       key_file => $key_file,
+      require  => File["${name}/.ssh"]
     }
   }
 
