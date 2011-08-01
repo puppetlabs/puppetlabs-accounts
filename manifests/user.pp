@@ -25,7 +25,7 @@ define accounts::user(
         $locked_shell = '/usr/sbin/nologin'
       }
       'solaris' : {
-        $locked_shell = '/usr/sbin/nologin'
+        $locked_shell = '/usr/bin/false'
       }
       default : {
         $locked_shell = '/sbin/nologin'
