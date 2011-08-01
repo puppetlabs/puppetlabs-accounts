@@ -29,15 +29,18 @@ define accounts::home_dir(
     source  => "puppet:///modules/accounts/shell/bash_profile",
   }
 
-  if $ssh_keys == [] {
-    file { $key_file:
-     mode => '0600',
-    }
-  } else {
+  # Manage the file permissions of the authorized_keys file
+  file { $key_file:
+   ensure => file,
+   mode   => '0600',
+  }
+
+  if $ssh_keys != [] {
     accounts::manage_keys { $ssh_keys:
       user     => $user,
       key_file => $key_file,
-      require  => File["${name}/.ssh"]
+      require  => File["${name}/.ssh"],
+      before   => File["${key_file}"],
     }
   }
 
