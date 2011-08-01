@@ -7,15 +7,21 @@
 # [*locked*] Whether the user account should be locked.
 # [*sshkeys*] List of ssh public keys to be associated with the
 # user.
+# [*data_namespace*] Namespace where users_hash_default variable will be
+# looked-up. Defaults to accounts::data. The class that represents this
+# namespace will be included into the accounts::user define.
 #
 define accounts::user(
   $user_params = {},
   $locked = false,
-  $sshkeys = []
+  $sshkeys = [],
+  $data_namespace = 'accounts::data'
 ) {
 
   # import configurable user defaults
-  $users_hash_default = $::accounts::users_hash_default
+  include $data_namespace
+  $users_hash_default = getvar("${data_namespace}::users_hash_default")
+  validate_hash($users_hash_default)
 
   # if the account should be locked, create a hash to be
   # merged over the user_params hash.
