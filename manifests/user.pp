@@ -8,18 +8,19 @@
 # [*sshkeys*] List of ssh public keys to be associated with the
 # user.
 # [*data_namespace*] Namespace where users_hash_default variable will be
-# looked-up. Defaults to accounts::data. The class that represents this
-# namespace will be included into the accounts::user define.
+# looked-up. Defaults to accounts, which itself imports data into it's
+# namespace from the location you specify.  NOTE: this class should be
+# declared in the catalog before accounts::user resources are declared.
 #
 define accounts::user(
   $user_params = {},
   $locked = false,
   $sshkeys = [],
-  $data_namespace = 'accounts::data'
+  $data_namespace = 'accounts'
 ) {
 
-  # import configurable user defaults
-  include $data_namespace
+  # NOTE: The data_namespace should be declared in the catalog before
+  # accounts::user resources are declared.
   $users_hash_default = getvar("${data_namespace}::users_hash_default")
   validate_hash($users_hash_default)
 
