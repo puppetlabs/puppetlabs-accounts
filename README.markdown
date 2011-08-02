@@ -105,3 +105,24 @@ attribute in the `accounts_users_hash.yaml` date file:
         uid: '2001'
         gid: '2001'
 
+# Declaring User Accounts #
+
+In addition to specifying what accounts Puppet should manage through the
+definition of a Hash variable or YAML file, the accounts module supports
+declaring resources directly.  An example of this pattern is provided in the
+tests/init\_with\_user\_resources.pp file.
+
+By default the accounts::user defined type will merge default parameters for
+the user using the users\_hash\_default data provided to the accounts class.
+For example, when using a YAML data store, the accounts class will populate the
+variable named $accounts::users\_hash\_default from the YAML data file
+/etc/puppet/data/users\_hash\_default.yaml  The accounts::user defined resource
+type will then use these parameters as the default value for any declared
+resources which do not explicitly declare the parameter.
+
+Likewise, using a namespace has the same effect.  If you would like to specify
+the default values in the namespace site::accounts::data, then the accounts
+module will copy $site::accounts::data::users\_hash\_default to
+$accounts::users\_hash\_default and the accounts::user defined resource will
+use these values as the default.
+
