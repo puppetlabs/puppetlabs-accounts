@@ -30,11 +30,12 @@
 #  and give them full sudo and full passwordless sudo privileges respectively.
 #  Defaults to true.
 #
-#  [*data_store*] Where the data specifying accounts and groups live.  This setting
-#  may be 'yaml' or 'namespace'.  When set to namespace the puppet class specified
-#  with the data_namespace class parameter will be used.  YAML data store is the default.
-#  Examples of these configuration files are located in the ext/data/ directory of this
-#  module.  These files should be copied to a data directory inside Puppet's confdir.
+#  [*data_store*] Where the data specifying accounts and groups live.  This
+#  setting may be 'yaml' or 'namespace' (Defaults to namespace).  When set to
+#  namespace the puppet class specified with the data_namespace class parameter
+#  will be used.  YAML data store is the default.  Examples of these
+#  configuration files are located in the ext/data/ directory of this module.
+#  These files should be copied to a data directory inside Puppet's confdir.
 #  For example:
 #   * /etc/puppet/data/accounts_users_hash.yaml
 #   * /etc/puppet/data/accounts_users_default_hash.yaml
@@ -66,7 +67,7 @@ class accounts (
   $manage_groups   = true,
   $manage_users    = true,
   $manage_sudoers  = true,
-  $data_store      = 'yaml',
+  $data_store      = 'namespace',
   $data_namespace  = 'accounts::data',
   $sudoers_path    = '/etc/sudoers'
 ) {
@@ -82,47 +83,39 @@ class accounts (
   validate_bool($manage_users)
   $manage_users_real = $manage_users
 
+  # We always populate these Hash data structures because the accounts::user defined
+  # Type needs the $accounts::users_hash_default variable.
   case $data_store_real {
     namespace: {
       # Make sure the namespace is added to the catalog.
       include "${data_namespace_real}"
-
+      $groups_hash = getvar("${data_namespace_real}::groups_hash")
+      validate_hash($groups_hash)
       # This section of the code is repsonsible for pulling in the data we need.
-      if $manage_groups_real {
-        $groups_hash = getvar("${data_namespace_real}::groups_hash")
-        validate_hash($groups_hash)
-      }
-      if $manage_users_real {
-        # This section of the code is repsonsible for pulling in the data we need.
-        $users_hash = getvar("${data_namespace_real}::users_hash")
-        validate_hash($users_hash)
-        # The default hash will be merged into the users hash.
-        $users_hash_default = getvar("${data_namespace_real}::users_hash_default")
-        validate_hash($users_hash_default)
-      }
+      $users_hash = getvar("${data_namespace_real}::users_hash")
+      validate_hash($users_hash)
+      # The default hash will be merged into the users hash.
+      $users_hash_default = getvar("${data_namespace_real}::users_hash_default")
+      validate_hash($users_hash_default)
     }
 
     yaml: {
       # Figure out where the default puppet confdir is for the master.
       $datadir = inline_template('<%= File.join(Puppet[:confdir], "data") %>')
       # Load the hash data from YAML
-      if $manage_users_real {
-        # The files the end user defines data in.
-        $users_hash_file = inline_template("<%= File.join('${datadir}', 'accounts_users_hash.yaml')%>")
-        $users_hash_default_file = inline_template("<%= File.join('${datadir}', 'accounts_users_default_hash.yaml')%>")
-        # Load the files and validate the basic data types.
-        $users_hash = loadyaml($users_hash_file)
-        validate_hash($users_hash)
-        $users_hash_default = loadyaml($users_hash_default_file)
-        validate_hash($users_hash_default)
-      }
-      if $manage_groups_real {
-        # The files the end user defines data in.
-        $groups_hash_file = inline_template("<%= File.join('${datadir}', 'accounts_groups_hash.yaml')%>")
-        # Load the files and validate the basic data types.
-        $groups_hash = loadyaml($groups_hash_file)
-        validate_hash($groups_hash)
-      }
+      # The files the end user defines data in.
+      $users_hash_file = inline_template("<%= File.join('${datadir}', 'accounts_users_hash.yaml')%>")
+      $users_hash_default_file = inline_template("<%= File.join('${datadir}', 'accounts_users_default_hash.yaml')%>")
+      # Load the files and validate the basic data types.
+      $users_hash = loadyaml($users_hash_file)
+      validate_hash($users_hash)
+      $users_hash_default = loadyaml($users_hash_default_file)
+      validate_hash($users_hash_default)
+      # The files the end user defines data in.
+      $groups_hash_file = inline_template("<%= File.join('${datadir}', 'accounts_groups_hash.yaml')%>")
+      # Load the files and validate the basic data types.
+      $groups_hash = loadyaml($groups_hash_file)
+      validate_hash($groups_hash)
     }
   }
 

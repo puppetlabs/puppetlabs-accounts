@@ -16,24 +16,26 @@ of the module directory structure.
 
 # Quick Start #
 
-Example YAML files are provided in the ext/data/ directory in this module.
-These examples should be copied to $confdir/data, e.g. /etc/puppet/data/ or
-/etc/puppetlabs/puppet/data for Puppet Enterprise.
-
-For example:
-
-    $ mkdir $(puppet --configprint confdir)/data
-    $ cp ext/data/*.yaml $(puppet --configprint confdir)/data/
-
-Then, simply declare the accounts class in a Puppet managed node's catalog:
+With the module installed, simply declare the accounts class in a Puppet
+managed node's catalog:
 
     # site.pp
     node default {
-      class  { accounts: data_store => yaml }
+      accounts::user { 'dan': }
+      accounts::user { 'jeff': }
     }
 
-The above example will load the YAML files in /etc/puppet/data/ and create
-accounts, home directories, and groups based on the data provided in the files.
+The above example will create accounts, home directories, and groups for Jeff
+and Dan.
+
+# Declaring User Accounts #
+
+The accounts::user defined resource type supports most of the major features
+the user native type supports (see $ puppet describe user) and the additional
+parameters of locked and sshkeys.
+
+Examples of declaring resources are provided in the examples/ sub directory of
+this module.
 
 # Home Directory Customization #
 

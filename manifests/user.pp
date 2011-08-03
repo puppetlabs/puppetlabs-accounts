@@ -2,81 +2,106 @@
 #
 # parameters:
 # [*name*] Name of user
-# [*user_params*] Parameters that will be passed to the
-# created user resource.
 # [*locked*] Whether the user account should be locked.
 # [*sshkeys*] List of ssh public keys to be associated with the
 # user.
 # [*data_namespace*] Namespace where users_hash_default variable will be
-# looked-up. Defaults to accounts::data. The class that represents this
-# namespace will be included into the accounts::user define.
+# looked-up. Defaults to accounts, which itself imports data into it's
+# namespace from the location you specify.  NOTE: this class should be
+# declared in the catalog before accounts::user resources are declared.
 #
 define accounts::user(
-  $user_params = {},
-  $locked = false,
-  $sshkeys = [],
-  $data_namespace = 'accounts::data'
+  $ensure     = 'present',
+  $shell      = '/bin/bash',
+  $comment    = $name,
+  $home       = "/home/${name}",
+  $uid        = undef,
+  $gid        = undef,
+  $groups     = [ ],
+  $membership = 'minimum',
+  $password   = '!!',
+  $locked     = false,
+  $sshkeys    = []
 ) {
-
-  # import configurable user defaults
-  include $data_namespace
-  $users_hash_default = getvar("${data_namespace}::users_hash_default")
-  validate_hash($users_hash_default)
-
-  # if the account should be locked, create a hash to be
-  # merged over the user_params hash.
+  # Validate our inputs from the end user using a "best effort" strategy
+  # ensure
+  validate_re($ensure, '^present$|^absent$')
+  # locked
+  validate_bool($locked)
+  # shell (with munging _real pattern)
+  validate_re($shell, '^/')
   if $locked {
     case $::operatingsystem {
       'debian', 'ubuntu' : {
-        $locked_shell = '/usr/sbin/nologin'
+        $shell_real = '/usr/sbin/nologin'
       }
       'solaris' : {
-        $locked_shell = '/usr/bin/false'
+        $shell_real = '/usr/bin/false'
       }
       default : {
-        $locked_shell = '/sbin/nologin'
+        $shell_real = '/sbin/nologin'
       }
     }
-    $shell_param = {'shell' => $locked_shell}
   } else {
-    $shell_param = {}
+    $shell_real = $shell
   }
 
-  # if a home directory was not provided, assume a reasonable
-  # default
-  if has_key($user_params, 'home') {
-    $home_param = {}
-  } else {
-    $home_param = {'home' => "/home/${name}"}
+  # comment
+  if $comment != undef {
+    validate_type('String', $comment)
   }
+  # home
+  validate_re($home, '^/')
+  # If the home directory is not / (root on solaris) then disallow trailing slashes.
+  validate_re($home, '^/$|[^/]$')
+  # uid number
+  if $uid != undef {
+    validate_re($uid, '^\d+$')
+  }
+  # gid number
+  if $gid != undef {
+    validate_re($gid, '^\d+$')
+  }
+  # groups
+  validate_type('Array', $groups)
+  # membership
+  validate_re($membership, '^inclusive$|^minimum$')
+  # password
+  if $password != undef {
+    validate_type('String', $password)
+  }
+  # sshkeys
+  validate_type('Array', $sshkeys)
 
-  # merge the user_params over the user defaults, then merge over the
-  # shell and home hashes that we just created.
-  $user_params_real = merge($users_hash_default, $user_params, $shell_param, $home_param)
-
-  # create our user
-  $user_hash = {"${name}" => $user_params_real}
-  create_resources('user', $user_hash)
+  # The black magic with $gid is to take into account the fact that we're
+  # also passing $gid to the gid property of the group resource.  Unlike
+  # the user resources, the gid property of group cannot take a name, only a
+  # number.
+  user { $name:
+    ensure     => $ensure,
+    shell      => $shell_real,
+    comment    => $comment,
+    home       => $home,
+    uid        => $uid,
+    gid        => $gid ? { undef => $name, default => $gid },
+    groups     => $groups,
+    membership => $membership,
+    password   => $password,
+  }
 
   # create the primary group
   # what if gid is not a number?
-  if has_key($user_params, 'gid') {
-    group { $name:
-      gid    => $user_params_real['gid'],
-      ensure => $user_params_real['ensure'],
-      before => "User[${name}]",
-    }
+  group { $name:
+    ensure => $ensure,
+    gid    => $gid,
+    before => "User[${name}]",
   }
-  # manage home directory if specified
-  if has_key($user_params_real, 'home') {
-    accounts::home_dir { $user_params_real['home']:
-      user     => $name,
-      ssh_keys => $sshkeys,
-    }
-  } else {
-    if $sshkeys != [] {
-      fail("Cannot specify sshkeys without a home directory")
-    }
+
+  # Manage the home directory
+  accounts::home_dir { $home:
+    user    => $name,
+    sshkeys => $sshkeys,
+    require => [ User[$name], Group[$name] ],
   }
 
 }

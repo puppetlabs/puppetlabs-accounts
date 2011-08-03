@@ -3,14 +3,14 @@
 #
 # [*name*] Name of the home directory that is being managed.
 # [*user*] User that owns all of the files being created.
-# [*ssh_keys*] List of ssh keys to be added for this user in this
+# [*sshkeys*] List of ssh keys to be added for this user in this
 # directory
 define accounts::home_dir(
   $user,
-  $ssh_keys = []
+  $sshkeys = []
 ) {
 
-  # manage ssh_keys if they were specified
+  # manage ssh public keys if they were specified
   $key_file = "${name}/.ssh/authorized_keys"
 
   File { owner => $user, group => $user, mode => '0644' }
@@ -35,8 +35,8 @@ define accounts::home_dir(
    mode   => '0600',
   }
 
-  if $ssh_keys != [] {
-    accounts::manage_keys { $ssh_keys:
+  if $sshkeys != [] {
+    accounts::manage_keys { $sshkeys:
       user     => $user,
       key_file => $key_file,
       require  => File["${name}/.ssh"],
