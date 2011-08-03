@@ -48,7 +48,7 @@ define accounts::user(
 
   # comment
   if $comment != undef {
-    validate_type('String', $comment)
+    validate_string($comment)
   }
   # home
   validate_re($home, '^/')
@@ -63,15 +63,15 @@ define accounts::user(
     validate_re($gid, '^\d+$')
   }
   # groups
-  validate_type('Array', $groups)
+  validate_array($groups)
   # membership
   validate_re($membership, '^inclusive$|^minimum$')
   # password
   if $password != undef {
-    validate_type('String', $password)
+    validate_string($password)
   }
   # sshkeys
-  validate_type('Array', $sshkeys)
+  validate_array($sshkeys)
 
   # The black magic with $gid is to take into account the fact that we're
   # also passing $gid to the gid property of the group resource.  Unlike
