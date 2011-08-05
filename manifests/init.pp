@@ -145,11 +145,11 @@ class accounts (
         warning("manage_sudoers is $manage_sudoers but is not supported on $operatingsystem")
       }
       default: {
-        append_line { 'sudo_rules':
+        whole_line { 'sudo_rules':
           path => $sudoers_path,
           line => '%sudo ALL=(ALL) ALL',
         }
-        append_line { 'sudonopw_rules':
+       whole_line { 'sudonopw_rules':
           path => $sudoers_path,
           line => '%sudonopw ALL=NOPASSWD: ALL'
         }
