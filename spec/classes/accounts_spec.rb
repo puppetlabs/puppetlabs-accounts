@@ -67,6 +67,8 @@ describe 'accounts' do
     end
     it { should contain_file_line_sudo_rules.with_param('path', '/etc/sudoers') }
     it { should contain_file_line_sudonopw_rules.with_param('path', '/etc/sudoers') }
+
+    # We shouldn't manage sudoers on Solaris
     describe "on Solaris" do
       before :each do
         facts['operatingsystem'] = 'Solaris'
@@ -75,7 +77,11 @@ describe 'accounts' do
       it { should_not contain_file_line_sudonopw_rules }
     end
   end
-  # Unless we're on solaris, which does not have sudoers by default
+
+  describe "class containment (Anchor Points)" do
+    it { should create_resource('anchor', 'accounts::begin') }
+    it { should create_resource('anchor', 'accounts::end') }
+  end
 
 end
 
