@@ -137,8 +137,6 @@ class accounts (
   }
 
   if $manage_users_real {
-    # FIXME We're relying on $users_hash being in scope
-    # when this class is declared.
     create_resources('accounts::user', $users_hash)
   }
 

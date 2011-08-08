@@ -1,3 +1,20 @@
+2011-08-08 Puppet Labs <support@puppetlabs.com> - 1.0.0
+* Initial release in Puppet Enterprise 1.2
+* Updated dependency on stdlib 2.0.0
+* (#8575) Add YAML data file support
+* (#8577) Support multiple ssh keys per user
+* (#8583) Add lockout feature to accounts module
+* (#8578) Add sudo configuration to accounts
+* (#8582) Add base bash rc and profile scripts
+* (#8649) Do not manage sudoers on Solaris
+* (#8678) Refactor user creation to use define
+* (#8678) Always manage authorized_keys file permissions
+* (#8678) Manage no users and groups by default
+* (#8718) Add unit tests for accounts::user
+* (#8794) Rename whole_line to file_line in accounts class
+* (#8578) Do not manage sudoers by default
+* (#8718) Add test coverage for anchor resources
+
 2011-06-23 Jeff McCune <jeff@puppetlabs.com> - 0.0.3
 * Basic home directory management.  MVP release.
 
