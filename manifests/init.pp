@@ -28,7 +28,7 @@
 #  [*manage_sudoers*] Whether or not this module should add sudo rules to the sudoers
 #  file of the client. If specified as true, it will add groups %sudo and %sudonopw
 #  and give them full sudo and full passwordless sudo privileges respectively.
-#  Defaults to true.
+#  Defaults to false.
 #
 #  [*data_store*] Where the data specifying accounts and groups live.  This
 #  setting may be 'yaml' or 'namespace' (Defaults to namespace).  When set to
@@ -66,7 +66,7 @@
 class accounts (
   $manage_groups   = true,
   $manage_users    = true,
-  $manage_sudoers  = true,
+  $manage_sudoers  = false,
   $data_store      = 'namespace',
   $data_namespace  = 'accounts::data',
   $sudoers_path    = '/etc/sudoers'
