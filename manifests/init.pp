@@ -72,7 +72,10 @@ class accounts (
   $sudoers_path    = '/etc/sudoers'
 ) {
 
-  validate_re($sudoers_path, '\/\S+')
+  # Must be fully qualified
+  validate_re($sudoers_path, '^/[^/]+')
+  # Must not have a trailing slash
+  validate_re($sudoers_path, '[^/]$')
   validate_bool($manage_sudoers)
   validate_re($data_store, '^namespace$|^yaml$')
   $data_store_real = $data_store
@@ -145,11 +148,11 @@ class accounts (
         warning("manage_sudoers is $manage_sudoers but is not supported on $operatingsystem")
       }
       default: {
-        whole_line { 'sudo_rules':
+        file_line { 'sudo_rules':
           path => $sudoers_path,
           line => '%sudo ALL=(ALL) ALL',
         }
-       whole_line { 'sudonopw_rules':
+        file_line { 'sudonopw_rules':
           path => $sudoers_path,
           line => '%sudonopw ALL=NOPASSWD: ALL'
         }
