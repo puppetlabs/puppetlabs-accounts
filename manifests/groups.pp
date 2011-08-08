@@ -17,9 +17,7 @@ class accounts::groups (
   validate_hash($groups_hash)
   $groups_hash_real = $groups_hash
 
-  # JJM FIXME This will need to be re-factored
-  # When Puppet 2.7 is included in PE since the create_resources
-  # function will be part of core.
+  # JJM FIXME This will need to be re-factored when Puppet 2.7 is included in PE since the create_resources function will be part of core.
   create_resources('group', $groups_hash_real)
 
 }
