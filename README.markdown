@@ -107,3 +107,7 @@ attribute in the `accounts_users_hash.yaml` date file:
         uid: '2001'
         gid: '2001'
 
+# RSpec Testing #
+
+Please see the testing README file at: `spec/README_TESTING.markdown`
+
