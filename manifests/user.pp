@@ -5,10 +5,6 @@
 # [*locked*] Whether the user account should be locked.
 # [*sshkeys*] List of ssh public keys to be associated with the
 # user.
-# [*data_namespace*] Namespace where users_hash_default variable will be
-# looked-up. Defaults to accounts, which itself imports data into it's
-# namespace from the location you specify.  NOTE: this class should be
-# declared in the catalog before accounts::user resources are declared.
 #
 define accounts::user(
   $ensure     = 'present',
