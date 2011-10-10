@@ -1,4 +1,0 @@
---- 
-  password: '!!'
-  shell: /bin/bash
-  ensure: present
