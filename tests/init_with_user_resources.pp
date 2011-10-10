@@ -35,15 +35,6 @@ class site::accounts::data {
     'ops'       => { gid => '3004' },
   }
 
-  # If a account specified in the $users_hash does not have one of these
-  # parameters defined, the parameters here will be used.  This provides a way
-  # to set default data in a hierarchical manner.
-  $users_hash_default = {
-    password => '!!',
-    shell    => '/bin/bash',
-    ensure   => 'present',
-  }
-
   # These are the actual accounts on the system to manage
   $users_hash = {
     'jeff' => {

@@ -38,7 +38,6 @@
 #  These files should be copied to a data directory inside Puppet's confdir.
 #  For example:
 #   * /etc/puppet/data/accounts_users_hash.yaml
-#   * /etc/puppet/data/accounts_users_default_hash.yaml
 #   * /etc/puppet/data/accounts_groups_hash.yaml
 #
 #  [*sudoers_path*] Location of sudoers file on client systems.
@@ -97,9 +96,6 @@ class accounts (
       # This section of the code is repsonsible for pulling in the data we need.
       $users_hash = getvar("${data_namespace_real}::users_hash")
       validate_hash($users_hash)
-      # The default hash will be merged into the users hash.
-      $users_hash_default = getvar("${data_namespace_real}::users_hash_default")
-      validate_hash($users_hash_default)
     }
 
     yaml: {
@@ -108,12 +104,9 @@ class accounts (
       # Load the hash data from YAML
       # The files the end user defines data in.
       $users_hash_file = inline_template("<%= File.join('${datadir}', 'accounts_users_hash.yaml')%>")
-      $users_hash_default_file = inline_template("<%= File.join('${datadir}', 'accounts_users_default_hash.yaml')%>")
       # Load the files and validate the basic data types.
       $users_hash = loadyaml($users_hash_file)
       validate_hash($users_hash)
-      $users_hash_default = loadyaml($users_hash_default_file)
-      validate_hash($users_hash_default)
       # The files the end user defines data in.
       $groups_hash_file = inline_template("<%= File.join('${datadir}', 'accounts_groups_hash.yaml')%>")
       # Load the files and validate the basic data types.
