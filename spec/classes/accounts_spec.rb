@@ -1,13 +1,13 @@
 require 'spec_helper'
 require 'classes/shared'
 
-describe 'accounts' do
+describe 'pe_accounts' do
   let(:params) { {} }
   let(:facts) { {} }
   let(:contain_file_line_sudo_rules) { create_resource('file_line', 'sudo_rules') }
   let(:contain_file_line_sudonopw_rules) { create_resource('file_line', 'sudonopw_rules') }
 
-  describe "when setting accounts params" do
+  describe "when setting pe_accounts params" do
 
     # This parameter hash provides valid and invalid values for automatic
     # test generated. See 'classes/shared.rb' for details.
@@ -25,18 +25,18 @@ describe 'accounts' do
         :invalid => [ nil, 'true', 'false', 'yes', 'no', '' ],
       },
       # We can't support 'yaml' here because the class will try to load
-      # Puppet[:confdir]/data/accounts_users_hash.yaml
+      # Puppet[:confdir]/data/pe_accounts_users_hash.yaml
       :data_store => {
         :valid => [ 'namespace' ],
         :invalid => [ '', nil, true, false, 'somethingelse' ],
       },
       # We have to make sure the classes exist for the "valid" section
-      # Therefore, while site::accounts::data is valid, it won't be
+      # Therefore, while site::pe_accounts::data is valid, it won't be
       # unless the class is defined.  There should be a separate test
       # for this as a result.
       :data_namespace => {
-        :valid   => [ 'accounts::data' ],
-        :invalid => [ 'site::accounts', '', false, nil, 'site' ],
+        :valid   => [ 'pe_accounts::data' ],
+        :invalid => [ 'site::pe_accounts', '', false, nil, 'site' ],
       },
       :sudoers_path => {
         :valid => [ '/etc/sudoers', '/etc/opt/csw/sudoers' ],
@@ -46,7 +46,7 @@ describe 'accounts' do
     }
 
     # Call shared example
-    it_should_behave_like 'a parameterized class', 'accounts', parameters
+    it_should_behave_like 'a parameterized class', 'pe_accounts', parameters
 
     # Convenience helper for returning parameters for a type from the
     # catalogue.
@@ -79,8 +79,8 @@ describe 'accounts' do
   end
 
   describe "class containment (Anchor Points)" do
-    it { should create_resource('anchor', 'accounts::begin') }
-    it { should create_resource('anchor', 'accounts::end') }
+    it { should create_resource('anchor', 'pe_accounts::begin') }
+    it { should create_resource('anchor', 'pe_accounts::end') }
   end
 
 end

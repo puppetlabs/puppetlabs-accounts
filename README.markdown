@@ -3,7 +3,7 @@
 This module manages many of the resources related to login and service accounts
 on Puppet managed systems.  Unlike other Puppet Modules, this module allows you
 to specify users and groups using a simple Hash data structure.  This Hash may
-be defined in a Puppet module of your choice (e.g. site::accounts) or in a
+be defined in a Puppet module of your choice (e.g. site::pe\_accounts) or in a
 simple YAML file on disk.
 
 # Installation #
@@ -11,18 +11,18 @@ simple YAML file on disk.
 This module should be placed in your module search path.  The module is
 designed to be automatically updated with Puppet Enterprise updates and should
 not be modified.  Customization of the module behavior is intended to be done
-in a namespace outside of the accounts module or using a YAML data file outside
-of the module directory structure.
+in a namespace outside of the pe\_accounts module or using a YAML data file
+outside of the module directory structure.
 
 # Quick Start #
 
-With the module installed, simply declare the accounts class in a Puppet
+With the module installed, simply declare the pe\_accounts class in a Puppet
 managed node's catalog:
 
     # site.pp
     node default {
-      accounts::user { 'dan': }
-      accounts::user { 'jeff': }
+      pe\_accounts::user { 'dan': }
+      pe\_accounts::user { 'jeff': }
     }
 
 The above example will create accounts, home directories, and groups for Jeff
@@ -30,7 +30,7 @@ and Dan.
 
 # Declaring User Accounts #
 
-The accounts::user defined resource type supports most of the major features
+The pe\_accounts::user defined resource type supports most of the major features
 the user native type supports (see $ puppet describe user) and the additional
 parameters of locked and sshkeys.
 
@@ -65,7 +65,7 @@ For example:
         comment: Bad Person
         locked: true
 
-The accounts module will set the account to an invalid shell appropriate for
+The pe\_accounts module will set the account to an invalid shell appropriate for
 the system Puppet is managing.
 
     $ ssh villain@centos56
@@ -84,10 +84,10 @@ For example, on Mac OS X:
     $ pbcopy < ~/.ssh/id_dsa.pub
 
 Once copied, I can add the key to my account by simply setting the sshkeys
-attribute in the `accounts_users_hash.yaml` date file:
+attribute in the `pe_accounts_users_hash.yaml` date file:
 
-    # /etc/puppet/data/accounts_users_hash.yaml
-    --- 
+    # /etc/puppet/data/pe_accounts_users_hash.yaml
+    ---
       jeff:
         comment: Jeff McCune
         groups:

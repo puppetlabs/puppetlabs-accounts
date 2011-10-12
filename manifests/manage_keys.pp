@@ -2,7 +2,7 @@
 # manages ssh keys for users
 #
 #
-define accounts::manage_keys(
+define pe_accounts::manage_keys(
   $user,
   $key_file
 ) {
