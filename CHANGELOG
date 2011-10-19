@@ -1,3 +1,7 @@
+2011-10-18 Puppet Labs <support@puppetlabs.com> - 1.0.2
+* (#9993) PE module to have a prefix of "pe_"
+* (#9993) PE module to have a prefix of "pe_"
+
 2011-10-18 Puppet Labs <support@puppetlabs.com> - 1.0.1
 * (#9445) Remove incomplete support for default parameters
 * Fixup incorrect accounts::user data_namespace documentation
