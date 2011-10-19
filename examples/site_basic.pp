@@ -1,22 +1,22 @@
 node default {
-  # We can set some default properties for all accounts managed by the accounts
+  # We can set some default properties for all accounts managed by the pe_accounts
   # module
-  Accounts::User {
+  Pe_accounts::User {
     ensure => present,
     shell  => '/bin/bash',
   }
 
-  # A simple resource declaration using the accounts module provides much more
-  # than the Puppet native user type.  For example, the home directory will be
-  # managed, a primary group created, initial bashrc and authorized_keys file
+  # A simple resource declaration using the pe_accounts module provides much
+  # more than the Puppet native user type.  For example, the home directory will
+  # be managed, a primary group created, initial bashrc and authorized_keys file
   # created and managed...
-  accounts::user { 'linus':
+  pe_accounts::user { 'linus':
     ensure => present,
   }
 
   # In addition, we can manage a great many things related to accounts
   # This password is 'puppet'
-  accounts::user { 'jeff':
+  pe_accounts::user { 'jeff':
     ensure     => present, # present, absent
     comment    => 'Jeff McCune',
     uid        => 1112,

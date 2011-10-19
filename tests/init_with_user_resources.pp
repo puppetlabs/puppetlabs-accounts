@@ -1,31 +1,31 @@
 node default {
   # Make sure to declare data classes before accessing them.
-  class { 'site::accounts::data': }
+  class { 'site::pe_accounts::data': }
 
   # This example uses the default behavior of adding resources to the Puppet
   # catalog using a Hash data structure defined in a user provided namespace.
   notify { 'alpha': }
   ->
-  class { 'accounts':
+  class { 'pe_accounts':
     data_store     => 'namespace',
-    data_namespace => 'site::accounts::data',
+    data_namespace => 'site::pe_accounts::data',
   }
   ->
   notify { 'omega': }
 
   # The end user is also able to declare accounts using the defined resource type
   # we provide.
-  accounts::user { 'bob':
+  pe_accounts::user { 'bob':
     uid      => 4001,
     gid      => 4001,
     shell    => '/bin/bash',
     password => '!!',
-    sshkeys  => "${::site::accounts::data::users_hash['jeff']['sshkeys']}-2",
+    sshkeys  => "${::site::pe_accounts::data::users_hash['jeff']['sshkeys']}-2",
     locked   => false,
   }
 }
 
-class site::accounts::data {
+class site::pe_accounts::data {
   # The groups_hash defines "shared" supplementary groups.
   $groups_hash = {
     'admin'     => { gid => '3000' },

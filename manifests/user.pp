@@ -6,7 +6,7 @@
 # [*sshkeys*] List of ssh public keys to be associated with the
 # user.
 #
-define accounts::user(
+define pe_accounts::user(
   $ensure     = 'present',
   $shell      = '/bin/bash',
   $comment    = $name,
@@ -94,7 +94,7 @@ define accounts::user(
   }
 
   # Manage the home directory
-  accounts::home_dir { $home:
+  pe_accounts::home_dir { $home:
     user    => $name,
     sshkeys => $sshkeys,
     require => [ User[$name], Group[$name] ],

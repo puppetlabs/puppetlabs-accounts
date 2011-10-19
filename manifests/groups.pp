@@ -1,4 +1,4 @@
-# Class: accounts::groups
+# Class: pe_accounts::groups
 #
 #   Manage basic groups
 #
@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class accounts::groups (
+class pe_accounts::groups (
   $groups_hash
 ) {
 
