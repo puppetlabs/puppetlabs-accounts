@@ -3,7 +3,7 @@
 This module is tested using the following components:
 
  * rspec > 2.6.0
- * rspec-puppet (puppetlabs master branch) (e2ab2f2)
+ * rspec-puppet >= 0.1.0
  * puppet 2.6.9
  * facter 1.6.0
  * stdlib module 2.0.0
@@ -20,18 +20,6 @@ directory structure:
     cd ~/src/modules
     git clone git@github.com:puppetlabs/puppetlabs-stdlib.git stdlib
     git clone git@github.com:puppetlabs/puppetlabs-pe_accounts.git pe_accounts
-    cd pe_accounts/spec
-    rspec **/*_spec.rb
-
-# Other Notes #
-
-I use rvm with these components installed.
-
-There is no Rakefile or rake tasks, so testing is a simple mater of:
-
-    cd spec/
-    rspec **/*_spec.rb
-
-You should not receive any failures.  If you do, please make sure you have the
-components at the specific version checked out and in the Ruby path.
+    cd pe_accounts
+    rake spec
 

@@ -1,4 +1,5 @@
 require 'puppet'
+require 'rubygems'
 require 'rspec-puppet'
 
 RSpec.configure do |c|
