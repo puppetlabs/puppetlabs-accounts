@@ -6,6 +6,11 @@ to specify users and groups using a simple Hash data structure.  This Hash may
 be defined in a Puppet module of your choice (e.g. site::pe\_accounts) or in a
 simple YAML file on disk.
 
+This module is designed to work on all PE supported Unix operating systems.
+Unless otherwise stated, this module is not expected to configure accounts on
+Microsoft Windows platforms.  Therefore, please avoid declaring
+`pe_accounts::user` resources in a configuration catalog for a Windows node.
+
 # Installation #
 
 This module should be placed in your module search path.  The module is
