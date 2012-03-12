@@ -101,7 +101,7 @@ describe 'pe_accounts::user', :type => :define do
 
   describe 'when supplying resource defaults' do
 
-    let(:pre_condition) { "Accounts::User{ shell => '/bin/zsh' }" }
+    let(:pre_condition) { "Pe_accounts::User{ shell => '/bin/zsh' }" }
 
     it { should contain_user.with_param('shell', '/bin/zsh') }
 
