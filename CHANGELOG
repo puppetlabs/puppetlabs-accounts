@@ -1,3 +1,6 @@
+2012-03-12 Puppet Labs <support@puppetlabs.com> - 1.0.3
+* (#12357) Minor changes to rake spec task
+
 2011-10-18 Puppet Labs <support@puppetlabs.com> - 1.0.2
 * (#9993) PE module to have a prefix of "pe_"
 * (#9993) PE module to have a prefix of "pe_"
