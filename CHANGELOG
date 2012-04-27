@@ -1,3 +1,6 @@
+2012-04-27 Puppet Labs <support@puppetlabs.com> - 1.0.4
+* Update create_resources to match latest from 2.7.x
+
 2012-03-12 Puppet Labs <support@puppetlabs.com> - 1.0.3
 * (#12357) Minor changes to rake spec task
 
