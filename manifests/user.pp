@@ -5,6 +5,7 @@
 # [*locked*] Whether the user account should be locked.
 # [*sshkeys*] List of ssh public keys to be associated with the
 # user.
+# [*managehome*] Whether the home directory should be removed with accounts
 #
 define pe_accounts::user(
   $ensure     = 'present',
@@ -17,13 +18,16 @@ define pe_accounts::user(
   $membership = 'minimum',
   $password   = '!!',
   $locked     = false,
-  $sshkeys    = []
+  $sshkeys    = [],
+  $managehome = true,
 ) {
   # Validate our inputs from the end user using a "best effort" strategy
   # ensure
   validate_re($ensure, '^present$|^absent$')
   # locked
   validate_bool($locked)
+  # managehome
+  validate_bool($managehome)
   # shell (with munging _real pattern)
   validate_re($shell, '^/')
   if $locked {
@@ -90,14 +94,31 @@ define pe_accounts::user(
   group { $name:
     ensure => $ensure,
     gid    => $gid,
-    before => "User[${name}]",
   }
 
-  # Manage the home directory
-  pe_accounts::home_dir { $home:
-    user    => $name,
-    sshkeys => $sshkeys,
-    require => [ User[$name], Group[$name] ],
+  # Use the ensure relationship to swap the dependency order
+  if $ensure == "present" {
+    Group[$name] -> User[$name]
+  }
+  if $ensure == "absent" {
+    User[$name] -> Group[$name]
   }
 
+  # Create the home directory if the user is being created
+  if $ensure == "present" {
+    pe_accounts::home_dir { $home:
+      user    => $name,
+      sshkeys => $sshkeys,
+      require => [ User[$name], Group[$name] ],
+    }
+  }
+
+  # If the user is being removed, and managehome is on, remove home
+  if $ensure == "absent" and $managehome == true {
+    file { $home:
+      ensure  => absent,
+      recurse => true,
+      force   => true,
+    }
+  }
 }
