@@ -46,6 +46,7 @@ describe 'pe_accounts::user', :type => :define do
     it { should contain_user.with_param('password', 'foo') }
     it { should contain_group.with_param('ensure', 'present') }
     it { should contain_group.with_param('gid', '456') }
+    it { should contain_group.with_param('before', 'User[dan]') }
     it { should contain_home_dir.with_param('user', title) }
     it { should contain_home_dir.with_param('sshkeys', ['1 2 3', '2 3 4']) }
 
@@ -59,6 +60,7 @@ describe 'pe_accounts::user', :type => :define do
       end
 
       it { should contain_user.with_param('ensure', 'absent') }
+      it { should contain_user.with_param('before', 'Group[dan]') }
       it { should contain_group.with_param('ensure', 'absent') }
       it do
         should contain_home_dir.with({
