@@ -23,7 +23,7 @@ describe 'pe_accounts::user', :type => :define do
 
   describe 'when setting user parameters' do
     before do
-      params['ensure']     = 'absent'
+      params['ensure']     = 'present'
       params['shell']      = '/bin/csh'
       params['comment']    = 'comment'
       params['home']       = '/var/home/dan'
@@ -34,7 +34,8 @@ describe 'pe_accounts::user', :type => :define do
       params['password']   = 'foo'
       params['sshkeys']    = ['1 2 3', '2 3 4']
     end
-    it { should contain_user.with_param('ensure', 'absent') }
+
+    it { should contain_user.with_param('ensure', 'present') }
     it { should contain_user.with_param('shell', '/bin/csh') }
     it { should contain_user.with_param('comment', 'comment') }
     it { should contain_user.with_param('home', '/var/home/dan') }
@@ -43,10 +44,41 @@ describe 'pe_accounts::user', :type => :define do
     it { should contain_user.with_param('groups', 'admin') }
     it { should contain_user.with_param('membership', 'inclusive') }
     it { should contain_user.with_param('password', 'foo') }
-    it { should contain_group.with_param('ensure', 'absent') }
+    it { should contain_group.with_param('ensure', 'present') }
     it { should contain_group.with_param('gid', '456') }
+    it { should contain_group.with_param('before', 'User[dan]') }
     it { should contain_home_dir.with_param('user', title) }
     it { should contain_home_dir.with_param('sshkeys', ['1 2 3', '2 3 4']) }
+
+    describe 'when setting the user to absent' do
+
+      # when deleting users the home dir is a File resource instead of a pe_accounts::home_dir
+      let(:contain_home_dir) { contain_file('/var/home/dan') }
+
+      before do
+        params['ensure'] = 'absent'
+      end
+
+      it { should contain_user.with_param('ensure', 'absent') }
+      it { should contain_user.with_param('before', 'Group[dan]') }
+      it { should contain_group.with_param('ensure', 'absent') }
+      it do
+        should contain_home_dir.with({
+          'ensure' => 'absent',
+          'recurse' => true,
+          'force' => true
+        })
+      end
+
+      describe 'with managehome off' do
+
+        before do
+          params['managehome'] = false
+        end
+
+        it { should_not contain_home_dir }
+      end
+    end
   end
 
   describe 'invalid parameter values' do
@@ -70,6 +102,10 @@ describe 'pe_accounts::user', :type => :define do
     end
     it 'should not accept non-boolean values for locked' do
       params['locked'] = 'false'
+      expect { subject }.to raise_error
+    end
+    it 'should not accept non-boolean values for managehome' do
+      params['managehome'] = 'false'
       expect { subject }.to raise_error
     end
   end
