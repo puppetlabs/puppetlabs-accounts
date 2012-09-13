@@ -1,3 +1,10 @@
+2012-09-13 Puppet Labs <support@puppetlabs.com> - 1.1.0
+* Fix typo in create_resources function's description string
+* add basic acceptance tests
+* add tests for resource relationship differences in adding/removing users
+* add tests for most of the changed behaviour when removing accounts
+* Implement ensure=>absent for user accounts and default to cleaning up homedir
+
 2012-04-27 Puppet Labs <support@puppetlabs.com> - 1.0.4
 * Update create_resources to match latest from 2.7.x
 
