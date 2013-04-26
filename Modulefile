@@ -1,5 +1,5 @@
 name    'puppetlabs-pe_accounts'
-version '1.1.0'
+version '2.0.0'
 source 'git@github.com:puppetlabs/puppetlabs-pe_accounts.git'
 author 'puppetlabs'
 license 'Puppet Enterprise Software License Agreement'

@@ -1,3 +1,6 @@
+2013-04-26 Puppet Labs <support@puppetlabs.com> - 2.0.0
+* (#17373) Remove duplicate function create_resources from module
+
 2012-09-13 Puppet Labs <support@puppetlabs.com> - 1.1.0
 * Fix typo in create_resources function's description string
 * add basic acceptance tests
