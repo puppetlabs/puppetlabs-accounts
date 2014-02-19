@@ -1,5 +1,5 @@
 name    'puppetlabs-pe_accounts'
-version '2.0.1'
+version File.exists?('.version') ? File.read('.version').chomp : '2.0.1'
 source 'git@github.com:puppetlabs/puppetlabs-pe_accounts.git'
 author 'puppetlabs'
 license 'Puppet Enterprise Software License Agreement'
