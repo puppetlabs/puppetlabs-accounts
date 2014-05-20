@@ -8,4 +8,4 @@ description 'Account Management Module for PE'
 project_page 'https://github.com/puppetlabs/puppetlabs-pe_accounts'
 
 ## Add dependencies, if any:
-dependency 'puppetlabs/stdlib', '3.2.x'
+dependency 'puppetlabs/stdlib', '>=3.2.0 <5.0.0'
