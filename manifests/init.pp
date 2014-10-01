@@ -72,17 +72,17 @@ class pe_accounts (
 ) {
 
   # Must be fully qualified
-  validate_re($sudoers_path, '^/[^/]+')
+  pe_validate_re($sudoers_path, '^/[^/]+')
   # Must not have a trailing slash
-  validate_re($sudoers_path, '[^/]$')
-  validate_bool($manage_sudoers)
-  validate_re($data_store, '^namespace$|^yaml$')
+  pe_validate_re($sudoers_path, '[^/]$')
+  pe_validate_bool($manage_sudoers)
+  pe_validate_re($data_store, '^namespace$|^yaml$')
   $data_store_real = $data_store
-  validate_re($data_namespace, '::data$')
+  pe_validate_re($data_namespace, '::data$')
   $data_namespace_real = $data_namespace
-  validate_bool($manage_groups)
+  pe_validate_bool($manage_groups)
   $manage_groups_real = $manage_groups
-  validate_bool($manage_users)
+  pe_validate_bool($manage_users)
   $manage_users_real = $manage_users
 
   # We always populate these Hash data structures because the pe_accounts::user
