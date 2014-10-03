@@ -23,13 +23,13 @@ define pe_accounts::user(
 ) {
   # Validate our inputs from the end user using a "best effort" strategy
   # ensure
-  validate_re($ensure, '^present$|^absent$')
+  pe_validate_re($ensure, '^present$|^absent$')
   # locked
-  validate_bool($locked)
+  pe_validate_bool($locked)
   # managehome
-  validate_bool($managehome)
+  pe_validate_bool($managehome)
   # shell (with munging _real pattern)
-  validate_re($shell, '^/')
+  pe_validate_re($shell, '^/')
   if $locked {
     case $::operatingsystem {
       'debian', 'ubuntu' : {
@@ -48,30 +48,30 @@ define pe_accounts::user(
 
   # comment
   if $comment != undef {
-    validate_string($comment)
+    pe_validate_string($comment)
   }
   # home
-  validate_re($home, '^/')
+  pe_validate_re($home, '^/')
   # If the home directory is not / (root on solaris) then disallow trailing slashes.
-  validate_re($home, '^/$|[^/]$')
+  pe_validate_re($home, '^/$|[^/]$')
   # uid number
   if $uid != undef {
-    validate_re($uid, '^\d+$')
+    pe_validate_re($uid, '^\d+$')
   }
   # gid number
   if $gid != undef {
-    validate_re($gid, '^\d+$')
+    pe_validate_re($gid, '^\d+$')
   }
   # groups
-  validate_array($groups)
+  pe_validate_array($groups)
   # membership
-  validate_re($membership, '^inclusive$|^minimum$')
+  pe_validate_re($membership, '^inclusive$|^minimum$')
   # password
   if $password != undef {
-    validate_string($password)
+    pe_validate_string($password)
   }
   # sshkeys
-  validate_array($sshkeys)
+  pe_validate_array($sshkeys)
 
   # The black magic with $gid is to take into account the fact that we're
   # also passing $gid to the gid property of the group resource.  Unlike
