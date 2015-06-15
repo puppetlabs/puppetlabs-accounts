@@ -4,8 +4,8 @@ require 'classes/shared'
 describe 'accounts' do
   let(:params) { {} }
   let(:facts) { {} }
-  let(:contain_file_line_sudo_rules) { create_resource('file_line', 'sudo_rules') }
-  let(:contain_file_line_sudonopw_rules) { create_resource('file_line', 'sudonopw_rules') }
+  let(:contain_file_line_sudo_rules) { contain_file_line('sudo_rules') }
+  let(:contain_file_line_sudonopw_rules) { contain_file_line('sudonopw_rules') }
 
   describe "when setting accounts params" do
 
@@ -57,30 +57,30 @@ describe 'accounts' do
 
   # Make sure we don't touch sudoers by default.
   describe "when using default class parameters" do
-    it { should_not contain_file_line_sudo_rules }
-    it { should_not contain_file_line_sudonopw_rules }
+    it { is_expected.not_to contain_file_line_sudo_rules }
+    it { is_expected.not_to contain_file_line_sudonopw_rules }
   end
   # Make sure we manage sudoers if told to do so
   describe "when manage_sudoers is true" do
     before :each do
       params['manage_sudoers'] = true
     end
-    it { should contain_file_line_sudo_rules.with_param('path', '/etc/sudoers') }
-    it { should contain_file_line_sudonopw_rules.with_param('path', '/etc/sudoers') }
+    it { is_expected.to contain_file_line_sudo_rules.with({ 'path' => '/etc/sudoers' }) }
+    it { is_expected.to contain_file_line_sudonopw_rules.with({'path' => '/etc/sudoers'}) }
 
     # We shouldn't manage sudoers on Solaris
     describe "on Solaris" do
       before :each do
         facts['operatingsystem'] = 'Solaris'
       end
-      it { should_not contain_file_line_sudo_rules }
-      it { should_not contain_file_line_sudonopw_rules }
+      it { is_expected.not_to contain_file_line_sudo_rules }
+      it { is_expected.not_to contain_file_line_sudonopw_rules }
     end
   end
 
   describe "class containment (Anchor Points)" do
-    it { should create_resource('anchor', 'accounts::begin') }
-    it { should create_resource('anchor', 'accounts::end') }
+    it { is_expected.to contain_anchor('accounts::begin') }
+    it { is_expected.to contain_anchor('accounts::end') }
   end
 
 end

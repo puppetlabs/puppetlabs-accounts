@@ -7,18 +7,18 @@ describe 'accounts::user', :type => :define do
   let(:params) { {} }
   let(:facts) { {} }
 
-  let(:contain_user) { create_resource('user', 'dan') }
-  let(:contain_group) { create_resource('group', 'dan') }
-  let(:contain_home_dir) { create_resource('accounts::home_dir', '/var/home/dan') }
+#  let(:contain_user) { create_resource('user', 'dan') }
+#  let(:contain_group) { create_resource('group', 'dan') }
+#  let(:contain_home_dir) { create_resource('accounts::home_dir', '/var/home/dan') }
 
   describe 'expected defaults' do
-    it { should contain_user.with_param('shell', '/bin/bash') }
-    it { should contain_user.with_param('home', "/home/#{title}") }
-    it { should contain_user.with_param('ensure', 'present') }
-    it { should contain_user.with_param('comment', title) }
-    it { should contain_user.with_param('groups', []) }
-    it { should contain_group.with_param('ensure', 'present') }
-    it { should contain_group.with_param('gid', nil) }
+    it { is_expected.to contain_user('dan').with({'shell' => '/bin/bash'}) }
+    it { is_expected.to contain_user('dan').with({'home' => "/home/#{title}"}) }
+    it { is_expected.to contain_user('dan').with({'ensure' => 'present'}) }
+    it { is_expected.to contain_user('dan').with({'comment' => title}) }
+    it { is_expected.to contain_user('dan').with({'groups' => []}) }
+    it { is_expected.to contain_group('dan').with({'ensure' => 'present'}) }
+    it { is_expected.to contain_group('dan').with({'gid' => nil}) }
   end
 
   describe 'when setting user parameters' do
@@ -35,20 +35,20 @@ describe 'accounts::user', :type => :define do
       params['sshkeys']    = ['1 2 3', '2 3 4']
     end
 
-    it { should contain_user.with_param('ensure', 'present') }
-    it { should contain_user.with_param('shell', '/bin/csh') }
-    it { should contain_user.with_param('comment', 'comment') }
-    it { should contain_user.with_param('home', '/var/home/dan') }
-    it { should contain_user.with_param('uid', '123') }
-    it { should contain_user.with_param('gid', '456') }
-    it { should contain_user.with_param('groups', 'admin') }
-    it { should contain_user.with_param('membership', 'inclusive') }
-    it { should contain_user.with_param('password', 'foo') }
-    it { should contain_group.with_param('ensure', 'present') }
-    it { should contain_group.with_param('gid', '456') }
-    it { should contain_group.with_param('before', 'User[dan]') }
-    it { should contain_home_dir.with_param('user', title) }
-    it { should contain_home_dir.with_param('sshkeys', ['1 2 3', '2 3 4']) }
+    it { is_expected.to contain_user('dan').with({'ensure' => 'present'}) }
+    it { is_expected.to contain_user('dan').with({'shell' => '/bin/csh'}) }
+    it { is_expected.to contain_user('dan').with({'comment' => 'comment'}) }
+    it { is_expected.to contain_user('dan').with({'home' => '/var/home/dan'}) }
+    it { is_expected.to contain_user('dan').with({'uid' => '123'}) }
+    it { is_expected.to contain_user('dan').with({'gid' => '456'}) }
+    it { is_expected.to contain_user('dan').with({'groups' => ['admin']}) }
+    it { is_expected.to contain_user('dan').with({'membership' => 'inclusive'}) }
+    it { is_expected.to contain_user('dan').with({'password' => 'foo'}) }
+    it { is_expected.to contain_group('dan').with({'ensure' => 'present'}) }
+    it { is_expected.to contain_group('dan').with({'gid' => '456'}) }
+    it { is_expected.to contain_group('dan').that_comes_before('User[dan]') }
+    it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'user' => title}) }
+    it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'sshkeys' => ['1 2 3', '2 3 4']}) }
 
     describe 'when setting the user to absent' do
 
@@ -59,11 +59,11 @@ describe 'accounts::user', :type => :define do
         params['ensure'] = 'absent'
       end
 
-      it { should contain_user.with_param('ensure', 'absent') }
-      it { should contain_user.with_param('before', 'Group[dan]') }
-      it { should contain_group.with_param('ensure', 'absent') }
+      it { is_expected.to contain_user('dan').with({'ensure' => 'absent'}) }
+      it { is_expected.to contain_user('dan').that_comes_before('Group[dan]') }
+      it { is_expected.to contain_group('dan').with({'ensure' => 'absent'}) }
       it do
-        should contain_home_dir.with({
+        is_expected.to_not contain_accounts__home_dir('/var/home/dan').with({
           'ensure' => 'absent',
           'recurse' => true,
           'force' => true
@@ -76,7 +76,7 @@ describe 'accounts::user', :type => :define do
           params['managehome'] = false
         end
 
-        it { should_not contain_home_dir }
+        it { is_expected.not_to contain_home_dir }
       end
     end
   end
@@ -84,29 +84,29 @@ describe 'accounts::user', :type => :define do
   describe 'invalid parameter values' do
     it 'should only accept absent and present for ensure' do
       params['ensure'] = 'invalid'
-      expect { subject }.should raise_error
+      expect { subject.call }.to raise_error
     end
     it 'should fail if locked is not a boolean' do
       params['locked'] = 'true'
-      expect { subject }.should raise_error
+      expect { subject.call }.to raise_error
     end
     ['home', 'shell'].each do |param|
       it "should fail is #{param} does not start with '/'" do
         params[param] = 'no_leading_slash'
-        expect { subject }.should raise_error
+        expect { subject.call }.to raise_error
       end
     end
     it 'should fail if gid is not composed of digits' do
       params['gid'] = 'name'
-      expect { subject }.should raise_error
+      expect { subject.call }.to raise_error
     end
     it 'should not accept non-boolean values for locked' do
       params['locked'] = 'false'
-      expect { subject }.to raise_error
+      expect { subject.call }.to raise_error
     end
     it 'should not accept non-boolean values for managehome' do
       params['managehome'] = 'false'
-      expect { subject }.to raise_error
+      expect { subject.call }.to raise_error
     end
   end
 
@@ -116,22 +116,22 @@ describe 'accounts::user', :type => :define do
 
     describe 'on debian' do
       before { facts['operatingsystem'] = 'debian' }
-      it { should contain_user.with_param('shell', '/usr/sbin/nologin') }
+      it { is_expected.to contain_user('dan').with({'shell' => '/usr/sbin/nologin'}) }
     end
 
     describe 'on ubuntu' do
       before { facts['operatingsystem'] = 'ubuntu' }
-      it { should contain_user.with_param('shell', '/usr/sbin/nologin') }
+      it { is_expected.to contain_user('dan').with({'shell' => '/usr/sbin/nologin'}) }
     end
 
     describe 'on solaris' do
       before { facts['operatingsystem'] = 'solaris' }
-      it { should contain_user.with_param('shell', '/usr/bin/false') }
+      it { is_expected.to contain_user('dan').with({'shell' => '/usr/bin/false'}) }
     end
 
     describe 'on all other platforms' do
       before { facts['operatingsystem'] = 'anything_else' }
-      it { should contain_user.with_param('shell', '/sbin/nologin') }
+      it { is_expected.to contain_user('dan').with({'shell' => '/sbin/nologin'}) }
     end
   end
 
@@ -139,16 +139,16 @@ describe 'accounts::user', :type => :define do
 
     let(:pre_condition) { "Accounts::User{ shell => '/bin/zsh' }" }
 
-    it { should contain_user.with_param('shell', '/bin/zsh') }
+    it { is_expected.to contain_user('dan').with({'shell' => '/bin/zsh'}) }
 
     describe 'override defaults' do
       let(:params) { { 'shell' => '/bin/csh' } }
-      it { should contain_user.with_param('shell', '/bin/csh') }
+      it { is_expected.to contain_user('dan').with({'shell' => '/bin/csh'}) }
     end
 
     describe 'locked overrides should override defaults and user params' do
       let(:params) { { 'shell' => '/bin/csh', 'locked' => true} }
-      it { should contain_user.with_param('shell', '/sbin/nologin') }
+      it { is_expected.to contain_user('dan').with({'shell' => '/sbin/nologin'}) }
     end
   end
 end

@@ -18,14 +18,14 @@ shared_examples "a parameterized class" do |type, properties|
     settings[:valid].each do |value|
       it "and should support #{value.inspect} as a value to '#{name.to_s}'" do
         params[name.to_s] = value
-        should create_class(type).send("with_" + name.to_s, value)
+        is_expected.to create_class(type).send("with_" + name.to_s, value)
       end
     end
 
     settings[:invalid].each do |value|
       it "and should fail if #{value.inspect} is a value of '#{name.to_s}'" do
         params[name.to_s] = value
-        expect { subject }.should raise_error
+        expect { subject.call }.to raise_error
       end
     end
   end
