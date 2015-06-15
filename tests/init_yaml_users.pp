@@ -1,7 +1,7 @@
 node default {
   notify { 'alpha': }
   ->
-  class  { 'pe_accounts':
+  class  { 'accounts':
     data_store    => 'yaml',
     manage_groups => false,
   }

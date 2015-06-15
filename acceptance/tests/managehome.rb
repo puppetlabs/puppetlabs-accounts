@@ -1,15 +1,15 @@
 
-test_name 'Removing a pe_accounts managed user with managehome disabled should not remove the users home directory'
+test_name 'Removing a accounts managed user with managehome disabled should not remove the users home directory'
 
 step 'Creating account'
 
-apply_manifest_on(master, "pe_accounts::user {'arthur':
+apply_manifest_on(master, "accounts::user {'arthur':
   ensure => present
 }")
 
 step 'Removing account keeping their home directory intact'
 
-apply_manifest_on(master, "pe_accounts::user {'arthur':
+apply_manifest_on(master, "accounts::user {'arthur':
   ensure => absent,
   managehome => false
 }")

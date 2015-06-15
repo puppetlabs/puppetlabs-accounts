@@ -19,7 +19,7 @@ directory structure:
     mkdir ~/src/modules/
     cd ~/src/modules
     git clone git@github.com:puppetlabs/puppetlabs-stdlib.git stdlib
-    git clone git@github.com:puppetlabs/puppetlabs-pe_accounts.git pe_accounts
-    cd pe_accounts
+    git clone git@github.com:puppetlabs/puppetlabs-accounts.git accounts
+    cd accounts
     rake spec
 

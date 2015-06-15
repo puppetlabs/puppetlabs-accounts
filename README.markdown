@@ -9,7 +9,7 @@ simple YAML file on disk.
 This module is designed to work on all PE supported Unix operating systems.
 Unless otherwise stated, this module is not expected to configure accounts on
 Microsoft Windows platforms.  Therefore, please avoid declaring
-`pe_accounts::user` resources in a configuration catalog for a Windows node.
+`accounts::user` resources in a configuration catalog for a Windows node.
 
 # Installation #
 
@@ -89,9 +89,9 @@ For example, on Mac OS X:
     $ pbcopy < ~/.ssh/id_dsa.pub
 
 Once copied, I can add the key to my account by simply setting the sshkeys
-attribute in the `pe_accounts_users_hash.yaml` date file:
+attribute in the `accounts_users_hash.yaml` date file:
 
-    # /etc/puppet/data/pe_accounts_users_hash.yaml
+    # /etc/puppet/data/accounts_users_hash.yaml
     ---
       jeff:
         comment: Jeff McCune

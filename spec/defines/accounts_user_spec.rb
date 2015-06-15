@@ -1,6 +1,6 @@
 require 'puppet'
 require 'rspec-puppet'
-describe 'pe_accounts::user', :type => :define do
+describe 'accounts::user', :type => :define do
   # assume the tests are in a module
   let(:module_path) { File.join(File.dirname(__FILE__), '../../../') }
   let(:title) { "dan" }
@@ -9,7 +9,7 @@ describe 'pe_accounts::user', :type => :define do
 
   let(:contain_user) { create_resource('user', 'dan') }
   let(:contain_group) { create_resource('group', 'dan') }
-  let(:contain_home_dir) { create_resource('pe_accounts::home_dir', '/var/home/dan') }
+  let(:contain_home_dir) { create_resource('accounts::home_dir', '/var/home/dan') }
 
   describe 'expected defaults' do
     it { should contain_user.with_param('shell', '/bin/bash') }
@@ -52,7 +52,7 @@ describe 'pe_accounts::user', :type => :define do
 
     describe 'when setting the user to absent' do
 
-      # when deleting users the home dir is a File resource instead of a pe_accounts::home_dir
+      # when deleting users the home dir is a File resource instead of a accounts::home_dir
       let(:contain_home_dir) { contain_file('/var/home/dan') }
 
       before do
@@ -137,7 +137,7 @@ describe 'pe_accounts::user', :type => :define do
 
   describe 'when supplying resource defaults' do
 
-    let(:pre_condition) { "Pe_accounts::User{ shell => '/bin/zsh' }" }
+    let(:pre_condition) { "Accounts::User{ shell => '/bin/zsh' }" }
 
     it { should contain_user.with_param('shell', '/bin/zsh') }
 
