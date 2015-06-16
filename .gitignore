@@ -1,4 +1,9 @@
 pkg/
-tmp/
-.DS_Store
-metadata.json
+Gemfile.lock
+vendor/
+spec/fixtures/
+.vagrant/
+.bundle/
+coverage/
+.idea/
+*.iml

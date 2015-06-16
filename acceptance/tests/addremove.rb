@@ -1,9 +1,9 @@
 
-test_name 'Adding and removing pe_accounts managed users'
+test_name 'Adding and removing accounts managed users'
 
 step 'Creating account'
 
-apply_manifest_catching_failures(master, "pe_accounts::user {'arthur':
+apply_manifest_catching_failures(master, "accounts::user {'arthur':
   ensure => present
 }", { :catch_failures => true })
 
@@ -20,7 +20,7 @@ on master, 'test -f /home/arthur/.ssh/authorized_keys'
 
 step 'Removing account'
 
-apply_manifest_catching_failures(master, "pe_accounts::user {'arthur':
+apply_manifest_catching_failures(master, "accounts::user {'arthur':
   ensure => absent
 }", { :catch_failures => true })
 

@@ -3,7 +3,7 @@ test_name 'A locked user should have a nologin shell (or equivalent)'
 
 step 'Creating locked account'
 
-apply_manifest_on(master, "pe_accounts::user {'arthur':
+apply_manifest_on(master, "accounts::user {'arthur':
   ensure => present,
   locked => true
 }")

@@ -1,4 +1,4 @@
-# Class: pe_accounts
+# Class: accounts
 #
 #   This module manages accounts on a Puppet managed system.
 #
@@ -9,20 +9,20 @@
 # Parameters:
 #
 #  [*data_namespace*] The Puppet namespace to find data.  Override the default
-#  of 'pe_accounts::data' with your own namespace.  The string must end with
-#  ::data.  site::pe_accounts::data is a good choice.
+#  of 'accounts::data' with your own namespace.  The string must end with
+#  ::data.  site::accounts::data is a good choice.
 #  This class will automatically be included for you.  The class should not
 #  be a parameterized class.
 #
 #  [*manage_groups*] Whether or not this module manages a set of default shared
 #  groups.  These groups must be defined in the $groups_hash hash in the
-#  _data_namespace_.  Please see the pe_accounts::data class included in this
+#  _data_namespace_.  Please see the accounts::data class included in this
 #  module for an example.
 #
 #  [*manage_users*] Whether or not this module manages a set of default shared
 #  users.  These users must be defined in the $users_hash in the
 #  _data_namespace_.  Configuration values that apply to all users should be
-#  in the $users_hash_default variable.  Please see the pe_accounts::data class
+#  in the $users_hash_default variable.  Please see the accounts::data class
 #  included in this module for an example.
 #
 #  [*manage_sudoers*] Whether or not this module should add sudo rules to the sudoers
@@ -37,8 +37,8 @@
 #  configuration files are located in the ext/data/ directory of this module.
 #  These files should be copied to a data directory inside Puppet's confdir.
 #  For example:
-#   * /etc/puppet/data/pe_accounts_users_hash.yaml
-#   * /etc/puppet/data/pe_accounts_groups_hash.yaml
+#   * /etc/puppet/data/accounts_users_hash.yaml
+#   * /etc/puppet/data/accounts_groups_hash.yaml
 #
 #  [*sudoers_path*] Location of sudoers file on client systems.
 #  defaults to /etc/sudoers
@@ -55,47 +55,47 @@
 #   node default {
 #     notify { 'alpha': }
 #     ->
-#     class  { 'pe_accounts':
+#     class  { 'accounts':
 #       data_store => 'yaml',
 #     }
 #     ->
 #     notify { 'omega': }
 #   }
 #
-class pe_accounts (
+class accounts (
   $manage_groups   = true,
   $manage_users    = true,
   $manage_sudoers  = false,
   $data_store      = 'namespace',
-  $data_namespace  = 'pe_accounts::data',
+  $data_namespace  = 'accounts::data',
   $sudoers_path    = '/etc/sudoers'
 ) {
 
   # Must be fully qualified
-  pe_validate_re($sudoers_path, '^/[^/]+')
+  validate_re($sudoers_path, '^/[^/]+')
   # Must not have a trailing slash
-  pe_validate_re($sudoers_path, '[^/]$')
-  pe_validate_bool($manage_sudoers)
-  pe_validate_re($data_store, '^namespace$|^yaml$')
+  validate_re($sudoers_path, '[^/]$')
+  validate_bool($manage_sudoers)
+  validate_re($data_store, '^namespace$|^yaml$')
   $data_store_real = $data_store
-  pe_validate_re($data_namespace, '::data$')
+  validate_re($data_namespace, '::data$')
   $data_namespace_real = $data_namespace
-  pe_validate_bool($manage_groups)
+  validate_bool($manage_groups)
   $manage_groups_real = $manage_groups
-  pe_validate_bool($manage_users)
+  validate_bool($manage_users)
   $manage_users_real = $manage_users
 
-  # We always populate these Hash data structures because the pe_accounts::user
-  # defined Type needs the $pe_accounts::users_hash_default variable.
+  # We always populate these Hash data structures because the accounts::user
+  # defined Type needs the $accounts::users_hash_default variable.
   case $data_store_real {
     namespace: {
       # Make sure the namespace is added to the catalog.
       include "${data_namespace_real}"
-      $groups_hash = pe_getvar("${data_namespace_real}::groups_hash")
-      pe_validate_hash($groups_hash)
+      $groups_hash = getvar("${data_namespace_real}::groups_hash")
+      validate_hash($groups_hash)
       # This section of the code is repsonsible for pulling in the data we need.
-      $users_hash = pe_getvar("${data_namespace_real}::users_hash")
-      pe_validate_hash($users_hash)
+      $users_hash = getvar("${data_namespace_real}::users_hash")
+      validate_hash($users_hash)
     }
 
     yaml: {
@@ -103,34 +103,34 @@ class pe_accounts (
       $datadir = inline_template('<%= File.join(Puppet[:confdir], "data") %>')
       # Load the hash data from YAML
       # The files the end user defines data in.
-      $users_hash_file = inline_template("<%= File.join('${datadir}', 'pe_accounts_users_hash.yaml')%>")
+      $users_hash_file = inline_template("<%= File.join('${datadir}', 'accounts_users_hash.yaml')%>")
       # Load the files and validate the basic data types.
-      $users_hash = pe_loadyaml($users_hash_file)
-      pe_validate_hash($users_hash)
+      $users_hash = loadyaml($users_hash_file)
+      validate_hash($users_hash)
       # The files the end user defines data in.
-      $groups_hash_file = inline_template("<%= File.join('${datadir}', 'pe_accounts_groups_hash.yaml')%>")
+      $groups_hash_file = inline_template("<%= File.join('${datadir}', 'accounts_groups_hash.yaml')%>")
       # Load the files and validate the basic data types.
-      $groups_hash = pe_loadyaml($groups_hash_file)
-      pe_validate_hash($groups_hash)
+      $groups_hash = loadyaml($groups_hash_file)
+      validate_hash($groups_hash)
     }
   }
 
-  pe_anchor { "pe_accounts::begin": }
-  pe_anchor { "pe_accounts::end": }
+  anchor { "accounts::begin": }
+  anchor { "accounts::end": }
 
   if $manage_groups_real {
 
-    class { 'pe_accounts::groups':
+    class { 'accounts::groups':
       groups_hash => $groups_hash,
     }
 
-    Pe_anchor['pe_accounts::begin'] -> Class['pe_accounts::groups']
-    Class['pe_accounts::groups'] -> Pe_anchor['pe_accounts::end']
+    Anchor['accounts::begin'] -> Class['accounts::groups']
+    Class['accounts::groups'] -> Anchor['accounts::end']
 
   }
 
   if $manage_users_real {
-    create_resources('pe_accounts::user', $users_hash)
+    create_resources('accounts::user', $users_hash)
   }
 
   if $manage_sudoers {
@@ -139,11 +139,11 @@ class pe_accounts (
         warning("manage_sudoers is $manage_sudoers but is not supported on $operatingsystem")
       }
       default: {
-        pe_file_line { 'sudo_rules':
+        file_line { 'sudo_rules':
           path => $sudoers_path,
           line => '%sudo ALL=(ALL) ALL',
         }
-        pe_file_line { 'sudonopw_rules':
+        file_line { 'sudonopw_rules':
           path => $sudoers_path,
           line => '%sudonopw ALL=NOPASSWD: ALL'
         }

@@ -1,5 +1,5 @@
 
-## Getting pe_accounts acceptance tests running with pe-dev-env ##
+## Getting accounts acceptance tests running with pe-dev-env ##
 
 The acceptance test suite requires a no-password root login, so we have to copy the Vagrant generated key file to root's home directory.
 We also have to set up the directory that git repositories are cloned in to.
@@ -13,7 +13,7 @@ After doing that, use the following as an example for running the actual tests. 
 a clone of [puppet_acceptance](https://github.com/puppetlabs/puppet-acceptance). Note that you may have to change the IP
 specified in `$MODULE_PATH/acceptance/integration.cfg` if it is not the default `pe-dev-env` IP (33.33.33.10).
 
-    export MODULE_PATH=../modules/pe_accounts
+    export MODULE_PATH=../modules/accounts
 
     ./systest.rb --type pe \
     --debug \

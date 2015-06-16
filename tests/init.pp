@@ -1,9 +1,9 @@
 node default {
   notify { 'alpha': }
   ->
-  class { 'pe_accounts':
+  class { 'accounts':
     data_store     => 'namespace',
-    data_namespace => 'pe_accounts::data',
+    data_namespace => 'accounts::data',
   }
   ->
   notify { 'omega': }
