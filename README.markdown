@@ -3,7 +3,7 @@
 This module manages many of the resources related to login and service accounts
 on Puppet managed systems.  Unlike other Puppet Modules, this module allows you
 to specify users and groups using a simple Hash data structure.  This Hash may
-be defined in a Puppet module of your choice (e.g. site::pe\_accounts) or in a
+be defined in a Puppet module of your choice (e.g. site::accounts) or in a
 simple YAML file on disk.
 
 This module is designed to work on all PE supported Unix operating systems.
@@ -16,18 +16,18 @@ Microsoft Windows platforms.  Therefore, please avoid declaring
 This module should be placed in your module search path.  The module is
 designed to be automatically updated with Puppet Enterprise updates and should
 not be modified.  Customization of the module behavior is intended to be done
-in a namespace outside of the pe\_accounts module or using a YAML data file
+in a namespace outside of the accounts module or using a YAML data file
 outside of the module directory structure.
 
 # Quick Start #
 
-With the module installed, simply declare the pe\_accounts class in a Puppet
+With the module installed, simply declare the accounts class in a Puppet
 managed node's catalog:
 
     # site.pp
     node default {
-      pe\_accounts::user { 'dan': }
-      pe\_accounts::user { 'jeff': }
+      accounts::user { 'dan': }
+      accounts::user { 'jeff': }
     }
 
 The above example will create accounts, home directories, and groups for Jeff
@@ -35,7 +35,7 @@ and Dan.
 
 # Declaring User Accounts #
 
-The pe\_accounts::user defined resource type supports most of the major features
+The accounts::user defined resource type supports most of the major features
 the user native type supports (see $ puppet describe user) and the additional
 parameters of locked and sshkeys.
 
@@ -70,7 +70,7 @@ For example:
         comment: Bad Person
         locked: true
 
-The pe\_accounts module will set the account to an invalid shell appropriate for
+The accounts module will set the account to an invalid shell appropriate for
 the system Puppet is managing.
 
     $ ssh villain@centos56
