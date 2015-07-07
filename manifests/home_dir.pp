@@ -45,16 +45,18 @@ define accounts::home_dir(
     }
 
     file { "${name}/.bashrc":
-      source => 'puppet:///modules/accounts/shell/bashrc',
-      owner  => $user,
-      group  => $user,
-      mode   => '0644',
+      source  => 'puppet:///modules/accounts/shell/bashrc',
+      owner   => $user,
+      group   => $user,
+      mode    => '0644',
+      replace => false,
     }
     file { "${name}/.bash_profile":
-      source => 'puppet:///modules/accounts/shell/bash_profile',
-      owner  => $user,
-      group  => $user,
-      mode   => '0644',
+      source  => 'puppet:///modules/accounts/shell/bash_profile',
+      owner   => $user,
+      group   => $user,
+      mode    => '0644',
+      replace => false,
     }
 
     file { $key_file:
