@@ -77,66 +77,51 @@ class accounts (
   validate_re($sudoers_path, '[^/]$')
   validate_bool($manage_sudoers)
   validate_re($data_store, '^namespace$|^yaml$')
-  $data_store_real = $data_store
   validate_re($data_namespace, '::data$')
-  $data_namespace_real = $data_namespace
   validate_bool($manage_groups)
-  $manage_groups_real = $manage_groups
   validate_bool($manage_users)
-  $manage_users_real = $manage_users
 
-  # We always populate these Hash data structures because the accounts::user
-  # defined Type needs the $accounts::users_hash_default variable.
-  case $data_store_real {
+  case $data_store {
     namespace: {
-      # Make sure the namespace is added to the catalog.
-      include "${data_namespace_real}"
-      $groups_hash = getvar("${data_namespace_real}::groups_hash")
-      validate_hash($groups_hash)
-      # This section of the code is repsonsible for pulling in the data we need.
-      $users_hash = getvar("${data_namespace_real}::users_hash")
-      validate_hash($users_hash)
+      include $data_namespace
+      $groups_hash = getvar("${data_namespace}::groups_hash")
+      $users_hash = getvar("${data_namespace}::users_hash")
+      validate_hash($users_hash, $groups_hash)
     }
 
     yaml: {
-      # Figure out where the default puppet confdir is for the master.
       $datadir = inline_template('<%= File.join(Puppet[:confdir], "data") %>')
-      # Load the hash data from YAML
-      # The files the end user defines data in.
       $users_hash_file = inline_template("<%= File.join('${datadir}', 'accounts_users_hash.yaml')%>")
-      # Load the files and validate the basic data types.
       $users_hash = loadyaml($users_hash_file)
-      validate_hash($users_hash)
-      # The files the end user defines data in.
       $groups_hash_file = inline_template("<%= File.join('${datadir}', 'accounts_groups_hash.yaml')%>")
-      # Load the files and validate the basic data types.
       $groups_hash = loadyaml($groups_hash_file)
-      validate_hash($groups_hash)
+      validate_hash($users_hash, $groups_hash)
     }
+
+    default: {}
   }
 
-  anchor { "accounts::begin": }
-  anchor { "accounts::end": }
+  anchor { 'accounts::begin': }
+  anchor { 'accounts::end': }
 
-  if $manage_groups_real {
+  if $manage_groups {
 
     class { 'accounts::groups':
       groups_hash => $groups_hash,
     }
 
-    Anchor['accounts::begin'] -> Class['accounts::groups']
-    Class['accounts::groups'] -> Anchor['accounts::end']
+    Anchor['accounts::begin'] -> Class['accounts::groups'] -> Anchor['accounts::end']
 
   }
 
-  if $manage_users_real {
+  if $manage_users {
     create_resources('accounts::user', $users_hash)
   }
 
   if $manage_sudoers {
-    case $operatingsystem {
+    case $::operatingsystem {
       solaris: {
-        warning("manage_sudoers is $manage_sudoers but is not supported on $operatingsystem")
+        warning("manage_sudoers is ${manage_sudoers} but is not supported on ${::operatingsystem}")
       }
       default: {
         file_line { 'sudo_rules':

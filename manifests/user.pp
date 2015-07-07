@@ -21,104 +21,73 @@ define accounts::user(
   $sshkeys    = [],
   $managehome = true,
 ) {
-  # Validate our inputs from the end user using a "best effort" strategy
-  # ensure
   validate_re($ensure, '^present$|^absent$')
-  # locked
-  validate_bool($locked)
-  # managehome
-  validate_bool($managehome)
-  # shell (with munging _real pattern)
+  validate_bool($locked, $managehome)
   validate_re($shell, '^/')
-  if $locked {
-    case $::operatingsystem {
-      'debian', 'ubuntu' : {
-        $shell_real = '/usr/sbin/nologin'
-      }
-      'solaris' : {
-        $shell_real = '/usr/bin/false'
-      }
-      default : {
-        $shell_real = '/sbin/nologin'
-      }
-    }
-  } else {
-    $shell_real = $shell
-  }
-
-  # comment
-  if $comment != undef {
-    validate_string($comment)
-  }
-  # home
+  validate_string($comment, $password)
   validate_re($home, '^/')
   # If the home directory is not / (root on solaris) then disallow trailing slashes.
   validate_re($home, '^/$|[^/]$')
-  # uid number
+  validate_array($groups, $sshkeys)
+  validate_re($membership, '^inclusive$|^minimum$')
+
   if $uid != undef {
     validate_re($uid, '^\d+$')
   }
-  # gid number
+
   if $gid != undef {
     validate_re($gid, '^\d+$')
+    $_gid = $gid
+  } else {
+    $_gid = $name
   }
-  # groups
-  validate_array($groups)
-  # membership
-  validate_re($membership, '^inclusive$|^minimum$')
-  # password
-  if $password != undef {
-    validate_string($password)
-  }
-  # sshkeys
-  validate_array($sshkeys)
 
-  # The black magic with $gid is to take into account the fact that we're
-  # also passing $gid to the gid property of the group resource.  Unlike
-  # the user resources, the gid property of group cannot take a name, only a
-  # number.
+  if $locked {
+    case $::operatingsystem {
+      'debian', 'ubuntu' : {
+        $_shell = '/usr/sbin/nologin'
+      }
+      'solaris' : {
+        $_shell = '/usr/bin/false'
+      }
+      default : {
+        $_shell = '/sbin/nologin'
+      }
+    }
+  } else {
+    $_shell = $shell
+  }
+
   user { $name:
     ensure     => $ensure,
-    shell      => $shell_real,
+    shell      => $_shell,
     comment    => $comment,
     home       => $home,
     uid        => $uid,
-    gid        => $gid ? { undef => $name, default => $gid },
+    gid        => $_gid,
     groups     => $groups,
     membership => $membership,
     password   => $password,
   }
 
-  # create the primary group
-  # what if gid is not a number?
+  # use $gid instead of $_gid since `gid` in group can only take a number
   group { $name:
     ensure => $ensure,
     gid    => $gid,
   }
 
-  # Use the ensure relationship to swap the dependency order
-  if $ensure == "present" {
+  if $ensure == 'present' {
     Group[$name] -> User[$name]
-  }
-  if $ensure == "absent" {
+  } else {
     User[$name] -> Group[$name]
   }
 
-  # Create the home directory if the user is being created
-  if $ensure == "present" {
-    accounts::home_dir { $home:
-      user    => $name,
-      sshkeys => $sshkeys,
-      require => [ User[$name], Group[$name] ],
-    }
+  accounts::home_dir { $home:
+    ensure     => $ensure,
+    managehome => $managehome,
+    user       => $name,
+    sshkeys    => $sshkeys,
+    require    => [ User[$name], Group[$name] ],
   }
 
-  # If the user is being removed, and managehome is on, remove home
-  if $ensure == "absent" and $managehome == true {
-    file { $home:
-      ensure  => absent,
-      recurse => true,
-      force   => true,
-    }
-  }
 }
