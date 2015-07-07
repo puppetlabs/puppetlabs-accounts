@@ -90,7 +90,7 @@ class accounts (
   case $data_store_real {
     namespace: {
       # Make sure the namespace is added to the catalog.
-      include "${data_namespace_real}"
+      include $data_namespace_real
       $groups_hash = getvar("${data_namespace_real}::groups_hash")
       validate_hash($groups_hash)
       # This section of the code is repsonsible for pulling in the data we need.
@@ -113,10 +113,12 @@ class accounts (
       $groups_hash = loadyaml($groups_hash_file)
       validate_hash($groups_hash)
     }
+
+    default: {}
   }
 
-  anchor { "accounts::begin": }
-  anchor { "accounts::end": }
+  anchor { 'accounts::begin': }
+  anchor { 'accounts::end': }
 
   if $manage_groups_real {
 
@@ -134,9 +136,9 @@ class accounts (
   }
 
   if $manage_sudoers {
-    case $operatingsystem {
+    case $::operatingsystem {
       solaris: {
-        warning("manage_sudoers is $manage_sudoers but is not supported on $operatingsystem")
+        warning("manage_sudoers is ${manage_sudoers} but is not supported on ${::operatingsystem}")
       }
       default: {
         file_line { 'sudo_rules':

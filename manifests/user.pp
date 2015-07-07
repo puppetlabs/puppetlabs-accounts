@@ -61,6 +61,9 @@ define accounts::user(
   # gid number
   if $gid != undef {
     validate_re($gid, '^\d+$')
+    $_gid = $gid
+  } else {
+    $_gid = $name
   }
   # groups
   validate_array($groups)
@@ -83,7 +86,7 @@ define accounts::user(
     comment    => $comment,
     home       => $home,
     uid        => $uid,
-    gid        => $gid ? { undef => $name, default => $gid },
+    gid        => $_gid,
     groups     => $groups,
     membership => $membership,
     password   => $password,
@@ -97,15 +100,15 @@ define accounts::user(
   }
 
   # Use the ensure relationship to swap the dependency order
-  if $ensure == "present" {
+  if $ensure == 'present' {
     Group[$name] -> User[$name]
   }
-  if $ensure == "absent" {
+  if $ensure == 'absent' {
     User[$name] -> Group[$name]
   }
 
   # Create the home directory if the user is being created
-  if $ensure == "present" {
+  if $ensure == 'present' {
     accounts::home_dir { $home:
       user    => $name,
       sshkeys => $sshkeys,
@@ -114,7 +117,7 @@ define accounts::user(
   }
 
   # If the user is being removed, and managehome is on, remove home
-  if $ensure == "absent" and $managehome == true {
+  if $ensure == 'absent' and $managehome == true {
     file { $home:
       ensure  => absent,
       recurse => true,
