@@ -1,15 +1,9 @@
-require 'puppet'
-require 'rspec-puppet'
-describe 'accounts::user', :type => :define do
-  # assume the tests are in a module
-  let(:module_path) { File.join(File.dirname(__FILE__), '../../../') }
+require 'spec_helper'
+
+describe '::accounts::user' do
   let(:title) { "dan" }
   let(:params) { {} }
   let(:facts) { {} }
-
-#  let(:contain_user) { create_resource('user', 'dan') }
-#  let(:contain_group) { create_resource('group', 'dan') }
-#  let(:contain_home_dir) { create_resource('accounts::home_dir', '/var/home/dan') }
 
   describe 'expected defaults' do
     it { is_expected.to contain_user('dan').with({'shell' => '/bin/bash'}) }
