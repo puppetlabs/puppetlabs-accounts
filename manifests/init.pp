@@ -3,42 +3,22 @@
 #   This module manages accounts on a Puppet managed system.
 #
 #   The goal of this module is to provide effective user and group management
-#   without having to modify any Puppet Code.  Users and Groups may be
-#   configured using simple data files or variables in a Puppet manifest.
+#   without having to modify any Puppet Code.
 #
 # Parameters:
 #
-#  [*data_namespace*] The Puppet namespace to find data.  Override the default
-#  of 'accounts::data' with your own namespace.  The string must end with
-#  ::data.  site::accounts::data is a good choice.
-#  This class will automatically be included for you.  The class should not
-#  be a parameterized class.
-#
 #  [*manage_groups*] Whether or not this module manages a set of default shared
-#  groups.  These groups must be defined in the $groups_hash hash in the
-#  _data_namespace_.  Please see the accounts::data class included in this
-#  module for an example.
+#  groups.  These groups must be defined in the $groups_hash parameter
 #
 #  [*manage_users*] Whether or not this module manages a set of default shared
-#  users.  These users must be defined in the $users_hash in the
-#  _data_namespace_.  Configuration values that apply to all users should be
-#  in the $users_hash_default variable.  Please see the accounts::data class
-#  included in this module for an example.
+#  users. These users must be defined in the $users_hash parameter.
+#  Configuration values that apply to all users should be in the
+#  $users_hash_default variable.
 #
 #  [*manage_sudoers*] Whether or not this module should add sudo rules to the sudoers
 #  file of the client. If specified as true, it will add groups %sudo and %sudonopw
 #  and give them full sudo and full passwordless sudo privileges respectively.
 #  Defaults to false.
-#
-#  [*data_store*] Where the data specifying accounts and groups live.  This
-#  setting may be 'yaml' or 'namespace' (Defaults to namespace).  When set to
-#  namespace the puppet class specified with the data_namespace class parameter
-#  will be used.  YAML data store is the default.  Examples of these
-#  configuration files are located in the ext/data/ directory of this module.
-#  These files should be copied to a data directory inside Puppet's confdir.
-#  For example:
-#   * /etc/puppet/data/accounts_users_hash.yaml
-#   * /etc/puppet/data/accounts_groups_hash.yaml
 #
 #  [*sudoers_path*] Location of sudoers file on client systems.
 #  defaults to /etc/sudoers
@@ -66,9 +46,10 @@ class accounts (
   $manage_groups   = true,
   $manage_users    = true,
   $manage_sudoers  = false,
-  $data_store      = 'namespace',
-  $data_namespace  = 'accounts::data',
   $sudoers_path    = '/etc/sudoers'
+  # Deprecated
+  $data_store      = undef,
+  $data_namespace  = undef,
 ) {
 
   # Must be fully qualified
@@ -76,16 +57,30 @@ class accounts (
   # Must not have a trailing slash
   validate_re($sudoers_path, '[^/]$')
   validate_bool($manage_sudoers)
-  validate_re($data_store, '^namespace$|^yaml$')
-  validate_re($data_namespace, '::data$')
   validate_bool($manage_groups)
   validate_bool($manage_users)
 
-  case $data_store {
+  # Deprecated
+  if $data_store or $data_namespace {
+    warning("accounts data has been deprecated. Use hiera instead.")
+  }
+  if $data_store {
+    $_data_store = $data_store
+  } else {
+    $_data_store = 'namespace'
+  }
+  if $data_namespace {
+    $_data_namespace = $data_namespace
+  } else {
+    $_data_namespace = 'accounts::data'
+  }
+  validate_re($_data_store, '^namespace$|^yaml$')
+  validate_re($_data_namespace, '::data$')
+  case $_data_store {
     namespace: {
-      include $data_namespace
-      $groups_hash = getvar("${data_namespace}::groups_hash")
-      $users_hash = getvar("${data_namespace}::users_hash")
+      include $_data_namespace
+      $groups_hash = getvar("${_data_namespace}::groups_hash")
+      $users_hash = getvar("${_data_namespace}::users_hash")
       validate_hash($users_hash, $groups_hash)
     }
 
