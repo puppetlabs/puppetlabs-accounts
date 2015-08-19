@@ -47,6 +47,8 @@ class accounts (
   $manage_users    = true,
   $manage_sudoers  = false,
   $sudoers_path    = '/etc/sudoers'
+  $groups_hash     = undef,
+  $users_hash      = undef,
   # Deprecated
   $data_store      = undef,
   $data_namespace  = undef,
@@ -79,17 +81,27 @@ class accounts (
   case $_data_store {
     namespace: {
       include $_data_namespace
-      $groups_hash = getvar("${_data_namespace}::groups_hash")
-      $users_hash = getvar("${_data_namespace}::users_hash")
-      validate_hash($users_hash, $groups_hash)
+      # So, namespace is the default, but because data_store is deprecated we
+      # also just use the hashes here if they are passed in.
+      if $groups_hash {
+        $_groups_hash = $groups_hash
+      } else {
+        $_groups_hash = getvar("${_data_namespace}::groups_hash")
+      }
+      if $users_hash {
+        $_users_hash = $users_hash
+      } else {
+        $_users_hash = getvar("${_data_namespace}::users_hash")
+      }
+      validate_hash($_users_hash, $_groups_hash)
     }
 
     yaml: {
       $datadir = inline_template('<%= File.join(Puppet[:confdir], "data") %>')
       $users_hash_file = inline_template("<%= File.join('${datadir}', 'accounts_users_hash.yaml')%>")
-      $users_hash = loadyaml($users_hash_file)
+      $_users_hash = loadyaml($users_hash_file)
       $groups_hash_file = inline_template("<%= File.join('${datadir}', 'accounts_groups_hash.yaml')%>")
-      $groups_hash = loadyaml($groups_hash_file)
+      $_groups_hash = loadyaml($groups_hash_file)
       validate_hash($users_hash, $groups_hash)
     }
 
@@ -102,7 +114,7 @@ class accounts (
   if $manage_groups {
 
     class { 'accounts::groups':
-      groups_hash => $groups_hash,
+      groups_hash => $_groups_hash,
     }
 
     Anchor['accounts::begin'] -> Class['accounts::groups'] -> Anchor['accounts::end']
@@ -110,7 +122,7 @@ class accounts (
   }
 
   if $manage_users {
-    create_resources('accounts::user', $users_hash)
+    create_resources('accounts::user', $_users_hash)
   }
 
   if $manage_sudoers {
