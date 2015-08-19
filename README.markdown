@@ -40,11 +40,12 @@ not be modified.
 With the module installed, simply declare the accounts class in a Puppet
 managed node's catalog:
 
-    # site.pp
-    node default {
-      accounts::user { 'dan': }
-      accounts::user { 'jeff': }
-    }
+~~~puppet
+node default {
+  accounts::user { 'dan': }
+  accounts::user { 'jeff': }
+}
+~~~
 
 The above example will create accounts, home directories, and groups for Jeff
 and Dan.
@@ -83,17 +84,21 @@ property of an account to true.
 
 For example:
 
-    accounts::user { 'villain':
-      comment => 'Bad Person',
-      locked  => true
-    }
+~~~puppet
+accounts::user { 'villain':
+  comment => 'Bad Person',
+  locked  => true
+}
+~~~
 
 The accounts module will set the account to an invalid shell appropriate for
 the system Puppet is managing.
 
-    $ ssh villain@centos56
-    This account is currently not available.
-    Connection to 172.16.214.129 closed.
+~~~
+$ ssh villain@centos56
+This account is currently not available.
+Connection to 172.16.214.129 closed.
+~~~
 
 ### Manage SSH keys
 
@@ -123,7 +128,61 @@ accounts::user { 'jeff':
 
 ##Reference
 
-List module's classes, types, providers, defines, facts, etc, along with the parameters for each.
+### Class: accounts
+Base class to configure how the accounts::users resources behave, and accept hashes from hiera.
+#### groups_hash
+Accepts a hash of group resources, ie from hiera. Required if `manage_groups` is true. Defaults to undef
+
+#### manage_groups
+Whether or not this module manages a set of default shared groups. These groups
+must be defined in the `groups_hash` parameter. Accepts true/false, default true.
+
+#### manage_users
+Whether or not this module manages a set of default shared users. These users
+must be defined in the `users_hash` parameter. Configuration values that apply
+to all users should be in the `users_hash_default` variable. Accepts true/false,
+default true.
+
+#### manage_sudoers
+Whether or not this module should add sudo rules to the sudoers file of the
+client with file_line. If specified as true, it will add groups %sudo and
+%sudonopw and give them full sudo and full passwordless sudo privileges
+respectively. Defaults to false.
+
+#### sudoers_path
+Location of sudoers file on client systems. Defaults to /etc/sudoers
+
+#### users_hash
+Accepts a hash of account::user resources, ie from hiera. Required if `manage_users` is true. Defaults to undef
+
+### Define: accounts::user
+This resource manages the user, group, .vim/, .ssh/, .bash_profile, .bashrc, homedir, .ssh/authorized\_keys files and directories. Currently the content of the dotfiles is not customizable, but this feature will be added in the future.
+
+#### comment
+Manage the user comment. Default to `$name`
+#### ensure
+Manage the ensure property of the user, group, homedir, and ssh keys. Default 'present'
+#### gid
+Manage the gid of the user's group. Default undef
+#### groups
+Manage the users group membership. Must be an array. Default empty array.
+#### home
+Manage the users homedir path. Default '/home/$name'
+#### locked
+Manage whether the account is locked. Accepts true/false. Default false.
+#### managehome
+Pass managehome to the user resource. Will also purge the users homedir if ensure is absent and managehome is true. Default true.
+#### membership
+Configure the user resource `groups` scope. Default 'minimum'
+#### password
+Manage the user password hash. Default '!!'
+#### shell
+Manage the user shell. Default '/bin/bash'
+#### sshkeys
+Manage the users ssh keys. Must be an array. Default empty array.
+#### uid
+Manage the users uid. Default undef.
+
 
 ##Limitations
 
