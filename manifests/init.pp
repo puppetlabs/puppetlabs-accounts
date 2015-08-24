@@ -46,7 +46,7 @@ class accounts (
   $manage_groups   = true,
   $manage_users    = true,
   $manage_sudoers  = false,
-  $sudoers_path    = '/etc/sudoers'
+  $sudoers_path    = '/etc/sudoers',
   $groups_hash     = undef,
   $users_hash      = undef,
   # Deprecated
@@ -66,12 +66,12 @@ class accounts (
   if $data_store or $data_namespace {
     warning("accounts data has been deprecated. Use hiera instead.")
   }
-  if $data_store {
+  if $data_store != undef {
     $_data_store = $data_store
   } else {
     $_data_store = 'namespace'
   }
-  if $data_namespace {
+  if $data_namespace != undef {
     $_data_namespace = $data_namespace
   } else {
     $_data_namespace = 'accounts::data'

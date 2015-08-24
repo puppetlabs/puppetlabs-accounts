@@ -12,6 +12,7 @@ define accounts::user(
   $shell      = '/bin/bash',
   $comment    = $name,
   $home       = "/home/${name}",
+  $home_mode  = undef,
   $uid        = undef,
   $gid        = undef,
   $groups     = [ ],
@@ -84,6 +85,7 @@ define accounts::user(
 
   accounts::home_dir { $home:
     ensure     => $ensure,
+    mode       => $home_mode,
     managehome => $managehome,
     user       => $name,
     sshkeys    => $sshkeys,
