@@ -21,6 +21,7 @@ describe '::accounts::user' do
       params['shell']      = '/bin/csh'
       params['comment']    = 'comment'
       params['home']       = '/var/home/dan'
+      params['home_mode']  = '0755'
       params['uid']        = '123'
       params['gid']        = '456'
       params['groups']     = ['admin']
@@ -42,6 +43,7 @@ describe '::accounts::user' do
     it { is_expected.to contain_group('dan').with({'gid' => '456'}) }
     it { is_expected.to contain_group('dan').that_comes_before('User[dan]') }
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'user' => title}) }
+    it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'mode' => '0755'}) }
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'sshkeys' => ['1 2 3', '2 3 4']}) }
 
     describe 'when setting the user to absent' do

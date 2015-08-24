@@ -168,6 +168,8 @@ Manage the gid of the user's group. Default undef
 Manage the users group membership. Must be an array. Default empty array.
 #### home
 Manage the users homedir path. Default '/home/$name'
+#### home_mode
+Manage the users homedir mode. Default '0700'
 #### locked
 Manage whether the account is locked. Accepts true/false. Default false.
 #### managehome

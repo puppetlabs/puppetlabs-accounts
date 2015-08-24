@@ -7,6 +7,7 @@
 # directory
 define accounts::home_dir(
   $user,
+  $mode       = '0700',
   $ensure     = 'present',
   $managehome = true,
   $sshkeys    = [],
@@ -27,7 +28,7 @@ define accounts::home_dir(
       ensure => directory,
       owner  => $user,
       group  => $user,
-      mode   => '0700',
+      mode   => $mode,
     }
 
     file { "${name}/.ssh":
