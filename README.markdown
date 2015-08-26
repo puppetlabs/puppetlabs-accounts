@@ -3,9 +3,7 @@
 #### Table of Contents
 1. [Description](#description)
 2. [Setup - The basics of getting started with accounts](#setup)
-    * [What accounts affects](#what-accounts-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with [modulename]](#beginning-with-[modulename])
+    * [Beginning with accounts](#beginning-with-accounts)
 3. [Usage - Configuration options and additional functionality](#usage)
 4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
@@ -17,70 +15,57 @@
 The accounts module manages resources related to login and service accounts
 for Puppet Enterprise. This module replaces Puppet Enterprise's built-in pe\_accounts module, which was removed from PE 2015.3 and later.
 
-This module is designed to work on all PE-supported Unix operating systems.
-This module does not currently support configuring accounts on Microsoft
+This module works on all PE-supported Unix operating systems. It does not currently support configuring accounts on Microsoft
 Windows platforms.
 
 ## Setup
 
-### What accounts affects **OPTIONAL**
+**Note:** When you install this module, it is placed in your module search path. Do not modify the module; it is designed to be automatically updated with Puppet Enterprise updates.
 
+### Beginning with accounts
 
-### Setup Requirements **OPTIONAL**
-
-
-### Install the accounts module
-
-This module should be placed in your module search path. The module is
-designed to be automatically updated with Puppet Enterprise updates and should
-not be modified.
-
-### Quick Start
-
-With the module installed, simply declare the accounts class in a Puppet
-managed node's catalog:
+Declare the `accounts` class in a Puppet-managed node's manifest:
 
 ~~~puppet
 node default {
   accounts::user { 'dan': }
-  accounts::user { 'jeff': }
+  accounts::user { 'morgan': }
 }
 ~~~
 
-The above example will create accounts, home directories, and groups for Jeff
-and Dan.
+The above example creates accounts, home directories, and groups for Dan
+and Morgan.
 
 ## Usage
 
 ### Declare user accounts
 
-The accounts::user defined resource type supports most of the major features
-the user native type supports (see $ puppet describe user) and the additional
-parameters of locked and sshkeys.
-
-Examples of declaring resources are provided in the examples/ sub directory of
-this module.
+~~~puppet
+accounts::user { 'bob':
+    uid      => 4001,
+    gid      => 4001,
+    shell    => '/bin/bash',
+    password => '!!',
+    sshkeys  => "ssh-rsa AAAA...",
+    locked   => false,
+  }
+~~~
 
 ### Customize the home directory
 
-If the account being managed is using the Bash shell, a simple bashrc and
-bash\_profile rc file will be managed by Puppet for each account.  These rc
-files will read the following files in the following order, which are not
-automatically managed by Puppet:
+If the account being managed uses the bash shell, a simple bashrc and
+bash\_profile rc file is managed by Puppet for each account. These rc
+files read the following files, which are not automatically managed by Puppet, in the following order:
 
- 1. /etc/bashrc
- 2. /etc/bashrc.puppet
- 3. ~/.bashrc.custom
+ 1. `/etc/bashrc`
+ 2. `/etc/bashrc.puppet`
+ 3. `~/.bashrc.custom`
 
-Each account holder may customize their shell by managing the bashrc.custom
-file.  In addition, the system administrator may easily make profile changes
-that affect all accounts with a shell of bash by managing the
-/etc/bashrc.puppet file.
+Account holders can customize their shells by managing their bashrc.custom files. In addition, the system administrator can make profile changes that affect all accounts with a bash shell by managing the `/etc/bashrc.puppet` file.
 
 ### Lock accounts
 
-Accounts managed with this module can be locked by setting the "locked"
-property of an account to true.
+Lock accounts by setting the `locked` parameter of an account to 'true'.
 
 For example:
 
@@ -91,8 +76,8 @@ accounts::user { 'villain':
 }
 ~~~
 
-The accounts module will set the account to an invalid shell appropriate for
-the system Puppet is managing.
+The accounts module sets the account to an invalid shell appropriate for
+the system Puppet is managing and displays the following message if a user tries to access the account:
 
 ~~~
 $ ssh villain@centos56
@@ -102,10 +87,8 @@ Connection to 172.16.214.129 closed.
 
 ### Manage SSH keys
 
-SSH Keys may be managed using the "sshkeys" attribute of `accounts::user`. This
-attribute is expected to be an array and each value of the array is expected to
-be a single string which may be a copy and paste of the public key file
-contents.
+Manage SSH keys managed with the `sshkeys` attribute of the `accounts::user` define. This
+parameter accepts an array of single string values, which can be copies of the public key file contents.
 
 Example:
 
@@ -125,66 +108,97 @@ accounts::user { 'jeff':
 }
 ~~~
 
-
-##Reference
+## Reference
 
 ### Class: accounts
-Base class to configure how the accounts::users resources behave, and accept hashes from hiera.
-#### groups_hash
-Accepts a hash of group resources, ie from hiera. Required if `manage_groups` is true. Defaults to undef
 
-#### manage_groups
-Whether or not this module manages a set of default shared groups. These groups
-must be defined in the `groups_hash` parameter. Accepts true/false, default true.
+This class accepts hashes from Hiera and configures how the accounts::users resources behave.
 
-#### manage_users
-Whether or not this module manages a set of default shared users. These users
+#### `groups_hash`
+
+*Required* if `manage_groups` is 'true'.  Allows creation of group resources. Accepts a hash of group resources, i.e., from Hiera. Default: undef.
+
+#### `manage_groups`
+
+Whether this module manages a set of default shared groups. These groups
+must be defined in the `groups_hash` parameter. Valid values: 'true', 'false'. Default: 'true'.
+
+#### `manage_users`
+
+Whether this module manages a set of default shared users. These users
 must be defined in the `users_hash` parameter. Configuration values that apply
-to all users should be in the `users_hash_default` variable. Accepts true/false,
-default true.
+to all users should be in the `users_hash_default` variable. Valid values: 'true', 'false'. Default: 'true'.
 
-#### manage_sudoers
-Whether or not this module should add sudo rules to the sudoers file of the
-client with file_line. If specified as true, it will add groups %sudo and
-%sudonopw and give them full sudo and full passwordless sudo privileges
-respectively. Defaults to false.
+#### `manage_sudoers`
 
-#### sudoers_path
-Location of sudoers file on client systems. Defaults to /etc/sudoers
+Whether this module should add sudo rules to the sudoers file of the
+client with file_line. If 'true', this adds groups `%sudo` and
+`%sudonopw` and gives them full sudo and full passwordless sudo privileges,
+respectively. Valid values: 'true', 'false'. Default: 'false'.
 
-#### users_hash
-Accepts a hash of account::user resources, ie from hiera. Required if `manage_users` is true. Defaults to undef
+#### `sudoers_path`
+
+The location of sudoers file on client systems. Default: `/etc/sudoers`.
+
+#### `users_hash`
+
+*Required* if `manage_users` is true. Allows creation of user resources. Accepts a hash of `account::user` resources, i.e., from Hiera. Required if `manage_users` is true. Defaults to undef.
 
 ### Define: accounts::user
-This resource manages the user, group, .vim/, .ssh/, .bash_profile, .bashrc, homedir, .ssh/authorized\_keys files and directories. Currently the content of the dotfiles is not customizable, but this feature will be added in the future.
 
-#### comment
-Manage the user comment. Default to `$name`
-#### ensure
-Manage the ensure property of the user, group, homedir, and ssh keys. Default 'present'
-#### gid
-Manage the gid of the user's group. Default undef
-#### groups
+This resource manages the user, group, .vim/, .ssh/, .bash_profile, .bashrc, homedir, .ssh/authorized\_keys files and directories.
+
+#### `comment`
+
+Manage the user comment. Default to `$name`.
+
+#### `ensure`
+
+Manage the ensure property of the user, group, homedir, and ssh keys. Default 'present'.
+
+#### `gid`
+
+Manage the gid of the user's group. Default undef.
+
+#### `groups`
+
 Manage the users group membership. Must be an array. Default empty array.
-#### home
-Manage the users homedir path. Default '/home/$name'
-#### home_mode
-Manage the users homedir mode. Default '0700'
-#### locked
-Manage whether the account is locked. Accepts true/false. Default false.
-#### managehome
-Pass managehome to the user resource. Will also purge the users homedir if ensure is absent and managehome is true. Default true.
-#### membership
-Configure the user resource `groups` scope. Default 'minimum'
-#### password
-Manage the user password hash. Default '!!'
-#### shell
-Manage the user shell. Default '/bin/bash'
-#### sshkeys
-Manage the users ssh keys. Must be an array. Default empty array.
-#### uid
-Manage the users uid. Default undef.
 
+#### `home`
+
+Manages the user's homedir path. Default: '/home/$name'.
+
+#### home_mode
+
+Manage the users homedir mode. Default '0700'
+
+#### `locked`
+
+Manages whether the account is locked. Accepts true/false. Default: false.
+
+#### `managehome`
+
+Passes `managehome` to the user resource. Purges the user's homedir if `ensure` is absent and `managehome` is true. Default: true.
+
+#### `membership`
+
+Configures the user resource `groups` scope. Default: 'minimum'.
+
+#### `password`
+
+Manages the user password hash. Default: '!!'.
+
+#### `shell`
+
+Manages the user shell. Default: '/bin/bash'.
+
+#### `sshkeys`
+
+Manages the users ssh keys. Must be an array. Default: an empty array.
+
+#### `uid`
+
+Manages the users uid. Default: undef.
 
 ##Limitations
 
@@ -196,4 +210,4 @@ This module was built by Puppet Labs specifically for use with Puppet Enterprise
 
 If you run into an issue with this module, or if you would like to request a feature, please [file a ticket](https://tickets.puppetlabs.com/browse/MODULES/).
 
-If you are having problems getting this module up and running, please [contact Support](http://puppetlabs.com/services/customer-support).
+If you have problems getting this module up and running, please [contact Support](http://puppetlabs.com/services/customer-support).
