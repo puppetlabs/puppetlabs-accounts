@@ -12,15 +12,12 @@
 
 ## Description
 
-The accounts module manages resources related to login and service accounts
-for Puppet Enterprise. This module replaces Puppet Enterprise's built-in pe\_accounts module, which was removed from PE 2015.3 and later.
+The accounts module manages resources related to login and service accounts. This module replaces Puppet Enterprise's built-in pe\_accounts module, which was removed from PE 2015.3 and later.
 
-This module works on all PE-supported Unix operating systems. It does not currently support configuring accounts on Microsoft
+This module works on many UNIX/Linux operating systems. It does not support configuring accounts on Microsoft
 Windows platforms.
 
 ## Setup
-
-**Note:** When you install this module, it is placed in your module search path. Do not modify the module; it is designed to be automatically updated with Puppet Enterprise updates.
 
 ### Beginning with accounts
 
@@ -53,9 +50,9 @@ accounts::user { 'bob':
 
 ### Customize the home directory
 
-If the account being managed uses the bash shell, a simple bashrc and
+A simple bashrc and
 bash\_profile rc file is managed by Puppet for each account. These rc
-files read the following files, which are not automatically managed by Puppet, in the following order:
+files add some simple aliases, update the prompt, add ~/bin to the path, and source the following files (which are not managed by this module) in the following order:
 
  1. `/etc/bashrc`
  2. `/etc/bashrc.puppet`
@@ -88,7 +85,7 @@ Connection to 172.16.214.129 closed.
 ### Manage SSH keys
 
 Manage SSH keys managed with the `sshkeys` attribute of the `accounts::user` define. This
-parameter accepts an array of single string values, which can be copies of the public key file contents.
+parameter accepts an array of public key contents as strings.
 
 Example:
 
@@ -110,43 +107,9 @@ accounts::user { 'jeff':
 
 ## Reference
 
-### Class: accounts
-
-This class accepts hashes from Hiera and configures how the accounts::users resources behave.
-
-#### `groups_hash`
-
-*Required* if `manage_groups` is 'true'.  Allows creation of group resources. Accepts a hash of group resources, i.e., from Hiera. Default: undef.
-
-#### `manage_groups`
-
-Whether this module manages a set of default shared groups. These groups
-must be defined in the `groups_hash` parameter. Valid values: 'true', 'false'. Default: 'true'.
-
-#### `manage_users`
-
-Whether this module manages a set of default shared users. These users
-must be defined in the `users_hash` parameter. Configuration values that apply
-to all users should be in the `users_hash_default` variable. Valid values: 'true', 'false'. Default: 'true'.
-
-#### `manage_sudoers`
-
-Whether this module should add sudo rules to the sudoers file of the
-client with file_line. If 'true', this adds groups `%sudo` and
-`%sudonopw` and gives them full sudo and full passwordless sudo privileges,
-respectively. Valid values: 'true', 'false'. Default: 'false'.
-
-#### `sudoers_path`
-
-The location of sudoers file on client systems. Default: `/etc/sudoers`.
-
-#### `users_hash`
-
-*Required* if `manage_users` is true. Allows creation of user resources. Accepts a hash of `account::user` resources, i.e., from Hiera. Required if `manage_users` is true. Defaults to undef.
-
 ### Define: accounts::user
 
-This resource manages the user, group, .vim/, .ssh/, .bash_profile, .bashrc, homedir, .ssh/authorized\_keys files and directories.
+This resource manages the user, group, .vim/, .ssh/, .bash\_profile, .bashrc, homedir, .ssh/authorized\_keys files and directories.
 
 #### `comment`
 
@@ -168,7 +131,7 @@ Manage the users group membership. Must be an array. Default empty array.
 
 Manages the user's homedir path. Default: '/home/$name'.
 
-#### home_mode
+#### `home_mode`
 
 Manage the users homedir mode. Default '0700'
 
@@ -205,8 +168,6 @@ Manages the users uid. Default: undef.
 This module works with Puppet Enterprise 2015.3 and later.
 
 ## Development
-
-This module was built by Puppet Labs specifically for use with Puppet Enterprise (PE).
 
 If you run into an issue with this module, or if you would like to request a feature, please [file a ticket](https://tickets.puppetlabs.com/browse/MODULES/).
 
