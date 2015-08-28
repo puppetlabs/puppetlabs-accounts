@@ -33,6 +33,12 @@ describe 'accounts::user define', :unless => UNSUPPORTED_PLATFORMS.include?(fact
     describe file('/tmp/hunner/.bashrc') do
       its(:content) { should match(/managed by Puppet/) }
     end
+    describe file('/tmp/hunner/.bash_profile') do
+      its(:content) { should match(/Get the aliases and functions/) }
+    end
+    describe file('/tmp/hunner/.vim') do
+      it { should be_directory }
+    end
   end
   describe 'locking users' do
     describe user('hunner') do
