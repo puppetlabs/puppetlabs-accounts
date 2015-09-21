@@ -121,7 +121,7 @@ Specifies whether the user, its primary group, homedir, and ssh keys should exis
 
 #### `gid`
 
-Specifies he gid of the user's primary group. Must be specified numerically. Default undef.
+Specifies the gid of the user's primary group. Must be specified numerically. Default undef.
 
 #### `groups`
 
