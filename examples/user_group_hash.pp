@@ -6,7 +6,7 @@ $groups_hash = {
   'developer' => { gid => '3003' },
   'ops'       => { gid => '3004' },
 }
-create_resources("accounts::group", $groups_hash)
+create_resources('accounts::group', $groups_hash)
 
 $users_hash = {
   'jeff' => {
