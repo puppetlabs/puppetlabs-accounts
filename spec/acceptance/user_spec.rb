@@ -52,9 +52,9 @@ describe 'accounts::user define', :unless => UNSUPPORTED_PLATFORMS.include?(fact
       end
       it { 
         case fact('osfamily')
-        when 'debian'
+        when 'Debian'
           should have_login_shell '/usr/sbin/nologin'
-        when 'solaris'
+        when 'Solaris'
           should have_login_shell '/usr/bin/false'
         else
           should have_login_shell '/sbin/nologin'
