@@ -62,7 +62,7 @@ Account holders can customize their shells by managing their bashrc.custom files
 
 ### Lock accounts
 
-Lock accounts by setting the `locked` parameter of an account to 'true'.
+Lock accounts by setting the `locked` parameter of an account to true.
 
 For example:
 
@@ -84,7 +84,7 @@ Connection to 172.16.214.129 closed.
 
 ### Manage SSH keys
 
-Manage SSH keys managed with the `sshkeys` attribute of the `accounts::user` define. This
+Manage SSH keys with the `sshkeys` attribute of the `accounts::user` define. This
 parameter accepts an array of public key contents as strings.
 
 Example:
@@ -113,43 +113,43 @@ This resource manages the user, group, .vim/, .ssh/, .bash\_profile, .bashrc, ho
 
 #### `comment`
 
-Manage the user comment. Default to `$name`.
+A comment describing or regarding the user. Accepts a string. Default to `$name`.
 
 #### `ensure`
 
-Manage the ensure property of the user, group, homedir, and ssh keys. Default 'present'.
+Specifies whether the user, its primary group, homedir, and ssh keys should exist. Valid values are present and absent. Defaults to present. Note that when a user is created, a group with the same name as the user is also created. Default 'present'.
 
 #### `gid`
 
-Manage the gid of the user's group. Default undef.
+Specifies the gid of the user's primary group. Must be specified numerically. Default undef.
 
 #### `groups`
 
-Manage the users group membership. Must be an array. Default empty array.
+Specifies the user's group memberships. Valid values: an array. Default: an empty array.
 
 #### `home`
 
-Manages the user's homedir path. Default: '/home/$name'.
+Specifies the path to the user's home directory. Default: `/home/$name`.
 
 #### `home_mode`
 
-Manage the users homedir mode. Default '0700'
+Manages the user's home directory permission mode. Valid values are in [octal notation](https://docs.puppetlabs.com/references/latest/type.html#file-attribute-mode), specified as a string. Defaults to '0700', which gives the owner full read, write, and execute permissions, while group and other have no permissions. 
 
 #### `locked`
 
-Manages whether the account is locked. Accepts true/false. Default: false.
+Whether the account should be locked and the user prevented from logging in. Set to true for users whose login privileges have been revoked. Valid values: true, false. Default: false.
 
 #### `managehome`
 
-Passes `managehome` to the user resource. Purges the user's homedir if `ensure` is absent and `managehome` is true. Default: true.
+Whether the user's home directory should be managed. Purges the user's homedir if `ensure` is set to absent and `managehome` is set to true. Default: true.
 
 #### `membership`
 
-Configures the user resource `groups` scope. Default: 'minimum'.
+Whether specified groups should be considered the complete list (inclusive) or the minimum list (minimum) of groups to which the user belongs. Valid values: 'inclusive', 'minimum'. Default: 'minimum'.
 
 #### `password`
 
-Manages the user password hash. Default: '!!'.
+The user's password, in whatever encrypted format the local machine requires. Defaults to '!!', which prevents the user from logging in with a password.
 
 #### `shell`
 
@@ -157,11 +157,11 @@ Manages the user shell. Default: '/bin/bash'.
 
 #### `sshkeys`
 
-Manages the users ssh keys. Must be an array. Default: an empty array.
+An array of SSH public keys associated with the user. These should be complete public key strings that include the type and name of the key, exactly as the key would appear in its id_rsa.pub or id_dsa.pub file. Must be an array. Defaults to an empty array.
 
 #### `uid`
 
-Manages the users uid. Default: undef.
+Specifies the user's uid number. Must be specified numerically. Default: undef.
 
 ##Limitations
 
