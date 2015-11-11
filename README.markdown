@@ -111,6 +111,14 @@ accounts::user { 'jeff':
 
 This resource manages the user, group, .vim/, .ssh/, .bash\_profile, .bashrc, homedir, .ssh/authorized\_keys files and directories.
 
+#### `bashrc_content`
+
+The content to place in the user's ~/.bashrc file. Default: undef
+
+#### `bash_profile_content`
+
+The content to place in the user's ~/.bash\_profile file. Default: undef
+
 #### `comment`
 
 A comment describing or regarding the user. Accepts a string. Default to `$name`.
@@ -129,7 +137,7 @@ Specifies the user's group memberships. Valid values: an array. Default: an empt
 
 #### `home`
 
-Specifies the path to the user's home directory. Default: `/home/$name`.
+Specifies the path to the user's home directory. Default: `/home/$name` on linux and `/export/home/$name` on Solaris for non-root users, and `/root` on linux and `/` on Solaris for the root user.
 
 #### `home_mode`
 
@@ -141,7 +149,7 @@ Whether the account should be locked and the user prevented from logging in. Set
 
 #### `managehome`
 
-Whether the user's home directory should be managed. Purges the user's homedir if `ensure` is set to absent and `managehome` is set to true. Default: true.
+Whether the user's home directory and accounts::home\_dir file resources (ssh keys, .vim, .bashrc, etc.) should be managed. This will populate the home directory when `ensure => present` and purge the home directory when `ensure => absent`. Default: true.
 
 #### `membership`
 
@@ -157,7 +165,7 @@ Manages the user shell. Default: '/bin/bash'.
 
 #### `sshkeys`
 
-An array of SSH public keys associated with the user. These should be complete public key strings that include the type and name of the key, exactly as the key would appear in its id_rsa.pub or id_dsa.pub file. Must be an array. Defaults to an empty array.
+An array of SSH public keys associated with the user. These should be complete public key strings that include the type and name of the key, exactly as the key would appear in its id\_rsa.pub or id\_dsa.pub file. Must be an array. Defaults to an empty array.
 
 #### `uid`
 
