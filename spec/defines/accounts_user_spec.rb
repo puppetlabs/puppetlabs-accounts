@@ -6,13 +6,37 @@ describe '::accounts::user' do
   let(:facts) { {} }
 
   describe 'expected defaults' do
-    it { is_expected.to contain_user('dan').with({'shell' => '/bin/bash'}) }
-    it { is_expected.to contain_user('dan').with({'home' => "/home/#{title}"}) }
-    it { is_expected.to contain_user('dan').with({'ensure' => 'present'}) }
-    it { is_expected.to contain_user('dan').with({'comment' => title}) }
-    it { is_expected.to contain_user('dan').with({'groups' => []}) }
-    it { is_expected.to contain_group('dan').with({'ensure' => 'present'}) }
-    it { is_expected.to contain_group('dan').with({'gid' => nil}) }
+    it { is_expected.to contain_user('dan').with({'shell'      => '/bin/bash'}) }
+    it { is_expected.to contain_user('dan').with({'home'       => "/home/#{title}"}) }
+    it { is_expected.to contain_user('dan').with({'ensure'     => 'present'}) }
+    it { is_expected.to contain_user('dan').with({'comment'    => title}) }
+    it { is_expected.to contain_user('dan').with({'groups'     => []}) }
+    it { is_expected.to contain_user('dan').with({'managehome' => true }) }
+    it { is_expected.to contain_group('dan').with({'ensure'    => 'present'}) }
+    it { is_expected.to contain_group('dan').with({'gid'       => nil}) }
+  end
+
+  describe 'expected home defaults' do
+    context 'normal user on linux' do
+      let(:title) { "dan" }
+      let(:facts) { { :osfamily => "Debian" } }
+      it { is_expected.to contain_user('dan').with_home('/home/dan') }
+    end
+    context 'root user on linux' do
+      let(:title) { "root" }
+      let(:facts) { { :osfamily => "Debian" } }
+      it { is_expected.to contain_user('root').with_home('/root') }
+    end
+    context 'normal user on Solaris' do
+      let(:title) { "dan" }
+      let(:facts) { { :osfamily => "Solaris" } }
+      it { is_expected.to contain_user('dan').with_home('/export/home/dan') }
+    end
+    context 'root user on Solaris' do
+      let(:title) { "root" }
+      let(:facts) { { :osfamily => "Solaris" } }
+      it { is_expected.to contain_user('root').with_home('/') }
+    end
   end
 
   describe 'when setting user parameters' do
@@ -45,6 +69,7 @@ describe '::accounts::user' do
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'user' => title}) }
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'mode' => '0755'}) }
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'sshkeys' => ['1 2 3', '2 3 4']}) }
+    it { is_expected.to contain_file('/var/home/dan/.ssh') }
 
     describe 'when setting the user to absent' do
 
@@ -73,6 +98,7 @@ describe '::accounts::user' do
         end
 
         it { is_expected.not_to contain_home_dir }
+        it { is_expected.not_to contain_file('/var/home/dan/.ssh') }
       end
     end
   end
