@@ -10,6 +10,7 @@ RSpec.configure do |c|
   c.formatter = :documentation
   c.before :suite do
     hosts.each do |host|
+      install_ca_certs_on(host)
       copy_module_to(host, :source => proj_root, :module_name => 'accounts')
       on host, puppet('module','install','puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
     end
