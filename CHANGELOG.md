@@ -1,7 +1,7 @@
 # Change log
 All notable changes to this project will be documented in this file.
 
-## 1.0.0 - 2015-11-03
+## Supported Release 1.0.0 
 ### Summary:
 This is the initial release of the rewrite of puppetlabs-pe\_accounts for a more general usage.
 
