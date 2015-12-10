@@ -7,10 +7,12 @@
 # directory
 define accounts::home_dir(
   $user,
-  $mode       = '0700',
-  $ensure     = 'present',
-  $managehome = true,
-  $sshkeys    = [],
+  $bashrc_content       = undef,
+  $bash_profile_content = undef,
+  $mode                 = '0700',
+  $ensure               = 'present',
+  $managehome           = true,
+  $sshkeys              = [],
 ) {
   validate_re($ensure, '^(present|absent)$')
 
@@ -20,10 +22,13 @@ define accounts::home_dir(
       recurse => true,
       force   => true,
     }
-  } elsif $ensure == 'present' {
+  } elsif $ensure == 'present' and $managehome == true {
 
     $key_file = "${name}/.ssh/authorized_keys"
 
+    # Solaris homedirs are managed in zfs by `useradd -m`. If the directory
+    # does not yet exist then we can't predict how it should be created, but we
+    # should still manage the user/group/mode
     file { $name:
       ensure => directory,
       owner  => $user,
@@ -45,19 +50,23 @@ define accounts::home_dir(
       mode   => '0700',
     }
 
-    file { "${name}/.bashrc":
-      source  => 'puppet:///modules/accounts/shell/bashrc',
-      owner   => $user,
-      group   => $user,
-      mode    => '0644',
-      replace => false,
+    if $bashrc_content {
+      file { "${name}/.bashrc":
+        ensure  => file,
+        content => $bashrc_content,
+        owner   => $user,
+        group   => $user,
+        mode    => '0644',
+      }
     }
-    file { "${name}/.bash_profile":
-      source  => 'puppet:///modules/accounts/shell/bash_profile',
-      owner   => $user,
-      group   => $user,
-      mode    => '0644',
-      replace => false,
+    if $bash_profile_content {
+      file { "${name}/.bash_profile":
+        ensure  => file,
+        content => $bash_profile_content,
+        owner   => $user,
+        group   => $user,
+        mode    => '0644',
+      }
     }
 
     file { $key_file:
@@ -74,6 +83,10 @@ define accounts::home_dir(
         require  => File["${name}/.ssh"],
         before   => File[$key_file],
       }
+    }
+  } elsif $managehome == false {
+    if $sshkeys != [] {
+      warning("ssh keys were passed for user ${user} but \$managehome is set to false; not managing user ssh keys")
     }
   }
 }

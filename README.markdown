@@ -39,13 +39,13 @@ and Morgan.
 
 ~~~puppet
 accounts::user { 'bob':
-    uid      => 4001,
-    gid      => 4001,
-    shell    => '/bin/bash',
-    password => '!!',
-    sshkeys  => "ssh-rsa AAAA...",
-    locked   => false,
-  }
+  uid      => 4001,
+  gid      => 4001,
+  shell    => '/bin/bash',
+  password => '!!',
+  sshkeys  => "ssh-rsa AAAA...",
+  locked   => false,
+}
 ~~~
 
 ### Customize the home directory
@@ -111,6 +111,14 @@ accounts::user { 'jeff':
 
 This resource manages the user, group, .vim/, .ssh/, .bash\_profile, .bashrc, homedir, .ssh/authorized\_keys files and directories.
 
+#### `bashrc_content`
+
+The content to place in the user's ~/.bashrc file. Default: undef
+
+#### `bash_profile_content`
+
+The content to place in the user's ~/.bash\_profile file. Default: undef
+
 #### `comment`
 
 A comment describing or regarding the user. Accepts a string. Default to `$name`.
@@ -129,7 +137,7 @@ Specifies the user's group memberships. Valid values: an array. Default: an empt
 
 #### `home`
 
-Specifies the path to the user's home directory. Default: `/home/$name`.
+Specifies the path to the user's home directory. Default: `/home/$name` on linux and `/export/home/$name` on Solaris for non-root users, and `/root` on linux and `/` on Solaris for the root user.
 
 #### `home_mode`
 
@@ -141,7 +149,7 @@ Whether the account should be locked and the user prevented from logging in. Set
 
 #### `managehome`
 
-Whether the user's home directory should be managed. Purges the user's homedir if `ensure` is set to absent and `managehome` is set to true. Default: true.
+Whether the user's home directory should be managed by puppet. In addition to the usual [user resource managehome](https://docs.puppetlabs.com/references/latest/type.html#user-attribute-managehome) qualities, this attribute also purges the user's homedir if `ensure` is set to absent and `managehome` is set to true. Default: true.
 
 #### `membership`
 
@@ -157,15 +165,19 @@ Manages the user shell. Default: '/bin/bash'.
 
 #### `sshkeys`
 
-An array of SSH public keys associated with the user. These should be complete public key strings that include the type and name of the key, exactly as the key would appear in its id_rsa.pub or id_dsa.pub file. Must be an array. Defaults to an empty array.
+An array of SSH public keys associated with the user. These should be complete public key strings that include the type and name of the key, exactly as the key would appear in its id\_rsa.pub or id\_dsa.pub file. Must be an array. Defaults to an empty array.
 
 #### `uid`
 
 Specifies the user's uid number. Must be specified numerically. Default: undef.
 
-##Limitations
+## Limitations
 
 This module works with Puppet Enterprise 2015.3 and later.
+
+### Changes from pe\_accounts
+
+The accounts module is designed to take the place of the pe\_accounts module that shipped with PE 2015.2 and earlier. Some of the changes include the removal of the base class, improving the validation, and allowing more flexibility for which files should or should not be managed in a user's home directory. For example, the .bashrc and .bash\_profile files are not managed by default but allow custom content to be passed in using the `bashrc_content` and `bash_profile_content` parameters. The content for these two files as managed by pe\_accounts may continue to be used by passing `bashrc_content => file('accounts/shell/bashrc')` and `bash_profile_content => file('accounts/shell/bash_profile')` to the `accounts::user` type.
 
 ## Development
 
