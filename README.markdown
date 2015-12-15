@@ -159,6 +159,10 @@ Whether specified groups should be considered the complete list (inclusive) or t
 
 The user's password, in whatever encrypted format the local machine requires. Defaults to '!!', which prevents the user from logging in with a password.
 
+#### `purge_sshkeys`
+
+Whether keys not included in `sshkeys` should be removed from the user. If `purge_sshkeys` is true and `sshkeys` is an empty array, all SSH keys will be removed from the user. Valid values: true, false. Default: false.
+
 #### `shell`
 
 Manages the user shell. Default: '/bin/bash'.
