@@ -77,11 +77,15 @@ define accounts::home_dir(
     }
 
     if $sshkeys != [] {
-      accounts::manage_keys { $sshkeys:
-        user     => $user,
-        key_file => $key_file,
-        require  => File["${name}/.ssh"],
-        before   => File[$key_file],
+      $sshkeys.each |String $key| {
+        $key_title = "${user}_${key}"
+        accounts::manage_keys { $key_title:
+          user     => $user,
+          sshkey   => $key,
+          key_file => $key_file,
+          require  => File["${name}/.ssh"],
+          before   => File[$key_file],
+        }
       }
     }
   } elsif $managehome == false {
