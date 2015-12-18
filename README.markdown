@@ -15,7 +15,7 @@
 
 ## Description
 
-The accounts module manages resources related to login and service accounts. This module replaces Puppet Enterprise's built-in pe\_accounts module, which no longer included in PE 2015.3 and later versions.
+The accounts module manages resources related to login and service accounts. This module replaces Puppet Enterprise's built-in pe\_accounts module, which is no longer included in PE 2015.3 and later versions.
 
 This module works on many UNIX/Linux operating systems. It does not support configuring accounts on Microsoft Windows platforms.
 
@@ -53,15 +53,15 @@ accounts::user { 'bob':
 
 A simple bashrc and bash\_profile rc file is managed by Puppet for each account. These rc files add some simple aliases, update the prompt, add ~/bin to the path, and source the following files (which are not managed by this module) in the following order:
 
- 1. `/etc/bashrc`
- 2. `/etc/bashrc.puppet`
- 3. `~/.bashrc.custom`
+ 1. '/etc/bashrc'
+ 2. '/etc/bashrc.puppet'
+ 3. '~/.bashrc.custom'
 
-Account holders can customize their shells by managing their bashrc.custom files. In addition, the system administrator can make profile changes that affect all accounts with a bash shell by managing the `/etc/bashrc.puppet` file.
+Account holders can customize their shells by managing their bashrc.custom files. In addition, the system administrator can make profile changes that affect all accounts with a bash shell by managing the '/etc/bashrc.puppet' file.
 
 ### Lock accounts
 
-Lock accounts by setting the `locked` parameter of an account to `true`.
+Lock accounts by setting the `locked` parameter of an account to true.
 
 For example:
 
@@ -82,7 +82,7 @@ Connection to 172.16.214.129 closed.
 
 ### Manage SSH keys
 
-Manage SSH keys with the `sshkeys` attribute of the `accounts::user` define. This parameter accepts an array of public key contents as strings.
+Manage SSH keys with the `sshkeys` attribute of the `accounts::user` defined type. This parameter accepts an array of public key contents as strings.
 
 Example:
 
@@ -118,11 +118,11 @@ The content to place in the user's ~/.bash\_profile file. Default: undef.
 
 #### `comment`
 
-A comment describing or regarding the user. Accepts a string. Default: `$name`.
+A comment describing or regarding the user. Accepts a string. Default: '$name'.
 
 #### `ensure`
 
-Specifies whether the user, its primary group, homedir, and ssh keys should exist. Valid values are `present` and `absent`. Note that when a user is created, a group with the same name as the user is also created. Default: `present`.
+Specifies whether the user, its primary group, homedir, and ssh keys should exist. Valid values are 'present' and 'absent'. Note that when a user is created, a group with the same name as the user is also created. Default: 'present'.
 
 #### `gid`
 
@@ -134,7 +134,12 @@ Specifies the user's group memberships. Valid values: an array. Default: an empt
 
 #### `home`
 
-Specifies the path to the user's home directory. Default: `/home/$name` on linux and `/export/home/$name` on Solaris for non-root users, and `/root` on linux and `/` on Solaris for the root user.
+Specifies the path to the user's home directory. 
+Default: 
+* Linux, non-root user: '/home/$name' 
+* Linux, root user: '/root'
+* Solaris, non-root user: '/export/home/$name' 
+* Solaris, root user: '/'
 
 #### `home_mode`
 
@@ -142,23 +147,23 @@ Manages the user's home directory permission mode. Valid values are in [octal no
 
 #### `locked`
 
-Specifies whether the account should be locked and the user prevented from logging in. Set to `true` for users whose login privileges have been revoked. Valid values: `true`, `false`. Default: `false`.
+Specifies whether the account should be locked and the user prevented from logging in. Set to true for users whose login privileges have been revoked. Valid values: true, false. Default: false.
 
 #### `managehome`
 
-Specifies whether the user's home directory should be managed by puppet. In addition to the usual [user resource managehome](https://docs.puppetlabs.com/references/latest/type.html#user-attribute-managehome) qualities, this attribute also purges the user's homedir if `ensure` is set to absent and `managehome` is set to true. Default: `true`.
+Specifies whether the user's home directory should be managed by puppet. In addition to the usual [user resource managehome](https://docs.puppetlabs.com/references/latest/type.html#user-attribute-managehome) qualities, this attribute also purges the user's homedir if `ensure` is set to 'absent' and `managehome` is set to true. Default: true.
 
 #### `membership`
 
-Establishes whether specified groups should be considered the complete list (inclusive) or the minimum list (minimum) of groups to which the user belongs. Valid values: `inclusive`, `minimum`. Default: `minimum`.
+Establishes whether specified groups should be considered the complete list (inclusive) or the minimum list (minimum) of groups to which the user belongs. Valid values: 'inclusive', 'minimum'. Default: 'minimum'.
 
 #### `password`
 
-The user's password, in whatever encrypted format the local machine requires. Default: `!!`, which prevents the user from logging in with a password.
+The user's password, in whatever encrypted format the local machine requires. Default: '!!', which prevents the user from logging in with a password.
 
 #### `shell`
 
-Manages the user shell. Default: `/bin/bash`.
+Manages the user shell. Default: '/bin/bash'.
 
 #### `sshkeys`
 
@@ -174,7 +179,9 @@ This module works with Puppet Enterprise 2015.3 and later.
 
 ### Changes from pe\_accounts
 
-The accounts module is designed to take the place of the pe\_accounts module that shipped with PE 2015.2 and earlier. Some of the changes include the removal of the base class, improving the validation, and allowing more flexibility regarding which files should or should not be managed in a user's home directory. For example, the .bashrc and .bash\_profile files are not managed by default but allow custom content to be passed in using the `bashrc_content` and `bash_profile_content` parameters. The content for these two files as managed by pe\_accounts may continue to be used by passing `bashrc_content => file('accounts/shell/bashrc')` and `bash_profile_content => file('accounts/shell/bash_profile')` to the `accounts::user` type.
+The accounts module is designed to take the place of the pe\_accounts module that shipped with PE versions 2015.2 and earlier. Some of the changes include the removal of the base class, improving the validation, and allowing more flexibility regarding which files should or should not be managed in a user's home directory. 
+
+For example, the .bashrc and .bash\_profile files are not managed by default but allow custom content to be passed in using the `bashrc_content` and `bash_profile_content` parameters. The content for these two files as managed by pe\_accounts can continue to be used by passing `bashrc_content => file('accounts/shell/bashrc')` and `bash_profile_content => file('accounts/shell/bash_profile')` to the `accounts::user` defined type.
 
 ## Development
 
