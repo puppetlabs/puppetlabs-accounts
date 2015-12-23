@@ -53,9 +53,9 @@ accounts::user { 'bob':
 
 A simple bashrc and bash\_profile rc file is managed by Puppet for each account. These rc files add some simple aliases, update the prompt, add ~/bin to the path, and source the following files (which are not managed by this module) in the following order:
 
- 1. '/etc/bashrc'
- 2. '/etc/bashrc.puppet'
- 3. '~/.bashrc.custom'
+ 1. `/etc/bashrc`
+ 2. `/etc/bashrc.puppet`
+ 3. `~/.bashrc.custom`
 
 Account holders can customize their shells by managing their bashrc.custom files. In addition, the system administrator can make profile changes that affect all accounts with a bash shell by managing the '/etc/bashrc.puppet' file.
 
