@@ -29,7 +29,7 @@ group :system_tests do
     gem 'beaker-rspec',  :require => false
   end
   gem 'serverspec',    :require => false
-  gem 'beaker-puppet_install_helper', :require => false
+  gem 'beaker-puppet_install_helper', '>= 0.4.2', :require => false
 end
 
 
