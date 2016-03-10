@@ -106,29 +106,29 @@ describe '::accounts::user' do
   describe 'invalid parameter values' do
     it 'should only accept absent and present for ensure' do
       params['ensure'] = 'invalid'
-      expect { subject.call }.to raise_error
+      expect { subject.call }.to raise_error Puppet::Error
     end
     it 'should fail if locked is not a boolean' do
       params['locked'] = 'true'
-      expect { subject.call }.to raise_error
+      expect { subject.call }.to raise_error Puppet::Error
     end
     ['home', 'shell'].each do |param|
       it "should fail is #{param} does not start with '/'" do
         params[param] = 'no_leading_slash'
-        expect { subject.call }.to raise_error
+        expect { subject.call }.to raise_error Puppet::Error
       end
     end
     it 'should fail if gid is not composed of digits' do
       params['gid'] = 'name'
-      expect { subject.call }.to raise_error
+      expect { subject.call }.to raise_error Puppet::Error
     end
     it 'should not accept non-boolean values for locked' do
       params['locked'] = 'false'
-      expect { subject.call }.to raise_error
+      expect { subject.call }.to raise_error Puppet::Error
     end
     it 'should not accept non-boolean values for managehome' do
       params['managehome'] = 'false'
-      expect { subject.call }.to raise_error
+      expect { subject.call }.to raise_error Puppet::Error
     end
   end
 
