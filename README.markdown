@@ -122,7 +122,7 @@ A comment describing or regarding the user. Accepts a string. Default: '$name'.
 
 #### `ensure`
 
-Specifies whether the user, its primary group, homedir, and ssh keys should exist. Valid values are 'present' and 'absent'. Note that when a user is created, a group with the same name as the user is also created. Default: 'present'.
+Specifies whether the user, its primary group, homedir, and ssh keys should exist. Valid values are 'present' and 'absent'. Note that when a user is created, a group with the same name as the user is also created, unless you set manage_primary_group to false. Default: 'present'.
 
 #### `gid`
 
@@ -131,6 +131,10 @@ Specifies the gid of the user's primary group. Must be specified numerically. De
 #### `groups`
 
 Specifies the user's group memberships. Valid values: an array. Default: an empty array.
+
+#### `manage_primary_group`
+
+Manage the primary group. Default: true
 
 #### `home`
 
