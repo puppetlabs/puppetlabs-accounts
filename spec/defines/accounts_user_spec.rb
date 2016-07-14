@@ -6,6 +6,7 @@ describe '::accounts::user' do
   let(:facts) { {} }
 
   describe 'expected defaults' do
+    let(:facts) { { :osfamily => "Debian" } }
     it { is_expected.to contain_user('dan').with({'shell'      => '/bin/bash'}) }
     it { is_expected.to contain_user('dan').with({'home'       => "/home/#{title}"}) }
     it { is_expected.to contain_user('dan').with({'ensure'     => 'present'}) }
@@ -138,26 +139,34 @@ describe '::accounts::user' do
 
     describe 'on debian' do
       before { facts['operatingsystem'] = 'debian' }
+      before { facts['osfamily'] = 'Debian' }
       it { is_expected.to contain_user('dan').with({'shell' => '/usr/sbin/nologin'}) }
     end
 
     describe 'on ubuntu' do
       before { facts['operatingsystem'] = 'ubuntu' }
+      before { facts['osfamily'] = 'Ubuntu' }
       it { is_expected.to contain_user('dan').with({'shell' => '/usr/sbin/nologin'}) }
     end
 
     describe 'on solaris' do
       before { facts['operatingsystem'] = 'solaris' }
+      before { facts['osfamily'] = 'Solaris' }
       it { is_expected.to contain_user('dan').with({'shell' => '/usr/bin/false'}) }
     end
 
     describe 'on all other platforms' do
       before { facts['operatingsystem'] = 'anything_else' }
+      before { facts['osfamily'] = 'anything_else' }
       it { is_expected.to contain_user('dan').with({'shell' => '/sbin/nologin'}) }
     end
   end
 
   describe 'when supplying resource defaults' do
+    before do
+      facts['osfamily'] = 'Debian'
+      facts['operatingsystem'] = 'debian'
+    end
 
     let(:pre_condition) { "Accounts::User{ shell => '/bin/zsh' }" }
 
@@ -170,7 +179,7 @@ describe '::accounts::user' do
 
     describe 'locked overrides should override defaults and user params' do
       let(:params) { { 'shell' => '/bin/csh', 'locked' => true} }
-      it { is_expected.to contain_user('dan').with({'shell' => '/sbin/nologin'}) }
+      it { is_expected.to contain_user('dan').with({'shell' => '/usr/sbin/nologin'}) }
     end
   end
 end
