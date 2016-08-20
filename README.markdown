@@ -44,7 +44,6 @@ accounts::user { 'bob':
   gid      => 4001,
   shell    => '/bin/bash',
   password => '!!',
-  sshkeys  => "ssh-rsa AAAA...",
   locked   => false,
 }
 ~~~
