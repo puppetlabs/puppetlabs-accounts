@@ -8,7 +8,9 @@
 define accounts::home_dir(
   $user,
   $bashrc_content       = undef,
+  $bashrc_source        = undef,
   $bash_profile_content = undef,
+  $bash_profile_source  = undef,
   $mode                 = '0700',
   $ensure               = 'present',
   $managehome           = true,
@@ -50,22 +52,40 @@ define accounts::home_dir(
       mode   => '0700',
     }
 
-    if $bashrc_content {
+    if $bashrc_content or $bashrc_source {
       file { "${name}/.bashrc":
-        ensure  => file,
-        content => $bashrc_content,
-        owner   => $user,
-        group   => $user,
-        mode    => '0644',
+        ensure => file,
+        owner  => $user,
+        group  => $user,
+        mode   => '0644',
+      }
+      if $bashrc_content {
+        File["${name}/.bashrc"] {
+          content => $bashrc_content,
+        }
+      }
+      if $bashrc_source {
+        File["${name}/.bashrc"] {
+          source => $bashrc_source,
+        }
       }
     }
-    if $bash_profile_content {
+    if $bash_profile_content or $bash_profile_source {
       file { "${name}/.bash_profile":
-        ensure  => file,
-        content => $bash_profile_content,
-        owner   => $user,
-        group   => $user,
-        mode    => '0644',
+        ensure => file,
+        owner  => $user,
+        group  => $user,
+        mode   => '0644',
+      }
+      if $bash_profile_content {
+        File["${name}/.bash_profile"] {
+          content => $bash_profile_content,
+        }
+      }
+      if $bash_profile_source {
+        File["${name}/.bash_profile"] {
+          source => $bash_profile_source,
+        }
       }
     }
 

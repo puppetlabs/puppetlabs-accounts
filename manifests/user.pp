@@ -23,7 +23,9 @@ define accounts::user(
   $purge_sshkeys        = false,
   $managehome           = true,
   $bashrc_content       = undef,
+  $bashrc_source        = undef,
   $bash_profile_content = undef,
+  $bash_profile_source  = undef,
 ) {
   validate_re($ensure, '^present$|^absent$')
   validate_bool($locked, $managehome, $purge_sshkeys)
@@ -34,8 +36,14 @@ define accounts::user(
   if $bashrc_content {
     validate_string($bashrc_content)
   }
+  if $bashrc_source {
+    validate_string($bashrc_source)
+  }
   if $bash_profile_content {
     validate_string($bash_profile_content)
+  }
+  if $bash_profile_source {
+    validate_string($bash_profile_source)
   }
   if $home {
     validate_re($home, '^/')
@@ -115,7 +123,9 @@ define accounts::user(
     mode                 => $home_mode,
     managehome           => $managehome,
     bashrc_content       => $bashrc_content,
+    bashrc_source        => $bashrc_source,
     bash_profile_content => $bash_profile_content,
+    bash_profile_source  => $bash_profile_source,
     user                 => $name,
     sshkeys              => $sshkeys,
     require              => [ User[$name], Group[$name] ],
