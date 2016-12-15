@@ -40,11 +40,10 @@ The above example creates accounts, home directories, and groups for Dan and Mor
 
 ~~~puppet
 accounts::user { 'bob':
-  uid      => 4001,
-  gid      => 4001,
+  uid      => '4001',
+  gid      => '4001',
   shell    => '/bin/bash',
   password => '!!',
-  sshkeys  => "ssh-rsa AAAA...",
   locked   => false,
 }
 ~~~
