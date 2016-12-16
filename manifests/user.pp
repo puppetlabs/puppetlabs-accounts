@@ -6,6 +6,7 @@
 # [*sshkeys*] List of ssh public keys to be associated with the
 # user.
 # [*managehome*] Whether the home directory should be removed with accounts
+# [*manage_primary_group*] Minage the primary group, default true
 #
 define accounts::user(
   $ensure               = 'present',
@@ -17,6 +18,7 @@ define accounts::user(
   $gid                  = undef,
   $groups               = [ ],
   $membership           = 'minimum',
+  $manage_primary_group = true,
   $password             = '!!',
   $locked               = false,
   $sshkeys              = [],
@@ -26,7 +28,7 @@ define accounts::user(
   $bash_profile_content = undef,
 ) {
   validate_re($ensure, '^present$|^absent$')
-  validate_bool($locked, $managehome, $purge_sshkeys)
+  validate_bool($locked, $managehome, $purge_sshkeys, $manage_primary_group)
   validate_re($shell, '^/')
   validate_string($comment, $password)
   validate_array($groups, $sshkeys)
@@ -99,15 +101,21 @@ define accounts::user(
   }
 
   # use $gid instead of $_gid since `gid` in group can only take a number
-  group { $name:
-    ensure => $ensure,
-    gid    => $gid,
-  }
+  if($manage_primary_group) {
+    group { $name:
+      ensure => $ensure,
+      gid    => $gid,
+    }
 
-  if $ensure == 'present' {
-    Group[$name] -> User[$name]
-  } else {
-    User[$name] -> Group[$name]
+    if $ensure == 'present' {
+      Group[$name] -> User[$name]
+    } else {
+      User[$name] -> Group[$name]
+    }
+
+    $home_dir_requirement = [ User[$name], Group[$name] ]
+  }else {
+    $home_dir_requirement = [ User[$name] ]
   }
 
   accounts::home_dir { $home_real:
@@ -117,7 +125,8 @@ define accounts::user(
     bashrc_content       => $bashrc_content,
     bash_profile_content => $bash_profile_content,
     user                 => $name,
+    group                => $_gid,
     sshkeys              => $sshkeys,
-    require              => [ User[$name], Group[$name] ],
+    require              => $home_dir_requirement,
   }
 }

@@ -72,6 +72,14 @@ describe '::accounts::user' do
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'sshkeys' => ['1 2 3', '2 3 4']}) }
     it { is_expected.to contain_file('/var/home/dan/.ssh') }
 
+    describe 'when setting manage_primary_group to false' do
+      before do
+        params['manage_primary_group'] = false
+      end
+
+      it { is_expected.not_to contain_group('dan') }
+    end
+
     describe 'when setting the user to absent' do
 
       # when deleting users the home dir is a File resource instead of a accounts::home_dir
@@ -121,6 +129,10 @@ describe '::accounts::user' do
     end
     it 'should fail if gid is not composed of digits' do
       params['gid'] = 'name'
+      expect { subject.call }.to raise_error Puppet::Error
+    end
+    it 'should not accept non-boolean values for manange_primary_group' do
+      params['manage_primary_group'] = 'false'
       expect { subject.call }.to raise_error Puppet::Error
     end
     it 'should not accept non-boolean values for locked' do

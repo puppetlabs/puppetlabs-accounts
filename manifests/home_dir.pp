@@ -13,6 +13,7 @@ define accounts::home_dir(
   $ensure               = 'present',
   $managehome           = true,
   $sshkeys              = [],
+  $group                = $user,
 ) {
   validate_re($ensure, '^(present|absent)$')
 
@@ -32,21 +33,21 @@ define accounts::home_dir(
     file { $name:
       ensure => directory,
       owner  => $user,
-      group  => $user,
+      group  => $group,
       mode   => $mode,
     }
 
     file { "${name}/.ssh":
       ensure => directory,
       owner  => $user,
-      group  => $user,
+      group  => $group,
       mode   => '0700',
     }
 
     file { "${name}/.vim":
       ensure => directory,
       owner  => $user,
-      group  => $user,
+      group  => $group,
       mode   => '0700',
     }
 
@@ -55,7 +56,7 @@ define accounts::home_dir(
         ensure  => file,
         content => $bashrc_content,
         owner   => $user,
-        group   => $user,
+        group   => $group,
         mode    => '0644',
       }
     }
@@ -64,7 +65,7 @@ define accounts::home_dir(
         ensure  => file,
         content => $bash_profile_content,
         owner   => $user,
-        group   => $user,
+        group   => $group,
         mode    => '0644',
       }
     }
@@ -72,7 +73,7 @@ define accounts::home_dir(
     file { $key_file:
       ensure => file,
       owner  => $user,
-      group  => $user,
+      group  => $group,
       mode   => '0600',
     }
 

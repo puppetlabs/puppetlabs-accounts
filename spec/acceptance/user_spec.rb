@@ -62,6 +62,28 @@ describe 'accounts::user define', :unless => UNSUPPORTED_PLATFORMS.include?(fact
       end
     end
   end
+  describe 'create user myuser without managing the primary group, group mygroup with id 666 exists' do
+    describe user('myuser') do
+      it 'does not create group myuser' do
+        pp = <<-EOS
+          group {
+            'somegroup':
+              ensure => present,
+              gid    => 666;
+          }
+
+          accounts::user { 'myuser':
+            gid                  => 666,
+            manage_primary_group => false,
+          }
+        EOS
+        apply_manifest(pp, :catch_failures => true)
+      end
+      it { should exist }
+      it { should_not belong_to_group 'myuser' }
+      it { should belong_to_primary_group 'somegroup' }
+    end
+  end
   describe 'locking users' do
     describe user('hunner') do
       it 'locks a user' do
