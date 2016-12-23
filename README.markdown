@@ -109,11 +109,19 @@ This resource manages the user, group, .vim/, .ssh/, .bash\_profile, .bashrc, ho
 
 #### `bashrc_content`
 
-The content to place in the user's ~/.bashrc file. Default: undef.
+The content to place in the user's ~/.bashrc file. Mutually exclusive to `bashrc_source`. Default: undef.
+
+#### `bashrc_source`
+
+A source file containing the content to place in the user's ~/.bashrc file. Mutually exclusive to `bashrc_content`. Default: undef.
 
 #### `bash_profile_content`
 
-The content to place in the user's ~/.bash\_profile file. Default: undef.
+The content to place in the user's ~/.bash\_profile file. Mutually exclusive to `bash_profile_source`. Default: undef.
+
+#### `bash_profile_source`
+
+A source file containing the content to place in the user's ~/.bash\_profile file. Mutually exclusive to `bash_profile_content`. Default: undef.
 
 #### `comment`
 
