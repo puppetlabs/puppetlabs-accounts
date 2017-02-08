@@ -7,6 +7,25 @@
 # user.
 # [*managehome*] Whether the home directory should be removed with accounts
 #
+# @param ensure Ensure present or absent
+# @param shell Users's shell
+# @param comment Gecos comment
+# @param home Home directory location
+# @param home_mode Permissions mode for home directory
+# @param uid UID of the user
+# @param gid GID for the user
+# @param groups Secondary groups for the user
+# @param membership Minimum or inclusive membership for groups
+# @param password  Encrypted password for this account
+# @param locked Should this account be locked
+# @param sshkeys Array of SSH keys to put in the authorized keys file
+# @param purge_sshkeys Should SSH keys not managed be purged
+# @param managehome Should Puppet manage the home directory
+# @param bashrc_content Content for the bashrc file
+# @param bashrc_source  Source file for the bashrc file
+# @param bash_profile_content Content for the bash_profile file
+# @param bash_profile_source  Source file for the bash_profile file
+
 define accounts::user(
   $ensure               = 'present',
   $shell                = '/bin/bash',
@@ -54,12 +73,12 @@ define accounts::user(
   if $home {
     $home_real = $home
   } elsif $name == 'root' {
-    $home_real = $::osfamily ? {
+    $home_real = $facts['osfamily']['family'] ? {
       'Solaris' => '/',
       default   => '/root',
     }
   } else {
-    $home_real = $::osfamily ? {
+    $home_real = $facts['osfamily']['family'] ? {
       'Solaris' => "/export/home/${name}",
       default   => "/home/${name}",
     }
@@ -77,7 +96,7 @@ define accounts::user(
   }
 
   if $locked {
-    case $::operatingsystem {
+    case $facts['os']['name'] {
       'debian', 'ubuntu' : {
         $_shell = '/usr/sbin/nologin'
       }
@@ -131,3 +150,4 @@ define accounts::user(
     require              => [ User[$name], Group[$name] ],
   }
 }
+

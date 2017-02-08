@@ -5,6 +5,17 @@
 # [*user*] User that owns all of the files being created.
 # [*sshkeys*] List of ssh keys to be added for this user in this
 # directory
+# 
+# @param user User to update
+# @param bashrc_content Content for the bashrc file
+# @param bashrc_source  Source file for the bashrc file
+# @param bash_profile_content Content for the bash_profile file
+# @param bash_profile_source  Source file for the bash_profile file
+# @param mode  Home directory mode
+# @param ensure Ensure present or absent
+# @param managehome Should Puppet manage the home directory
+# @param sshkeys Array of SSH keys to put in the authorized keys file
+
 define accounts::home_dir(
   $user,
   $bashrc_content       = undef,
@@ -110,3 +121,4 @@ define accounts::home_dir(
     }
   }
 }
+

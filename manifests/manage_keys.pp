@@ -1,4 +1,9 @@
+# Manage user SSH authorized keys file
 #
+# @param user Which user account to update
+# @param key_file Which authorized keys file to update
+#
+
 define accounts::manage_keys(
   $user,
   $key_file,
@@ -19,3 +24,4 @@ define accounts::manage_keys(
     target => $key_file,
   }
 }
+
