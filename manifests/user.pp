@@ -26,6 +26,7 @@ define accounts::user(
   $bashrc_source        = undef,
   $bash_profile_content = undef,
   $bash_profile_source  = undef,
+  $system               = false,
 ) {
   validate_re($ensure, '^present$|^absent$')
   validate_bool($locked, $managehome, $purge_sshkeys)
@@ -95,7 +96,7 @@ define accounts::user(
   user { $name:
     ensure         => $ensure,
     shell          => $_shell,
-    comment        => "${comment}", # lint:ignore:only_variable_string
+    comment        => $comment, # lint:ignore:only_variable_string
     home           => $home_real,
     uid            => $uid,
     gid            => $_gid,
@@ -104,12 +105,14 @@ define accounts::user(
     managehome     => $managehome,
     password       => $password,
     purge_ssh_keys => $purge_sshkeys,
+    system         => $system,
   }
 
   # use $gid instead of $_gid since `gid` in group can only take a number
   group { $name:
     ensure => $ensure,
     gid    => $gid,
+    system => $system,
   }
 
   if $ensure == 'present' {
