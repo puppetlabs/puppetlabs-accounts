@@ -139,6 +139,10 @@ Specifies the gid of the user's primary group. Must be specified numerically. De
 
 Specifies the user's group memberships. Valid values: an array. Default: an empty array.
 
+#### `create_group`
+
+Specifies if you want to create a group with the user's name. Default: true.
+
 #### `home`
 
 Specifies the path to the user's home directory. 
