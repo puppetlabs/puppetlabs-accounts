@@ -6,6 +6,7 @@
 # [*sshkeys*] List of ssh public keys to be associated with the
 # user.
 # [*managehome*] Whether the home directory should be removed with accounts
+# [*system*] Whether the account should be a member of the system accounts
 #
 define accounts::user(
   $ensure               = 'present',
@@ -16,6 +17,7 @@ define accounts::user(
   $uid                  = undef,
   $gid                  = undef,
   $groups               = [ ],
+  $create_group         = true,
   $membership           = 'minimum',
   $password             = '!!',
   $locked               = false,
@@ -93,26 +95,29 @@ define accounts::user(
     $_shell = $shell
   }
 
+  # Check if user wants to create a group whith user's name
+  if $create_group {
+    # use $gid instead of $_gid since `gid` in group can only take a number
+    group { $name:
+      ensure => $ensure,
+      gid    => $gid,
+      system => $system,
+    }
+  }
+
   user { $name:
     ensure         => $ensure,
     shell          => $_shell,
     comment        => $comment, # lint:ignore:only_variable_string
     home           => $home_real,
     uid            => $uid,
-    gid            => $_gid,
+    gid            => $gid,
     groups         => $groups,
     membership     => $membership,
     managehome     => $managehome,
     password       => $password,
     purge_ssh_keys => $purge_sshkeys,
     system         => $system,
-  }
-
-  # use $gid instead of $_gid since `gid` in group can only take a number
-  group { $name:
-    ensure => $ensure,
-    gid    => $gid,
-    system => $system,
   }
 
   if $ensure == 'present' {
