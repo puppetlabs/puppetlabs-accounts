@@ -108,7 +108,7 @@ define accounts::user(
   user { $name:
     ensure         => $ensure,
     shell          => $_shell,
-    comment        => $comment, # lint:ignore:only_variable_string
+    comment        => "${comment}", # lint:ignore:only_variable_string
     home           => $home_real,
     uid            => $uid,
     gid            => $gid,
