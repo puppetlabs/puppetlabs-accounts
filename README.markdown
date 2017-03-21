@@ -188,6 +188,10 @@ An array of SSH public keys associated with the user. These should be complete p
 
 Specifies the user's uid number. Must be specified numerically. Default: undef.
 
+#### `system`
+
+Specifies if you want to create a system account. Default: false.
+
 ## Limitations
 
 This module works with Puppet Enterprise 2015.3 and later.

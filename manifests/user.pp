@@ -6,6 +6,7 @@
 # [*sshkeys*] List of ssh public keys to be associated with the
 # user.
 # [*managehome*] Whether the home directory should be removed with accounts
+# [*system*] Whether the account should be a member of the system accounts
 #
 define accounts::user(
   $ensure               = 'present',
@@ -27,6 +28,7 @@ define accounts::user(
   $bashrc_source        = undef,
   $bash_profile_content = undef,
   $bash_profile_source  = undef,
+  $system               = false,
 ) {
   validate_re($ensure, '^present$|^absent$')
   validate_bool($locked, $managehome, $purge_sshkeys)
@@ -99,6 +101,7 @@ define accounts::user(
     group { $name:
       ensure => $ensure,
       gid    => $gid,
+      system => $system,
     }
   }
 
@@ -114,6 +117,7 @@ define accounts::user(
     managehome     => $managehome,
     password       => $password,
     purge_ssh_keys => $purge_sshkeys,
+    system         => $system,
   }
 
   if $ensure == 'present' {
