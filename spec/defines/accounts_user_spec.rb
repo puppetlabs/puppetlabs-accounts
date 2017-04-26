@@ -11,6 +11,7 @@ describe '::accounts::user' do
     it { is_expected.to contain_user('dan').with({'home'       => "/home/#{title}"}) }
     it { is_expected.to contain_user('dan').with({'ensure'     => 'present'}) }
     it { is_expected.to contain_user('dan').with({'comment'    => title}) }
+    it { is_expected.to contain_user('dan').with({'group'      => title}) }
     it { is_expected.to contain_user('dan').with({'groups'     => []}) }
     it { is_expected.to contain_user('dan').with({'managehome' => true }) }
     it { is_expected.to contain_group('dan').with({'ensure'    => 'present'}) }
@@ -49,6 +50,7 @@ describe '::accounts::user' do
       params['home_mode']  = '0755'
       params['uid']        = '123'
       params['gid']        = '456'
+      params['group']      = 'dan'
       params['groups']     = ['admin']
       params['membership'] = 'inclusive'
       params['password']   = 'foo'
@@ -61,6 +63,7 @@ describe '::accounts::user' do
     it { is_expected.to contain_user('dan').with({'home' => '/var/home/dan'}) }
     it { is_expected.to contain_user('dan').with({'uid' => '123'}) }
     it { is_expected.to contain_user('dan').with({'gid' => '456'}) }
+    it { is_expected.to contain_user('dan').with({'group' => 'dan'}) }
     it { is_expected.to contain_user('dan').with({'groups' => ['admin']}) }
     it { is_expected.to contain_user('dan').with({'membership' => 'inclusive'}) }
     it { is_expected.to contain_user('dan').with({'password' => 'foo'}) }

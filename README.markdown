@@ -42,6 +42,7 @@ The above example creates accounts, home directories, and groups for Dan and Mor
 accounts::user { 'bob':
   uid      => '4001',
   gid      => '4001',
+  group    => 'staff',
   shell    => '/bin/bash',
   password => '!!',
   locked   => false,
@@ -105,7 +106,7 @@ accounts::user { 'jeff':
 
 ### Defined type: `accounts::user`
 
-This resource manages the user, group, .vim/, .ssh/, .bash\_profile, .bashrc, homedir, .ssh/authorized\_keys files, and directories.
+This resource manages the user, group, .ssh/, .bash\_profile, .bashrc, homedir, .ssh/authorized\_keys files, and directories.
 
 #### `bashrc_content`
 
@@ -134,6 +135,10 @@ Specifies whether the user, its primary group, homedir, and ssh keys should exis
 #### `gid`
 
 Specifies the gid of the user's primary group. Must be specified numerically. Default: undef.
+
+#### `group`
+
+Specifies the name of the user's primary group. Must be specified as a string. Default: a group named the same as user name
 
 #### `groups`
 

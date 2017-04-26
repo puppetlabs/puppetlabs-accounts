@@ -2,6 +2,7 @@
 #
 # parameters:
 # [*name*] Name of user
+# [*group*] Name of user's primary group (defaults to user name)
 # [*locked*] Whether the user account should be locked.
 # [*sshkeys*] List of ssh public keys to be associated with the
 # user.
@@ -16,6 +17,7 @@ define accounts::user(
   $home_mode            = undef,
   $uid                  = undef,
   $gid                  = undef,
+  $group                = $name,
   $groups               = [ ],
   $create_group         = true,
   $membership           = 'minimum',
@@ -33,7 +35,7 @@ define accounts::user(
   validate_re($ensure, '^present$|^absent$')
   validate_bool($locked, $managehome, $purge_sshkeys)
   validate_re($shell, '^/')
-  validate_string($comment, $password)
+  validate_string($comment, $password, $group)
   validate_array($groups, $sshkeys)
   validate_re($membership, '^inclusive$|^minimum$')
   if $bashrc_content {
@@ -74,9 +76,6 @@ define accounts::user(
 
   if $gid != undef {
     validate_re($gid, '^\d+$')
-    $_gid = $gid
-  } else {
-    $_gid = $name
   }
 
   if $locked {
@@ -95,13 +94,20 @@ define accounts::user(
     $_shell = $shell
   }
 
-  # Check if user wants to create a group whith user's name
+  # Check if user wants to create the group
   if $create_group {
-    # use $gid instead of $_gid since `gid` in group can only take a number
-    group { $name:
-      ensure => $ensure,
-      gid    => $gid,
-      system => $system,
+    # Ensure that the group hasn't already been defined
+    if $ensure == 'present' and ! defined(Group[$group]) {
+      group { $group:
+        ensure => $ensure,
+        gid    => $gid,
+        system => $system,
+      }
+    # Only remove the group if it is the same as user name as it may be shared
+    } elsif $ensure == 'absent' and $name == $group {
+      group { $group:
+        ensure => $ensure,
+      }
     }
   }
 
@@ -111,7 +117,7 @@ define accounts::user(
     comment        => "${comment}", # lint:ignore:only_variable_string
     home           => $home_real,
     uid            => $uid,
-    gid            => $gid,
+    gid            => $group,
     groups         => $groups,
     membership     => $membership,
     managehome     => $managehome,
@@ -121,9 +127,9 @@ define accounts::user(
   }
 
   if $ensure == 'present' {
-    Group[$name] -> User[$name]
+    Group[$group] -> User[$name]
   } else {
-    User[$name] -> Group[$name]
+    User[$name] -> Group[$group]
   }
 
   accounts::home_dir { $home_real:
@@ -135,7 +141,8 @@ define accounts::user(
     bash_profile_content => $bash_profile_content,
     bash_profile_source  => $bash_profile_source,
     user                 => $name,
+    group                => $group,
     sshkeys              => $sshkeys,
-    require              => [ User[$name], Group[$name] ],
+    require              => [ User[$name], Group[$group] ],
   }
 }
