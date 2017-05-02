@@ -10,7 +10,7 @@
 #
 define accounts::user(
   $ensure               = 'present',
-  $shell                = '/bin/bash',
+  $shell                = '/bin/sh',
   $comment              = $name,
   $home                 = undef,
   $home_mode            = undef,
@@ -95,7 +95,7 @@ define accounts::user(
     $_shell = $shell
   }
 
-  # Check if user wants to create a group whith user's name
+  # Check if user wants to create a group with user's name
   if $create_group {
     # use $gid instead of $_gid since `gid` in group can only take a number
     group { $name:
