@@ -106,7 +106,7 @@ accounts::user { 'jeff':
 
 ### Defined type: `accounts::user`
 
-This resource manages the user, group, .ssh/, .bash\_profile, .bashrc, homedir, .ssh/authorized\_keys files, and directories.
+This resource manages the user, group, vim/, .ssh/, .bash\_profile, .bashrc, homedir, .ssh/authorized\_keys files, and directories.
 
 #### `bashrc_content`
 

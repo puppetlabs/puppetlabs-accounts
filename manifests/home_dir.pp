@@ -47,6 +47,13 @@ define accounts::home_dir(
       mode   => '0700',
     }
 
+    file { "${name}/.vim":
+      ensure => directory,
+      owner  => $user,
+      group  => $group,
+      mode   => '0700',
+    }
+
     if $bashrc_content or $bashrc_source {
       file { "${name}/.bashrc":
         ensure => file,
