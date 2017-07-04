@@ -30,12 +30,7 @@ end
 # Used for gem conditionals
 supports_windows = false
 ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
-minor_version_tmp = "#{ruby_version_segments[0]}.#{ruby_version_segments[1]}"
-if minor_version_tmp.to_f > 2.3
-  minor_version = "2.3"
-else
-  minor_version = minor_version_tmp
-end
+minor_version = "#{ruby_version_segments[0]}.#{ruby_version_segments[1]}"
 
 group :development do
   gem "puppet-module-posix-default-r#{minor_version}", :require => false, :platforms => "ruby"
