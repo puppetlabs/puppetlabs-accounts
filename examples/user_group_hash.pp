@@ -6,7 +6,7 @@ $groups_hash = {
   'developer' => { gid => '3003' },
   'ops'       => { gid => '3004' },
 }
-create_resources('accounts::group', $groups_hash)
+create_resources('group', $groups_hash)
 
 $users_hash = {
   'jeff' => {
@@ -17,8 +17,8 @@ $users_hash = {
     'gid'      => '1112',
     'locked'   => true,
     'sshkeys'  => [
-      'ssh-rsa AAAA...',
-      'ssh-dss AAAA...',
+      'ssh-rsa AAAAB3Nza...== jeff@puppetlabs.com',
+      'ssh-dss AAAAB3Nza...== jeff@metamachine.net',
     ],
     'password' => '!!',
   },

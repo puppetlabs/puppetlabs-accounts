@@ -2,11 +2,13 @@
 # Specified how home directories are managed.
 #
 # [*name*] Name of the home directory that is being managed.
+# [*group*] Name of the users primary group
 # [*user*] User that owns all of the files being created.
 # [*sshkeys*] List of ssh keys to be added for this user in this
 # directory
 define accounts::home_dir(
   $user,
+  $group,
   $bashrc_content       = undef,
   $bashrc_source        = undef,
   $bash_profile_content = undef,
@@ -34,21 +36,21 @@ define accounts::home_dir(
     file { $name:
       ensure => directory,
       owner  => $user,
-      group  => $user,
+      group  => $group,
       mode   => $mode,
     }
 
     file { "${name}/.ssh":
       ensure => directory,
       owner  => $user,
-      group  => $user,
+      group  => $group,
       mode   => '0700',
     }
 
     file { "${name}/.vim":
       ensure => directory,
       owner  => $user,
-      group  => $user,
+      group  => $group,
       mode   => '0700',
     }
 
@@ -56,7 +58,7 @@ define accounts::home_dir(
       file { "${name}/.bashrc":
         ensure => file,
         owner  => $user,
-        group  => $user,
+        group  => $group,
         mode   => '0644',
       }
       if $bashrc_content {
@@ -74,7 +76,7 @@ define accounts::home_dir(
       file { "${name}/.bash_profile":
         ensure => file,
         owner  => $user,
-        group  => $user,
+        group  => $group,
         mode   => '0644',
       }
       if $bash_profile_content {
@@ -92,7 +94,7 @@ define accounts::home_dir(
     file { $key_file:
       ensure => file,
       owner  => $user,
-      group  => $user,
+      group  => $group,
       mode   => '0600',
     }
 

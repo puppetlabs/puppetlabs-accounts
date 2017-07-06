@@ -84,4 +84,31 @@ describe 'accounts::user define', :unless => UNSUPPORTED_PLATFORMS.include?(fact
       }
     end
   end
+  describe 'create user with custom group name' do
+    describe user('cuser') do
+      it 'creates group of matching names, assigns non-matching group, manages homedir' do
+        pp = <<-EOS
+          file { '/test':
+            ensure => directory,
+            before => Accounts::User['cuser'],
+          }
+          accounts::user { 'cuser':
+            group                => 'staff',
+            password             => '!!',
+            home                 => '/test/cuser',
+          }
+        EOS
+        apply_manifest(pp, :catch_failures => true)
+      end
+      it { should exist }
+      it { should belong_to_group 'staff' }
+      it { should have_home_directory '/test/cuser' }
+    end
+    describe file('/test/cuser') do
+      it { should be_directory }
+      it { should be_mode 700 }
+      it { should be_owned_by 'cuser' }
+      it { should be_grouped_into 'staff' }
+    end
+  end
 end

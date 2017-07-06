@@ -1,16 +1,16 @@
-accounts::group { 'admin':
+group { 'admin':
   gid => 3000,
 }
-accounts::group { 'sudo':
+group { 'sudo':
   gid => 3001,
 }
-accounts::group { 'sudonopw':
+group { 'sudonopw':
   gid => 3002,
 }
-accounts::group { 'developer':
+group { 'developer':
   gid => 3003,
 }
-accounts::group { 'ops':
+group { 'ops':
   gid => 3004,
 }
 
@@ -25,8 +25,8 @@ accounts::user { 'jeff':
   gid      => 1112,
   locked   => true,
   sshkeys  => [
-    'ssh-rsa AAAA...',
-    'ssh-dss AAAA...',
+    'ssh-rsa AAAAB3Nza...== jeff@puppetlabs.com',
+    'ssh-dss AAAAB3Nza...== jeff@metamachine.net',
   ],
   password => '!!',
 }
