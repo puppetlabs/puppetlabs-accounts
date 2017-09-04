@@ -111,19 +111,35 @@ define accounts::user(
     }
   }
 
-  user { $name:
-    ensure         => $ensure,
-    shell          => $_shell,
-    comment        => "${comment}", # lint:ignore:only_variable_string
-    home           => $home_real,
-    uid            => $uid,
-    gid            => $group,
-    groups         => $groups,
-    membership     => $membership,
-    managehome     => $managehome,
-    password       => $password,
-    purge_ssh_keys => $purge_sshkeys,
-    system         => $system,
+  if $password != '' {
+    user { $name:
+      ensure         => $ensure,
+      shell          => $_shell,
+      comment        => "${comment}", # lint:ignore:only_variable_string
+      home           => $home_real,
+      uid            => $uid,
+      gid            => $group,
+      groups         => $groups,
+      membership     => $membership,
+      managehome     => $managehome,
+      password       => $password,
+      purge_ssh_keys => $purge_sshkeys,
+      system         => $system,
+    }
+  } else {
+    user { $name:
+      ensure         => $ensure,
+      shell          => $_shell,
+      comment        => "${comment}", # lint:ignore:only_variable_string
+      home           => $home_real,
+      uid            => $uid,
+      gid            => $group,
+      groups         => $groups,
+      membership     => $membership,
+      managehome     => $managehome,
+      purge_ssh_keys => $purge_sshkeys,
+      system         => $system,
+    }
   }
 
   if $ensure == 'present' {
