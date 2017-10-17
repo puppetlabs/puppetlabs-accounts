@@ -150,16 +150,16 @@ Specifies if you want to create a group with the user's name. Default: true.
 
 #### `home`
 
-Specifies the path to the user's home directory. 
-Default: 
-* Linux, non-root user: '/home/$name' 
+Specifies the path to the user's home directory.
+Default:
+* Linux, non-root user: '/home/$name'
 * Linux, root user: '/root'
-* Solaris, non-root user: '/export/home/$name' 
+* Solaris, non-root user: '/export/home/$name'
 * Solaris, root user: '/'
 
 #### `home_mode`
 
-Manages the user's home directory permission mode. Valid values are in [octal notation](https://docs.puppetlabs.com/references/latest/type.html#file-attribute-mode), specified as a string. Defaults to `0700`, which gives the owner full read, write, and execute permissions, while group and other have no permissions. 
+Manages the user's home directory permission mode. Valid values are in [octal notation](https://docs.puppetlabs.com/references/latest/type.html#file-attribute-mode), specified as a string. Defaults to `0700`, which gives the owner full read, write, and execute permissions, while group and other have no permissions.
 
 #### `locked`
 
@@ -203,7 +203,7 @@ This module works with Puppet Enterprise 2015.3 and later.
 
 ### Changes from pe\_accounts
 
-The accounts module is designed to take the place of the pe\_accounts module that shipped with PE versions 2015.2 and earlier. Some of the changes include the removal of the base class, improving the validation, and allowing more flexibility regarding which files should or should not be managed in a user's home directory. 
+The accounts module is designed to take the place of the pe\_accounts module that shipped with PE versions 2015.2 and earlier. Some of the changes include the removal of the base class, improving the validation, and allowing more flexibility regarding which files should or should not be managed in a user's home directory.
 
 For example, the .bashrc and .bash\_profile files are not managed by default but allow custom content to be passed in using the `bashrc_content` and `bash_profile_content` parameters. The content for these two files as managed by pe\_accounts can continue to be used by passing `bashrc_content => file('accounts/shell/bashrc')` and `bash_profile_content => file('accounts/shell/bash_profile')` to the `accounts::user` defined type.
 
