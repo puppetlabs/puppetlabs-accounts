@@ -10,30 +10,31 @@
 # [*system*] Whether the account should be a member of the system accounts
 #
 define accounts::user(
-  $ensure               = 'present',
-  $shell                = '/bin/bash',
-  $comment              = $name,
-  $home                 = undef,
-  $home_mode            = undef,
-  $uid                  = undef,
-  $gid                  = undef,
-  $group                = $name,
-  $groups               = [ ],
-  $create_group         = true,
-  $membership           = 'minimum',
-  $password             = '!!',
-  $locked               = false,
-  $sshkeys              = [],
-  $purge_sshkeys        = false,
-  $managehome           = true,
-  $bashrc_content       = undef,
-  $bashrc_source        = undef,
-  $bash_profile_content = undef,
-  $bash_profile_source  = undef,
-  $system               = false,
+  $ensure                   = 'present',
+  $shell                    = '/bin/bash',
+  $comment                  = $name,
+  $home                     = undef,
+  $home_mode                = undef,
+  $uid                      = undef,
+  $gid                      = undef,
+  $group                    = $name,
+  $groups                   = [ ],
+  $create_group             = true,
+  $membership               = 'minimum',
+  $password                 = '!!',
+  $locked                   = false,
+  $sshkeys                  = [],
+  $purge_sshkeys            = false,
+  $managehome               = true,
+  $bashrc_content           = undef,
+  $bashrc_source            = undef,
+  $bash_profile_content     = undef,
+  $bash_profile_source      = undef,
+  $system                   = false,
+  $ignore_password_if_empty = false,
 ) {
   validate_re($ensure, '^present$|^absent$')
-  validate_bool($locked, $managehome, $purge_sshkeys)
+  validate_bool($locked, $managehome, $purge_sshkeys, $ignore_password_if_empty)
   validate_re($shell, '^/')
   validate_string($comment, $password, $group)
   validate_array($groups, $sshkeys)
@@ -111,7 +112,7 @@ define accounts::user(
     }
   }
 
-  if $password != '' {
+  if  $password == '' and $ignore_password_if_empty {
     user { $name:
       ensure         => $ensure,
       shell          => $_shell,
@@ -122,7 +123,6 @@ define accounts::user(
       groups         => $groups,
       membership     => $membership,
       managehome     => $managehome,
-      password       => $password,
       purge_ssh_keys => $purge_sshkeys,
       system         => $system,
     }
@@ -137,6 +137,7 @@ define accounts::user(
       groups         => $groups,
       membership     => $membership,
       managehome     => $managehome,
+      password       => $password,
       purge_ssh_keys => $purge_sshkeys,
       system         => $system,
     }
