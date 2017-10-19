@@ -177,6 +177,10 @@ Establishes whether specified groups should be considered the complete list (inc
 
 The user's password, in whatever encrypted format the local machine requires. Default: '!!', which prevents the user from logging in with a password.
 
+#### `ignore_password_if_empty`
+
+Specifies whether an empty password field should be ignored. If the password field is defined but empty - if set to true this will ignore this as a password change, otherwise it will set the password. Valid values: true, false. Default: true.
+
 #### `purge_sshkeys`
 
 Whether keys not included in `sshkeys` should be removed from the user. If `purge_sshkeys` is true and `sshkeys` is an empty array, all SSH keys will be removed from the user. Valid values: true, false. Default: false.

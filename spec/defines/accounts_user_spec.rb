@@ -106,6 +106,100 @@ describe '::accounts::user' do
     end
   end
 
+  describe 'when setting user parameters with empty password ignored if true' do
+    before do
+      params['ensure']                   = 'present'
+      params['shell']                    = '/bin/csh'
+      params['comment']                  = 'comment'
+      params['home']                     = '/var/home/dan'
+      params['home_mode']                = '0755'
+      params['uid']                      = '123'
+      params['gid']                      = '456'
+      params['group']                    = 'dan'
+      params['groups']                   = ['admin']
+      params['membership']               = 'inclusive'
+      params['password']                 = ''
+      params['sshkeys']                  = ['1 2 3', '2 3 4']
+      params['ignore_password_if_empty'] = true
+    end
+    it { is_expected.to contain_user('dan').without_password }
+  end
+
+  describe 'when setting user parameters with empty password not ignored if false' do
+    before do
+      params['ensure']                   = 'present'
+      params['shell']                    = '/bin/csh'
+      params['comment']                  = 'comment'
+      params['home']                     = '/var/home/dan'
+      params['home_mode']                = '0755'
+      params['uid']                      = '123'
+      params['gid']                      = '456'
+      params['group']                    = 'dan'
+      params['groups']                   = ['admin']
+      params['membership']               = 'inclusive'
+      params['password']                 = ''
+      params['sshkeys']                  = ['1 2 3', '2 3 4']
+      params['ignore_password_if_empty'] = false
+    end
+    it { is_expected.to contain_user('dan').with({'password' => ''}) }
+  end
+
+  describe 'when setting user parameters with empty password not ignored by default' do
+    before do
+      params['ensure']                   = 'present'
+      params['shell']                    = '/bin/csh'
+      params['comment']                  = 'comment'
+      params['home']                     = '/var/home/dan'
+      params['home_mode']                = '0755'
+      params['uid']                      = '123'
+      params['gid']                      = '456'
+      params['group']                    = 'dan'
+      params['groups']                   = ['admin']
+      params['membership']               = 'inclusive'
+      params['password']                 = ''
+      params['sshkeys']                  = ['1 2 3', '2 3 4']
+    end
+    it { is_expected.to contain_user('dan').with({'password' => ''}) }
+  end
+
+  describe 'when setting user parameters with specified password not ignored if true' do
+    before do
+      params['ensure']                   = 'present'
+      params['shell']                    = '/bin/csh'
+      params['comment']                  = 'comment'
+      params['home']                     = '/var/home/dan'
+      params['home_mode']                = '0755'
+      params['uid']                      = '123'
+      params['gid']                      = '456'
+      params['group']                    = 'dan'
+      params['groups']                   = ['admin']
+      params['membership']               = 'inclusive'
+      params['password']                 = 'foo'
+      params['sshkeys']                  = ['1 2 3', '2 3 4']
+      params['ignore_password_if_empty'] = true
+    end
+    it { is_expected.to contain_user('dan').with({'password' => 'foo'}) }
+  end
+
+  describe 'when setting user parameters with specified password not ignored if false' do
+    before do
+      params['ensure']                   = 'present'
+      params['shell']                    = '/bin/csh'
+      params['comment']                  = 'comment'
+      params['home']                     = '/var/home/dan'
+      params['home_mode']                = '0755'
+      params['uid']                      = '123'
+      params['gid']                      = '456'
+      params['group']                    = 'dan'
+      params['groups']                   = ['admin']
+      params['membership']               = 'inclusive'
+      params['password']                 = 'foo'
+      params['sshkeys']                  = ['1 2 3', '2 3 4']
+      params['ignore_password_if_empty'] = false
+    end
+    it { is_expected.to contain_user('dan').with({'password' => 'foo'}) }
+  end
+
   describe 'invalid parameter values' do
     it 'should only accept absent and present for ensure' do
       params['ensure'] = 'invalid'

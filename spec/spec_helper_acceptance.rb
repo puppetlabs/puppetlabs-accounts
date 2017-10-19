@@ -10,3 +10,12 @@ install_module_dependencies_on(hosts)
 RSpec.configure do |c|
   c.formatter = :documentation
 end
+
+RSpec::Matchers.define :contain_password do |password|
+  match do |user|
+    if password == user.encrypted_password
+      return true
+    end
+  end
+  false
+end
