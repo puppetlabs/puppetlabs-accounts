@@ -68,7 +68,9 @@ describe '::accounts::user' do
     it { is_expected.to contain_user('dan').with({'password' => 'foo'}) }
     it { is_expected.to contain_group('dan').with({'ensure' => 'present'}) }
     it { is_expected.to contain_group('dan').with({'gid' => '456'}) }
-    it { is_expected.to contain_group('dan').that_comes_before('User[dan]') }
+    if RUBY_PLATFORM !~ %r{x86_64-darwin*}
+      it { is_expected.to contain_group('dan').that_comes_before('User[dan]') }
+    end
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'user' => title}) }
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'mode' => '0755'}) }
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'sshkeys' => ['1 2 3', '2 3 4']}) }
