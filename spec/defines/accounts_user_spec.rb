@@ -6,7 +6,13 @@ describe '::accounts::user' do
   let(:facts) { {} }
 
   describe 'expected defaults' do
-    let(:facts) { { :osfamily => "Debian" } }
+    let(:facts) do
+      {
+        :osfamily        => "Debian",
+        :operatingsystem => 'Debian',
+      }
+    end
+
     it { is_expected.to contain_user('dan').with({'shell'      => '/bin/bash'}) }
     it { is_expected.to contain_user('dan').with({'home'       => "/home/#{title}"}) }
     it { is_expected.to contain_user('dan').with({'ensure'     => 'present'}) }
@@ -21,27 +27,58 @@ describe '::accounts::user' do
   describe 'expected home defaults' do
     context 'normal user on linux' do
       let(:title) { "dan" }
-      let(:facts) { { :osfamily => "Debian" } }
+      let(:facts) do
+        {
+          :osfamily        => "Debian",
+          :operatingsystem => 'Debian',
+        }
+      end
+
       it { is_expected.to contain_user('dan').with_home('/home/dan') }
     end
     context 'root user on linux' do
       let(:title) { "root" }
-      let(:facts) { { :osfamily => "Debian" } }
+      let(:facts) do
+        {
+          :osfamily        => "Debian",
+          :operatingsystem => 'Debian',
+        }
+      end
+
       it { is_expected.to contain_user('root').with_home('/root') }
     end
     context 'normal user on Solaris' do
       let(:title) { "dan" }
-      let(:facts) { { :osfamily => "Solaris" } }
+      let(:facts) do
+        {
+          :osfamily        => "Solaris",
+          :operatingsystem => 'Solaris',
+        }
+      end
+
       it { is_expected.to contain_user('dan').with_home('/export/home/dan') }
     end
     context 'root user on Solaris' do
       let(:title) { "root" }
-      let(:facts) { { :osfamily => "Solaris" } }
+      let(:facts) do
+        {
+          :osfamily        => "Solaris",
+          :operatingsystem => 'Solaris',
+        }
+      end
+
       it { is_expected.to contain_user('root').with_home('/') }
     end
   end
 
   describe 'when setting user parameters' do
+    let(:facts) do
+      {
+        :osfamily        => "Debian",
+        :operatingsystem => 'Debian',
+      }
+    end
+
     before do
       params['ensure']     = 'present'
       params['shell']      = '/bin/csh'
