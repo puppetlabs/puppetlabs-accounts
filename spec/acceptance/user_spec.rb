@@ -113,6 +113,44 @@ describe 'accounts::user define', :unless => UNSUPPORTED_PLATFORMS.include?(fact
       it { should be_grouped_into 'staff' }
     end
   end
+  describe 'group set to false does not create group' do
+    describe user('group_false') do
+      it 'does not create group' do
+        pp = <<-EOS
+          accounts::user { 'group_false':
+            group                => 'newgrp_1',
+            create_group         => false,
+            home                 => '/test/group_false',
+          }
+        EOS
+        apply_manifest(pp, :expect_failures => true) do |r|
+          expect(r.stderr).to match(/.*useradd: group 'newgrp_1' does not exist.*/)
+        end
+      end
+      it { should_not exist }
+      it { should_not belong_to_group 'new_group_1' }
+    end
+  end
+  describe 'group set to true creates group' do
+    describe user('group_true') do
+      it 'creates group' do
+        pp = <<-EOS
+          file { '/test':
+            ensure => directory,
+            before => Accounts::User['group_true'],
+          }
+          accounts::user { 'group_true':
+            group                => 'newgrp_2',
+            create_group         => true,
+            home                 => '/test/group_true',
+          }
+        EOS
+        apply_manifest(pp, :catch_failures => true)
+      end
+      it { should exist }
+      it { should belong_to_group 'newgrp_2' }
+    end
+  end
   # Solaris does not offer a means of testing the password
   describe 'ignore password if ignore set to true', :unless => default['platform'].match(/solaris/) do
     describe user('ignore_user') do

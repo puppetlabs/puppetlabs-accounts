@@ -143,10 +143,12 @@ define accounts::user(
     }
   }
 
-  if $ensure == 'present' {
-    Group[$group] -> User[$name]
-  } else {
-    User[$name] -> Group[$group]
+  if $create_group {
+    if $ensure == 'present' {
+      Group[$group] -> User[$name]
+    } else {
+      User[$name] -> Group[$group]
+    }
   }
 
   accounts::home_dir { $home_real:
@@ -160,6 +162,6 @@ define accounts::user(
     user                 => $name,
     group                => $group,
     sshkeys              => $sshkeys,
-    require              => [ User[$name], Group[$group] ],
+    require              => [ User[$name] ],
   }
 }

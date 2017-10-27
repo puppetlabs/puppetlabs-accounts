@@ -4,15 +4,14 @@ describe '::accounts::user' do
   let(:title) { "dan" }
   let(:params) { {} }
   let(:facts) { {} }
+  let(:facts) do
+    {
+      :osfamily        => "Debian",
+      :operatingsystem => 'Debian',
+    }
+  end
 
   describe 'expected defaults' do
-    let(:facts) do
-      {
-        :osfamily        => "Debian",
-        :operatingsystem => 'Debian',
-      }
-    end
-
     it { is_expected.to contain_user('dan').with({'shell'      => '/bin/bash'}) }
     it { is_expected.to contain_user('dan').with({'home'       => "/home/#{title}"}) }
     it { is_expected.to contain_user('dan').with({'ensure'     => 'present'}) }
@@ -27,24 +26,10 @@ describe '::accounts::user' do
   describe 'expected home defaults' do
     context 'normal user on linux' do
       let(:title) { "dan" }
-      let(:facts) do
-        {
-          :osfamily        => "Debian",
-          :operatingsystem => 'Debian',
-        }
-      end
-
       it { is_expected.to contain_user('dan').with_home('/home/dan') }
     end
     context 'root user on linux' do
       let(:title) { "root" }
-      let(:facts) do
-        {
-          :osfamily        => "Debian",
-          :operatingsystem => 'Debian',
-        }
-      end
-
       it { is_expected.to contain_user('root').with_home('/root') }
     end
     context 'normal user on Solaris' do
@@ -141,6 +126,27 @@ describe '::accounts::user' do
         it { is_expected.not_to contain_file('/var/home/dan/.ssh') }
       end
     end
+
+    describe 'when setting the create_group to false' do
+      before do
+        params['group'] = 'foo'
+        params['create_group'] = false
+        params['ensure'] = 'present'
+      end
+
+      it { is_expected.not_to contain_group('foo') }
+    end
+
+    describe 'when setting the create_group to true' do
+      before do
+        params['group'] = 'foo'
+        params['create_group'] = true
+        params['ensure'] = 'present'
+      end
+
+      it { is_expected.to contain_group('foo') }
+    end
+
   end
 
   describe 'when setting user parameters with empty password ignored if true' do
@@ -293,6 +299,13 @@ describe '::accounts::user' do
       before { facts['osfamily'] = 'anything_else' }
       it { is_expected.to contain_user('dan').with({'shell' => '/sbin/nologin'}) }
     end
+  end
+
+  describe 'with create_group => false' do
+    before do
+      params['create_group'] = false
+    end
+    it { is_expected.not_to contain_group('dan') }
   end
 
   describe 'when supplying resource defaults' do
