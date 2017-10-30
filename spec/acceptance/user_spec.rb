@@ -114,17 +114,17 @@ describe 'accounts::user define', :unless => UNSUPPORTED_PLATFORMS.include?(fact
     end
   end
   describe 'group set to false does not create group' do
-    describe user('group_false') do
+    describe user('grp_flse') do
       it 'does not create group' do
         pp = <<-EOS
-          accounts::user { 'group_false':
+          accounts::user { 'grp_flse':
             group                => 'newgrp_1',
             create_group         => false,
-            home                 => '/test/group_false',
+            home                 => '/test/grp_flse',
           }
         EOS
         apply_manifest(pp, :expect_failures => true) do |r|
-          expect(r.stderr).to match(/.*useradd: group 'newgrp_1' does not exist.*/)
+          expect(r.stderr).to match(/(.*group '?newgrp_1'? does not exist.*|.*Unknown group `?newgrp_1'?.*)/)
         end
       end
       it { should_not exist }
@@ -132,17 +132,17 @@ describe 'accounts::user define', :unless => UNSUPPORTED_PLATFORMS.include?(fact
     end
   end
   describe 'group set to true creates group' do
-    describe user('group_true') do
+    describe user('grp_true') do
       it 'creates group' do
         pp = <<-EOS
           file { '/test':
             ensure => directory,
-            before => Accounts::User['group_true'],
+            before => Accounts::User['grp_true'],
           }
-          accounts::user { 'group_true':
+          accounts::user { 'grp_true':
             group                => 'newgrp_2',
             create_group         => true,
-            home                 => '/test/group_true',
+            home                 => '/test/grp_true',
           }
         EOS
         apply_manifest(pp, :catch_failures => true)
