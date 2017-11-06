@@ -59,6 +59,8 @@ A simple bashrc and bash\_profile rc file is managed by Puppet for each account.
 
 Account holders can customize their shells by managing their bashrc.custom files. In addition, the system administrator can make profile changes that affect all accounts with a bash shell by managing the '/etc/bashrc.puppet' file.
 
+An email foward can be installed by configuring the .forward file by using 'forward_content' or 'forward_source' parameters.
+
 ### Lock accounts
 
 Lock accounts by setting the `locked` parameter of an account to true.
@@ -123,6 +125,14 @@ The content to place in the user's ~/.bash\_profile file. Mutually exclusive to 
 #### `bash_profile_source`
 
 A source file containing the content to place in the user's ~/.bash\_profile file. Mutually exclusive to `bash_profile_content`. Default: undef.
+
+#### `forward_content`
+
+The content to place in the user's ~/.forward file. Mutually exclusive to `forward_source`. Default: undef.
+
+#### `forward_source`
+
+A source file containing the content to place in the user's ~/.forward file. Mutually exclusive to `forward_content`. Default: undef.
 
 #### `comment`
 

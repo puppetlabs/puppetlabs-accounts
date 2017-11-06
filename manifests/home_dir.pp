@@ -13,6 +13,8 @@ define accounts::home_dir(
   $bashrc_source        = undef,
   $bash_profile_content = undef,
   $bash_profile_source  = undef,
+  $forward_content      = undef,
+  $forward_source       = undef,
   $mode                 = '0700',
   $ensure               = 'present',
   $managehome           = true,
@@ -87,6 +89,25 @@ define accounts::home_dir(
       if $bash_profile_source {
         File["${name}/.bash_profile"] {
           source => $bash_profile_source,
+        }
+      }
+    }
+
+    if $forward_content or $forward_source {
+      file { "${name}/.forward":
+        ensure => file,
+        owner  => $user,
+        group  => $group,
+        mode   => '0644',
+      }
+      if $forward_content {
+        File["${name}/.forward"] {
+          content => $forward_content,
+        }
+      }
+      if $forward_source {
+        File["${name}/.forward"] {
+          source => $forward_source,
         }
       }
     }

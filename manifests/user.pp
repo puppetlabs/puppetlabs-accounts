@@ -32,6 +32,8 @@ define accounts::user(
   $bash_profile_source      = undef,
   $system                   = false,
   $ignore_password_if_empty = false,
+  $forward_content           = undef,
+  $forward_source            = undef,
 ) {
   validate_re($ensure, '^present$|^absent$')
   validate_bool($locked, $managehome, $purge_sshkeys, $ignore_password_if_empty)
@@ -50,6 +52,12 @@ define accounts::user(
   }
   if $bash_profile_source {
     validate_string($bash_profile_source)
+  }
+  if $forward_content {
+    validate_string($forward_content)
+  }
+  if $forward_source {
+    validate_string($forward_source)
   }
   if $home {
     validate_re($home, '^/')
@@ -159,6 +167,8 @@ define accounts::user(
     bashrc_source        => $bashrc_source,
     bash_profile_content => $bash_profile_content,
     bash_profile_source  => $bash_profile_source,
+    forward_content      => $forward_content,
+    forward_source       => $forward_source,
     user                 => $name,
     group                => $group,
     sshkeys              => $sshkeys,
