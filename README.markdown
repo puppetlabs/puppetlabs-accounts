@@ -211,6 +211,12 @@ Specifies the user's uid number. Must be specified numerically. Default: undef.
 
 Specifies if you want to create a system account. Default: false.
 
+## Functions
+
+### accounts_ssh_options_parser
+
+Parses an ssh authorized_keys option string into an array using its expected pattern which matches a crazy regex slightly modified from shellwords. The pattern should be a string.
+
 ## Limitations
 
 This module works with Puppet Enterprise 2015.3 and later.
