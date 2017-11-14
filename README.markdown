@@ -59,7 +59,7 @@ A simple bashrc and bash\_profile rc file is managed by Puppet for each account.
 
 Account holders can customize their shells by managing their bashrc.custom files. In addition, the system administrator can make profile changes that affect all accounts with a bash shell by managing the '/etc/bashrc.puppet' file.
 
-An email foward can be installed by configuring the .forward file by using 'forward_content' or 'forward_source' parameters.
+To install an email foward, configure the `.forward` file by using the `forward_content` or `forward_source` parameters.
 
 ### Lock accounts
 
@@ -189,7 +189,7 @@ The user's password, in whatever encrypted format the local machine requires. De
 
 #### `ignore_password_if_empty`
 
-Specifies whether an empty password field should be ignored. If the password field is defined but empty - if set to true this will ignore this as a password change, otherwise it will set the password. Valid values: true, false. Default: true.
+Specifies whether an empty password field should be ignored. If set to true, this ignores a password field that is defined but empty. If set to false, it sets the password to an empty value. Valid values: true, false. Default: true.
 
 #### `purge_sshkeys`
 

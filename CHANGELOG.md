@@ -1,6 +1,29 @@
 # Change log
 All notable changes to this project will be documented in this file.
 
+## Supported Release 1.2.0
+### Summary
+This release is a rollup of changes. Several attributes have been added as requested and submitted from our community.
+
+#### Added
+- Attribute ignore_password\_if\_empty is added which, if set to true, shall ignore password changes if the password is empty.
+- Removal of dependency on group resource if create\_group is set to false.
+- Add attribute to allow custom group names.
+- Add attribute to set system user or group.
+- Add attribute to set the user or group to be the system account.
+- Add attribute to create a group (or not) with the username.
+- Add support for .forward.
+- Add support for ssh options in authorization_keys.
+- Add ECDSA support.
+- Add support for ssh authorized key options.
+- Allow the use of the \`source\` param for bash files
+- Removal of end-of-life Ubuntu 12.04 support from metadata.
+- Update Puppet version compatibility.
+- Modulesync and Gemfile updates.
+
+#### Fixed
+- Multiple fixes to tests.
+
 ## Supported Release 1.1.0
 ### Summary
 A feature rich release, with the addition of Debian 8 support. Also several generic fixes to tests.
