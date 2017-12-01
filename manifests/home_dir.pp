@@ -20,7 +20,7 @@ define accounts::home_dir(
   $managehome           = true,
   $sshkeys              = [],
 ) {
-  validate_re($ensure, '^(present|absent)$')
+  validate_legacy(String, 'validate_re', $ensure, '^present$|^absent$')
 
   if $ensure == 'absent' and $managehome == true {
     file { $name:
