@@ -23,17 +23,17 @@ describe '::accounts::user' do
   end
 
   describe 'expected home defaults' do
-    context 'normal user on linux' do
+    context 'with normal user on linux' do
       let(:title) { 'dan' }
 
       it { is_expected.to contain_user('dan').with_home('/home/dan') }
     end
-    context 'root user on linux' do
+    context 'with root user on linux' do
       let(:title) { 'root' }
 
       it { is_expected.to contain_user('root').with_home('/root') }
     end
-    context 'normal user on Solaris' do
+    context 'with normal user on Solaris' do
       let(:title) { 'dan' }
       let(:facts) do
         {
@@ -44,7 +44,7 @@ describe '::accounts::user' do
 
       it { is_expected.to contain_user('dan').with_home('/export/home/dan') }
     end
-    context 'root user on Solaris' do
+    context 'with root user on Solaris' do
       let(:title) { 'root' }
       let(:facts) do
         {
