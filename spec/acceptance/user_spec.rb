@@ -4,7 +4,7 @@ test_key = 'AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4Tj
            'OV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9W'\
            'hQ=='
 
-pp_accounts_define = <<-EOS
+pp_accounts_define = <<-PUPPETCODE
           file { '/test':
             ensure => directory,
             before => Accounts::User['hunner'],
@@ -21,24 +21,24 @@ pp_accounts_define = <<-EOS
               'from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
             ],
           }
-EOS
+PUPPETCODE
 
-pp_without_managehome = <<-EOS
+pp_without_managehome = <<-PUPPETCODE
         accounts::user { 'hunner':
           managehome => false,
           sshkeys    => [
             'ssh-rsa #{test_key} vagrant',
           ],
         }
-EOS
+PUPPETCODE
 
-pp_locked_user = <<-EOS
+pp_locked_user = <<-PUPPETCODE
           accounts::user { 'hunner':
             locked => true,
           }
-EOS
+PUPPETCODE
 
-pp_custom_group_name = <<-EOS
+pp_custom_group_name = <<-PUPPETCODE
           file { '/test':
             ensure => directory,
             before => Accounts::User['cuser'],
@@ -48,17 +48,17 @@ pp_custom_group_name = <<-EOS
             password             => '!!',
             home                 => '/test/cuser',
           }
-EOS
+PUPPETCODE
 
-pp_create_group_false = <<-EOS
+pp_create_group_false = <<-PUPPETCODE
           accounts::user { 'grp_flse':
             group                => 'newgrp_1',
             create_group         => false,
             home                 => '/test/grp_flse',
           }
-EOS
+PUPPETCODE
 
-pp_create_group_true = <<-EOS
+pp_create_group_true = <<-PUPPETCODE
           file { '/test':
             ensure => directory,
             before => Accounts::User['grp_true'],
@@ -68,9 +68,9 @@ pp_create_group_true = <<-EOS
             create_group         => true,
             home                 => '/test/grp_true',
           }
-EOS
+PUPPETCODE
 
-pp_ignore_user_first_run = <<-EOS
+pp_ignore_user_first_run = <<-PUPPETCODE
           file { '/test':
             ensure => directory,
             before => Accounts::User['ignore_user'],
@@ -79,9 +79,9 @@ pp_ignore_user_first_run = <<-EOS
             group                    => 'staff',
             password                 => 'foo',
           }
-EOS
+PUPPETCODE
 
-pp_ignore_user_second_run = <<-EOS
+pp_ignore_user_second_run = <<-PUPPETCODE
           file { '/test':
             ensure => directory,
             before => Accounts::User['ignore_user'],
@@ -91,9 +91,9 @@ pp_ignore_user_second_run = <<-EOS
             password                 => '',
             ignore_password_if_empty => true,
           }
-EOS
+PUPPETCODE
 
-pp_no_ignore_user_first_run = <<-EOS
+pp_no_ignore_user_first_run = <<-PUPPETCODE
           file { '/test':
             ensure => directory,
             before => Accounts::User['no_ignore_user'],
@@ -102,9 +102,9 @@ pp_no_ignore_user_first_run = <<-EOS
             group                    => 'staff',
             password                 => 'foo',
           }
-EOS
+PUPPETCODE
 
-pp_no_ignore_user_second_run = <<-EOS
+pp_no_ignore_user_second_run = <<-PUPPETCODE
           file { '/test':
             ensure => directory,
             before => Accounts::User['no_ignore_user'],
@@ -114,9 +114,9 @@ pp_no_ignore_user_second_run = <<-EOS
             password                 => '',
             ignore_password_if_empty => false,
           }
-EOS
+PUPPETCODE
 
-pp_specd_user_first_run = <<-EOS
+pp_specd_user_first_run = <<-PUPPETCODE
           file { '/test':
             ensure => directory,
             before => Accounts::User['specd_user'],
@@ -125,9 +125,9 @@ pp_specd_user_first_run = <<-EOS
             group                    => 'staff',
             password                 => 'foo',
           }
-EOS
+PUPPETCODE
 
-pp_specd_user_second_run = <<-EOS
+pp_specd_user_second_run = <<-PUPPETCODE
           file { '/test':
             ensure => directory,
             before => Accounts::User['specd_user'],
@@ -137,7 +137,7 @@ pp_specd_user_second_run = <<-EOS
             password                 => 'bar',
             ignore_password_if_empty => true,
           }
-EOS
+PUPPETCODE
 
 describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
   describe 'main tests' do
