@@ -17,18 +17,17 @@ define accounts::home_dir(
   $forward_source       = undef,
   $mode                 = '0700',
   $ensure               = 'present',
-  $managehome           = true,
   $sshkeys              = [],
 ) {
   validate_re($ensure, '^(present|absent)$')
 
-  if $ensure == 'absent' and $managehome == true {
+  if $ensure == 'absent' {
     file { $name:
       ensure  => absent,
       recurse => true,
       force   => true,
     }
-  } elsif $ensure == 'present' and $managehome == true {
+  } elsif $ensure == 'present' {
 
     $key_file = "${name}/.ssh/authorized_keys"
 
@@ -126,10 +125,6 @@ define accounts::home_dir(
         require  => File["${name}/.ssh"],
         before   => File[$key_file],
       }
-    }
-  } elsif $managehome == false {
-    if $sshkeys != [] {
-      warning("ssh keys were passed for user ${user} but \$managehome is set to false; not managing user ssh keys")
     }
   }
 }
