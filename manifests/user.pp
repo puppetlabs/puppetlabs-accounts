@@ -159,19 +159,22 @@ define accounts::user(
     }
   }
 
-  accounts::home_dir { $home_real:
-    ensure               => $ensure,
-    mode                 => $home_mode,
-    managehome           => $managehome,
-    bashrc_content       => $bashrc_content,
-    bashrc_source        => $bashrc_source,
-    bash_profile_content => $bash_profile_content,
-    bash_profile_source  => $bash_profile_source,
-    forward_content      => $forward_content,
-    forward_source       => $forward_source,
-    user                 => $name,
-    group                => $group,
-    sshkeys              => $sshkeys,
-    require              => [ User[$name] ],
+  if $managehome {
+    accounts::home_dir { $home_real:
+      ensure               => $ensure,
+      mode                 => $home_mode,
+      bashrc_content       => $bashrc_content,
+      bashrc_source        => $bashrc_source,
+      bash_profile_content => $bash_profile_content,
+      bash_profile_source  => $bash_profile_source,
+      forward_content      => $forward_content,
+      forward_source       => $forward_source,
+      user                 => $name,
+      group                => $group,
+      sshkeys              => $sshkeys,
+      require              => [ User[$name] ],
+    }
+  } elsif $sshkeys != [] {
+      warning("ssh keys were passed for user ${name} but \$managehome is set to false; not managing user ssh keys")
   }
 }
