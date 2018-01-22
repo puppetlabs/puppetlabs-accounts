@@ -1,6 +1,17 @@
 # Change log
 All notable changes to this project will be documented in this file.
 
+## Supported Release [1.3.0]
+### Summary
+This release uses the PDK convert functionality which in return makes the module PDK compliant. It also includes a roll up of maintenance changes.
+
+#### Added
+- PDK Convert accounts ([MODULES-6328](https://tickets.puppet.com/browse/MODULES-6328)).
+
+#### Fixed
+- Don't create accounts::home_dir resources.
+- Multiple maintenance changes.
+
 ## Supported Release [1.2.1]
 ### Summary
 This release is to update the formatting of the module, Rubocop having been run for all ruby files and been set to run automatically on all future commits.
@@ -46,7 +57,7 @@ A feature rich release, with the addition of Debian 8 support. Also several gene
 #### Bugfixes
 - Multiple fixes to tests.
 
-## Supported Release 1.0.0 
+## Supported Release 1.0.0
 ### Summary:
 This is the initial release of the rewrite of puppetlabs-pe\_accounts for a more general usage.
 
@@ -54,4 +65,5 @@ Differences from the pe\_accounts module is that the data model is gone, and thu
 
 To regain the old hiera behavior, use the `create_resources()` function in combination with `accounts::user`; eg: `create_resources('accounts::user', hiera_hash('accounts::users'))`
 
+[1.3.0]:https://github.com/puppetlabs/puppetlabs-accounts/compare/1.2.1...1.3.0
 [1.2.1]:https://github.com/puppetlabs/puppetlabs-accounts/compare/1.2.0...1.2.1
