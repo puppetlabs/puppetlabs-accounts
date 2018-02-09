@@ -189,7 +189,7 @@ The user's password, in whatever encrypted format the local machine requires. De
 
 #### `ignore_password_if_empty`
 
-Specifies whether an empty password field should be ignored. If set to true, this ignores a password field that is defined but empty. If set to false, it sets the password to an empty value. Valid values: true, false. Default: true.
+Specifies whether an empty password field should be ignored. If set to true, this ignores a password field that is defined but empty. If set to false, it sets the password to an empty value. Valid values: true, false. Default: false.
 
 #### `purge_sshkeys`
 
