@@ -153,7 +153,7 @@ describe '::accounts::user' do
         params['forcelocal'] = false
       end
 
-      it { is_expected.to contain_user( 'dan').with('forcelocal' => false) }
+      it { is_expected.to contain_user('dan').with('forcelocal' => false) }
       it { is_expected.to contain_group('dan').with('forcelocal' => false) }
     end
 
@@ -162,7 +162,7 @@ describe '::accounts::user' do
         params['forcelocal'] = true
       end
 
-      it { is_expected.to contain_user( 'dan').with('forcelocal' => true) }
+      it { is_expected.to contain_user('dan').with('forcelocal' => true) }
       it { is_expected.to contain_group('dan').with('forcelocal' => true) }
     end
   end

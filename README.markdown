@@ -160,7 +160,7 @@ Specifies if you want to create a group with the user's name. Default: true.
 
 #### `forcelocal`
 
-Specifies if you want to manage a local user/group that is also managed by a network name service. Default: undef.
+Specifies if you want to manage a local user/group that is also managed by a network name service. Valid values: true, false. Default: undef.
 
 #### `home`
 
