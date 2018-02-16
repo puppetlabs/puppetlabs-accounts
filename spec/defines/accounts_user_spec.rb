@@ -147,6 +147,24 @@ describe '::accounts::user' do
 
       it { is_expected.to contain_group('foo') }
     end
+
+    describe 'when setting forcelocal to false' do
+      before(:each) do
+        params['forcelocal'] = false
+      end
+
+      it { is_expected.to contain_user('dan').with('forcelocal' => false) }
+      it { is_expected.to contain_group('dan').with('forcelocal' => false) }
+    end
+
+    describe 'when setting forcelocal to true' do
+      before(:each) do
+        params['forcelocal'] = true
+      end
+
+      it { is_expected.to contain_user('dan').with('forcelocal' => true) }
+      it { is_expected.to contain_group('dan').with('forcelocal' => true) }
+    end
   end
 
   describe 'when setting user parameters with empty password ignored if true' do

@@ -158,6 +158,10 @@ Specifies the user's group memberships. Valid values: an array. Default: an empt
 
 Specifies if you want to create a group with the user's name. Default: true.
 
+#### `forcelocal`
+
+Specifies if you want to manage a local user/group that is also managed by a network name service. Valid values: true, false. Default: undef.
+
 #### `home`
 
 Specifies the path to the user's home directory.

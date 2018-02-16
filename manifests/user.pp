@@ -21,6 +21,7 @@ define accounts::user(
   $groups                   = [ ],
   $create_group             = true,
   $membership               = 'minimum',
+  $forcelocal               = undef,
   $password                 = '!!',
   $locked                   = false,
   $sshkeys                  = [],
@@ -108,14 +109,16 @@ define accounts::user(
     # Ensure that the group hasn't already been defined
     if $ensure == 'present' and ! defined(Group[$group]) {
       group { $group:
-        ensure => $ensure,
-        gid    => $gid,
-        system => $system,
+        ensure     => $ensure,
+        gid        => $gid,
+        system     => $system,
+        forcelocal => $forcelocal,
       }
     # Only remove the group if it is the same as user name as it may be shared
     } elsif $ensure == 'absent' and $name == $group {
       group { $group:
-        ensure => $ensure,
+        ensure     => $ensure,
+        forcelocal => $forcelocal,
       }
     }
   }
@@ -133,6 +136,7 @@ define accounts::user(
       managehome     => $managehome,
       purge_ssh_keys => $purge_sshkeys,
       system         => $system,
+      forcelocal     => $forcelocal,
     }
   } else {
     user { $name:
@@ -148,6 +152,7 @@ define accounts::user(
       password       => $password,
       purge_ssh_keys => $purge_sshkeys,
       system         => $system,
+      forcelocal     => $forcelocal,
     }
   }
 
