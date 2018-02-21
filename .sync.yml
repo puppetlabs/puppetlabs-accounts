@@ -1,21 +1,4 @@
----
-appveyor.yml:
-  environment:
-  PUPPET_GEM_VERSION: "~> 4.0"
-  matrix:
-    - RUBY_VERSION: 24-x64
-      CHECK: "syntax lint"
-    - RUBY_VERSION: 24-x64
-      CHECK: metadata_lint
-    - RUBY_VERSION: 24-x64
-      CHECK: rubocop
-    - RUBY_VERSION: 24-x64
-      PUPPET_GEM_VERSION: "~> 5.0"
-      CHECK: spec
-
 .travis.yml:
-  env:
-    - PUPPET_GEM_VERSION="~> 5.0" CHECK=spec
   bundle_args: --without system_tests
   docker_sets:
     - set: docker/centos-7
@@ -28,8 +11,8 @@ appveyor.yml:
   branches:
     - release
   extras:
-    - rvm: 2.1.9
-      script: "\"bundle exec rake release_checks\""
+    - env: CHECK=release_checks
+      rvm: 2.1.9
 
 Gemfile:
   required:
