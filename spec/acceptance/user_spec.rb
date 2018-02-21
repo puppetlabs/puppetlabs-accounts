@@ -156,8 +156,8 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
       it('has authorized_key - vagrant', unless: default['platform'].match(%r{solaris-10})) {
         is_expected.to have_authorized_key "ssh-rsa #{test_key} vagrant"
       }
-      it('has authorized_key - vagrant2', unless: default['platform'].match(%r{solaris-10})) {
-        is_expected.to have_authorized_key "from=\"myhost.example.com,192.168.1.1\" ssh-rsa #{test_key} vagrant2"
+      it('has authorized_key - hunner_ssh-rsa_vagrant2', unless: default['platform'].match(%r{solaris-10})) {
+        is_expected.to have_authorized_key "from=\"myhost.example.com,192.168.1.1\" ssh-rsa #{test_key} hunner_ssh-rsa_vagrant2"
       }
     end
     describe file('/test/hunner') do
