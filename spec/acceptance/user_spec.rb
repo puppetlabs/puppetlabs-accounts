@@ -14,6 +14,7 @@ pp_accounts_define = <<-PUPPETCODE
             password             => 'hi',
             shell                => '/bin/true',
             home                 => '/test/hunner',
+            home_mode            => '0700',
             bashrc_content       => file('accounts/shell/bashrc'),
             bash_profile_content => file('accounts/shell/bash_profile'),
             sshkeys              => [
@@ -47,6 +48,7 @@ pp_custom_group_name = <<-PUPPETCODE
             group                => 'staff',
             password             => '!!',
             home                 => '/test/cuser',
+            home_mode            => '0700',
           }
 PUPPETCODE
 

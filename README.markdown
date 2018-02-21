@@ -173,7 +173,7 @@ Default:
 
 #### `home_mode`
 
-Manages the user's home directory permission mode. Valid values are in [octal notation](https://docs.puppetlabs.com/references/latest/type.html#file-attribute-mode), specified as a string. Defaults to `0700`, which gives the owner full read, write, and execute permissions, while group and other have no permissions.
+Manages the user's home directory permission mode. Valid values are in [octal notation](https://docs.puppetlabs.com/references/latest/type.html#file-attribute-mode), specified as a string. Defaults to `undef`, which will create a home directory with `0700` permissions but will not touch them if the directory already exists. Keeping it `undef` also allows a user to manage their own permissions, if `home_mode` is set, puppet will enfore the permissions on every run.
 
 #### `locked`
 

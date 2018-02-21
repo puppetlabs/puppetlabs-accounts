@@ -15,7 +15,7 @@ define accounts::home_dir(
   $bash_profile_source  = undef,
   $forward_content      = undef,
   $forward_source       = undef,
-  $mode                 = '0700',
+  $mode                 = undef,
   $ensure               = 'present',
   $sshkeys              = [],
 ) {
