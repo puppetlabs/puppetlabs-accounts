@@ -119,11 +119,13 @@ define accounts::home_dir(
     }
 
     if $sshkeys != [] {
-      accounts::manage_keys { $sshkeys:
-        user     => $user,
-        key_file => $key_file,
-        require  => File["${name}/.ssh"],
-        before   => File[$key_file],
+      $sshkeys.each |$sshkey| {
+        accounts::manage_keys { "${sshkey} for ${user}":
+          user     => $user,
+          key_file => $key_file,
+          require  => File["${name}/.ssh"],
+          before   => File[$key_file],
+        }
       }
     }
   }
