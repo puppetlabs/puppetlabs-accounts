@@ -36,14 +36,14 @@ define accounts::user(
   $forward_content           = undef,
   $forward_source            = undef,
 ) {
-  validate_re($ensure, '^present$|^absent$')
-  validate_bool($locked, $managehome, $purge_sshkeys, $ignore_password_if_empty)
-  validate_re($shell, '^/')
-  validate_string($comment, $password, $group)
-  validate_array($groups, $sshkeys)
-  validate_re($membership, '^inclusive$|^minimum$')
+  validate_legacy(String, 'validate_re', $ensure, '^present$|^absent$')
+  validate_legacy(Boolean, 'validate_bool', $locked, $managehome, $purge_sshkeys, $ignore_password_if_empty)
+  validate_legacy(String, 'validate_re', $shell, '^/')
+  validate_legacy(String, 'validate_string', $comment, $password, $group)
+  validate_legacy(Tuple, 'validate_array', $groups, $sshkeys)
+  validate_legacy(String, 'validate_re', $membership, '^inclusive$|^minimum$')
   if $bashrc_content {
-    validate_string($bashrc_content)
+    validate_legacy(String, 'validate_string', $bashrc_content)
   }
   if $bashrc_source {
     validate_string($bashrc_source)
