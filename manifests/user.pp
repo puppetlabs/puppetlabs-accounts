@@ -36,34 +36,34 @@ define accounts::user(
   $forward_content           = undef,
   $forward_source            = undef,
 ) {
-  validate_re($ensure, '^present$|^absent$')
-  validate_bool($locked, $managehome, $purge_sshkeys, $ignore_password_if_empty)
-  validate_re($shell, '^/')
-  validate_string($comment, $password, $group)
-  validate_array($groups, $sshkeys)
-  validate_re($membership, '^inclusive$|^minimum$')
+  validate_legacy(String, 'validate_re', $ensure, '^present$|^absent$')
+  validate_legacy(Boolean, 'validate_bool', $locked, $managehome, $purge_sshkeys, $ignore_password_if_empty)
+  validate_legacy(String, 'validate_re', $shell, '^/')
+  validate_legacy(String, 'validate_string', $comment, $password, $group)
+  validate_legacy(Tuple, 'validate_array', $groups, $sshkeys)
+  validate_legacy(String, 'validate_re', $membership, '^inclusive$|^minimum$')
   if $bashrc_content {
-    validate_string($bashrc_content)
+    validate_legacy(String, 'validate_string', $bashrc_content)
   }
   if $bashrc_source {
-    validate_string($bashrc_source)
+    validate_legacy(String, 'validate_string', $bashrc_source)
   }
   if $bash_profile_content {
-    validate_string($bash_profile_content)
+    validate_legacy(String, 'validate_string', $bash_profile_content)
   }
   if $bash_profile_source {
-    validate_string($bash_profile_source)
+    validate_legacy(String, 'validate_string', $bash_profile_source)
   }
   if $forward_content {
-    validate_string($forward_content)
+    validate_legacy(String, 'validate_string', $forward_content)
   }
   if $forward_source {
-    validate_string($forward_source)
+    validate_legacy(String, 'validate_string', $forward_source)
   }
   if $home {
-    validate_re($home, '^/')
+    validate_legacy(String, 'validate_re', $home, '^/')
     # If the home directory is not / (root on solaris) then disallow trailing slashes.
-    validate_re($home, '^/$|[^/]$')
+    validate_legacy(String, 'validate_re', $home, '^/$|[^/]$')
   }
 
   if $home {
@@ -81,11 +81,11 @@ define accounts::user(
   }
 
   if $uid != undef {
-    validate_re($uid, '^\d+$')
+    validate_legacy(String, 'validate_re', $uid, '^\d+$')
   }
 
   if $gid != undef {
-    validate_re($gid, '^\d+$')
+    validate_legacy(String, 'validate_re', $gid, '^\d+$')
   }
 
   if $locked {
