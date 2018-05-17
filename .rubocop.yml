@@ -68,9 +68,6 @@ Style/SymbolArray:
   EnforcedStyle: brackets
 RSpec/MessageSpies:
   EnforcedStyle: receive
-Style/Documentation:
-Style/WordArray:
-  EnforcedStyle: brackets
 Style/CollectionMethods:
   Enabled: true
 Style/MethodCalledOnDoEndBlock:
