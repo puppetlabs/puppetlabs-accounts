@@ -69,8 +69,6 @@ Style/SymbolArray:
 RSpec/MessageSpies:
   EnforcedStyle: receive
 Style/Documentation:
-  Exclude:
-  - lib/puppet/parser/functions/**/*
 Style/WordArray:
   EnforcedStyle: brackets
 Style/CollectionMethods:
