@@ -270,7 +270,7 @@ describe '::accounts::user' do
       params['locked'] = 'true'
       is_expected.to raise_error Puppet::Error
     end
-    %w[home shell].each do |param|
+    ['home', 'shell'].each do |param|
       it "should fail is #{param} does not start with '/'" do
         params[param] = 'no_leading_slash'
         is_expected.to raise_error Puppet::Error

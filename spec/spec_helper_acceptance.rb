@@ -1,7 +1,7 @@
 require 'beaker-rspec'
 require 'beaker/puppet_install_helper'
 require 'beaker/module_install_helper'
-UNSUPPORTED_PLATFORMS = %w[windows Darwin].freeze
+UNSUPPORTED_PLATFORMS = ['windows', 'Darwin'].freeze
 
 run_puppet_install_helper
 install_module_on(hosts)
