@@ -33,8 +33,9 @@ define accounts::user(
   $bash_profile_source      = undef,
   $system                   = false,
   $ignore_password_if_empty = false,
-  $forward_content           = undef,
-  $forward_source            = undef,
+  $forward_content          = undef,
+  $forward_source           = undef,
+  $expiry                   = undef,
 ) {
   validate_re($ensure, '^present$|^absent$')
   validate_bool($locked, $managehome, $purge_sshkeys, $ignore_password_if_empty)
@@ -60,6 +61,12 @@ define accounts::user(
   if $forward_source {
     validate_string($forward_source)
   }
+  if $expiry {
+    unless $expiry == 'absent' {
+      validate_re($expiry,'^\d{4}-\d{2}-\d{2}$')
+    }
+  }
+
   if $home {
     validate_re($home, '^/')
     # If the home directory is not / (root on solaris) then disallow trailing slashes.
@@ -137,6 +144,7 @@ define accounts::user(
       purge_ssh_keys => $purge_sshkeys,
       system         => $system,
       forcelocal     => $forcelocal,
+      expiry         => $expiry,
     }
   } else {
     user { $name:
@@ -153,6 +161,7 @@ define accounts::user(
       purge_ssh_keys => $purge_sshkeys,
       system         => $system,
       forcelocal     => $forcelocal,
+      expiry         => $expiry,
     }
   }
 
