@@ -1,6 +1,27 @@
 # Change log
 All notable changes to this project will be documented in this file.
 
+## Supported Release [2.0.0]
+### Summary
+This release drops support for Debian 7, adds support for Debian 9 and includes several small features and bug fixes.
+
+#### Added
+- [FM-7052] Addition of Debian 9 support to accounts
+- (MODULES-3989) Allow management of local accounts despite an NSS
+- Allow mode for homedir to be undef
+- Add expiry property to user resource.
+
+#### Fixed
+- (MODULES-6607) - Update docs to reflect correct default value for ignore_password_if_empty.
+- Update tests and README
+- Removed Debian 7 support
+
+#### Bugfixes
+- Allow sshkeys to be reused for multiple accounts
+- Set `home_mode` explicitly in tests
+- Fix test for ssh key to allow new comment format
+
+
 ## Supported Release [1.3.0]
 ### Summary
 This release uses the PDK convert functionality which in return makes the module PDK compliant. It also includes a roll up of maintenance changes.
