@@ -160,11 +160,11 @@ Specifies if you want to create a group with the user's name. Default: true.
 
 #### `expiry`
 
-Specifies the date you wish for the user account to expire on. Valid values: YYYY-MM-DD date format, or 'absent' to remove expiry date.
+Specifies the date the user account expires on. Valid values: YYYY-MM-DD date format, or 'absent' to remove expiry date.
 
 #### `forcelocal`
 
-Specifies if you want to manage a local user/group that is also managed by a network name service. Valid values: true, false. Default: undef.
+Specifies whether you want to manage a local user/group that is also managed by a network name service. Valid values: true, false. Default: undef.
 
 #### `home`
 
@@ -177,7 +177,7 @@ Default:
 
 #### `home_mode`
 
-Manages the user's home directory permission mode. Valid values are in [octal notation](https://docs.puppetlabs.com/references/latest/type.html#file-attribute-mode), specified as a string. Defaults to `undef`, which will create a home directory with `0700` permissions but will not touch them if the directory already exists. Keeping it `undef` also allows a user to manage their own permissions, if `home_mode` is set, puppet will enfore the permissions on every run.
+Manages the user's home directory permission mode. Valid values are in [octal notation](https://docs.puppetlabs.com/references/latest/type.html#file-attribute-mode), specified as a string. Defaults to `undef`, which creates a home directory with `0700` permissions. It does not touch them if the directory already exists. Keeping it `undef` also allows a user to manage their own permissions. If `home_mode` is set, Puppet enforces the permissions on every run.
 
 #### `locked`
 
