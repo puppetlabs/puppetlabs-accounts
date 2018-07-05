@@ -18,6 +18,7 @@ define accounts::home_dir(
   $mode                 = undef,
   $ensure               = 'present',
   $sshkeys              = [],
+  $sshkey_custom_path   = undef,
 ) {
   validate_re($ensure, '^(present|absent)$')
 
@@ -28,8 +29,12 @@ define accounts::home_dir(
       force   => true,
     }
   } elsif $ensure == 'present' {
-
-    $key_file = "${name}/.ssh/authorized_keys"
+    if $sshkey_custom_path != undef {
+      $key_file = "${sshkey_custom_path}/authorized_keys"
+    }
+    else {
+      $key_file = "${name}/.ssh/authorized_keys"
+    }
 
     # Solaris homedirs are managed in zfs by `useradd -m`. If the directory
     # does not yet exist then we can't predict how it should be created, but we
@@ -117,7 +122,9 @@ define accounts::home_dir(
       group  => $group,
       mode   => '0600',
     }
-
+# The require for .ssh should not mattter when the keyfile is not in the user
+# directory. The user might still want to do other non-key related config and
+# then we would still require the .ssh directory
     if $sshkeys != [] {
       $sshkeys.each |$sshkey| {
         accounts::manage_keys { "${sshkey} for ${user}":

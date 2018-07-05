@@ -21,8 +21,8 @@ accounts::user { 'jeff':
     'admin',
     'sudonopw',
   ],
-  uid      => 1112,
-  gid      => 1112,
+  uid      => '1112',
+  gid      => '1112',
   locked   => true,
   sshkeys  => [
     'ssh-rsa AAAAB3Nza...== jeff@puppetlabs.com',

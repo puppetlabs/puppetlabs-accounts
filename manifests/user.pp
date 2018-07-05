@@ -36,6 +36,7 @@ define accounts::user(
   $forward_content          = undef,
   $forward_source           = undef,
   $expiry                   = undef,
+  $sshkey_custom_path       = undef,
 ) {
   validate_re($ensure, '^present$|^absent$')
   validate_bool($locked, $managehome, $purge_sshkeys, $ignore_password_if_empty)
@@ -129,7 +130,15 @@ define accounts::user(
       }
     }
   }
+  if $purge_sshkeys {
+    if $sshkey_custom_path != undef {
+      $purge_sshkeys_value = ["${home_real}/.ssh/authorized_keys","${sshkey_custom_path}/authorized_keys"]
+    }
+    else { $purge_sshkeys_value = true }
+  }
+  else { $purge_sshkeys_value = false }
 
+  notify {"SSHKEYSVALUEPURGE_${name}": message => $purge_sshkeys_value.join(',') }
   if  $password == '' and $ignore_password_if_empty {
     user { $name:
       ensure         => $ensure,
@@ -141,7 +150,7 @@ define accounts::user(
       groups         => $groups,
       membership     => $membership,
       managehome     => $managehome,
-      purge_ssh_keys => $purge_sshkeys,
+      purge_ssh_keys => $purge_sshkeys_value,
       system         => $system,
       forcelocal     => $forcelocal,
       expiry         => $expiry,
@@ -158,7 +167,7 @@ define accounts::user(
       membership     => $membership,
       managehome     => $managehome,
       password       => $password,
-      purge_ssh_keys => $purge_sshkeys,
+      purge_ssh_keys => $purge_sshkeys_value,
       system         => $system,
       forcelocal     => $forcelocal,
       expiry         => $expiry,
@@ -186,9 +195,11 @@ define accounts::user(
       user                 => $name,
       group                => $group,
       sshkeys              => $sshkeys,
+      sshkey_custom_path   => $sshkey_custom_path,
       require              => [ User[$name] ],
     }
   } elsif $sshkeys != [] {
+      # modify if statement to also check for sshkey_custom_path
       warning("ssh keys were passed for user ${name} but \$managehome is set to false; not managing user ssh keys")
   }
 }
