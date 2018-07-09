@@ -22,19 +22,19 @@ file { '/var/lib/ssh/jeff':
 
 accounts::user { 'jeff':
   sshkey_custom_path => '/var/lib/ssh/jeff/authorized_keys',
-  shell    => '/bin/zsh',
-  comment  => 'Jeff McCune',
-  purge_sshkeys => true,
-  groups   => [
+  shell              => '/bin/zsh',
+  comment            => 'Jeff McCune',
+  purge_sshkeys      => true,
+  groups             => [
     'admin',
     'sudonopw',
   ],
-  uid      => '1112',
-  gid      => '1112',
-  locked   => true,
-  sshkeys  => [
+  uid                => '1112',
+  gid                => '1112',
+  locked             => true,
+  sshkeys            => [
     'ssh-rsa BBBBB3Nza...== jeff@puppetlabs.com',
     'ssh-dss BBBBB3Nza...== jeff@metamachine.net',
   ],
-  password => '!!',
+  password           => '!!',
 }
