@@ -11,7 +11,7 @@ define accounts::key_management(
   $user,
   $group,
   $user_home,
-  $sshkeys = [],
+  $sshkeys            = [],
   $sshkey_custom_path = undef,
 ) {
 
