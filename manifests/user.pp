@@ -133,7 +133,7 @@ define accounts::user(
 
   if $purge_sshkeys {
     if $sshkey_custom_path != undef {
-      $purge_sshkeys_value = ["${sshkey_custom_path}"]
+      $purge_sshkeys_value = ["${sshkey_custom_path}"] # lint:ignore:only_variable_string
     }
     else { $purge_sshkeys_value = true }
   }
