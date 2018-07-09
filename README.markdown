@@ -104,6 +104,12 @@ accounts::user { 'jeff':
 }
 ~~~
 
+The module supports placing sshkeys in a custom location. If you specify a value
+for the `sshkey_custom_path` attribute of the `accounts::user` defined type the
+module will place the keys in the specified file. The module will only manage
+the specified file and not the full path. If you set `purge_sshkeys` to true and
+you have set a custom path then ssh keys in the custom path will be purged. 
+
 ## Reference
 
 ### Defined type: `accounts::user`

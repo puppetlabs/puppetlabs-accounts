@@ -130,15 +130,16 @@ define accounts::user(
       }
     }
   }
+
   if $purge_sshkeys {
     if $sshkey_custom_path != undef {
-      $purge_sshkeys_value = ["${home_real}/.ssh/authorized_keys","${sshkey_custom_path}/authorized_keys"]
+      $purge_sshkeys_value = ["${sshkey_custom_path}"]
     }
     else { $purge_sshkeys_value = true }
   }
   else { $purge_sshkeys_value = false }
 
-  notify {"SSHKEYSVALUEPURGE_${name}": message => $purge_sshkeys_value.join(',') }
+
   if  $password == '' and $ignore_password_if_empty {
     user { $name:
       ensure         => $ensure,
@@ -194,12 +195,30 @@ define accounts::user(
       forward_source       => $forward_source,
       user                 => $name,
       group                => $group,
-      sshkeys              => $sshkeys,
-      sshkey_custom_path   => $sshkey_custom_path,
       require              => [ User[$name] ],
     }
+    accounts::key_management { "${name}_key_management":
+      user               => $name,
+      group              => $group,
+      user_home          => $home_real,
+      sshkeys            => $sshkeys,
+      sshkey_custom_path => $sshkey_custom_path,
+      require            => Accounts::Home_dir[$home_real]
+    }
   } elsif $sshkeys != [] {
-      # modify if statement to also check for sshkey_custom_path
-      warning("ssh keys were passed for user ${name} but \$managehome is set to false; not managing user ssh keys")
+    # We are not managing the user's home directory but we have specified a
+    # custom, non-home directory for the ssh keys.
+      if $sshkey_custom_path != undef {
+        accounts::key_management { "${name}_key_management":
+          user               => $name,
+          group              => $group,
+          user_home          => $home_real,
+          sshkeys            => $sshkeys,
+          sshkey_custom_path => $sshkey_custom_path,
+        }
+      }
+      else {
+        warning("ssh keys were passed for user ${name} but \$managehome is set to false; not managing user ssh keys")
+      }
   }
 }
