@@ -47,5 +47,4 @@ define accounts::key_management(
     }
   }
 
-
 }
