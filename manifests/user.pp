@@ -36,7 +36,7 @@ define accounts::user(
   $forward_content          = undef,
   $forward_source           = undef,
   $expiry                   = undef,
-  $sshkey_custom_path       = undef,
+  Optional[String] $sshkey_custom_path = undef,
 ) {
   validate_re($ensure, '^present$|^absent$')
   validate_bool($locked, $managehome, $purge_sshkeys, $ignore_password_if_empty)
