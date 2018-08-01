@@ -96,8 +96,15 @@ describe '::accounts::user' do
     it { is_expected.to contain_group('dan').that_comes_before('User[dan]') }
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with('user' => title) }
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with('mode' => '0755') }
-    it { is_expected.to contain_accounts__home_dir('/var/home/dan').with('sshkeys' => ['1 2 3', '2 3 4']) }
+    it { is_expected.to contain_accounts__key_management('dan_key_management').with('sshkeys' => ['1 2 3', '2 3 4']) }
     it { is_expected.to contain_file('/var/home/dan/.ssh') }
+
+    describe 'when setting custom sshkey location' do
+      before(:each) do
+        params['sshkey_custom_path'] = '/var/lib/ssh/dan/custom_key_file'
+      end
+      it { is_expected.to contain_file('/var/lib/ssh/dan/custom_key_file') }
+    end
 
     describe 'when setting the user to absent' do
       # when deleting users the home dir is a File resource instead of a accounts::home_dir

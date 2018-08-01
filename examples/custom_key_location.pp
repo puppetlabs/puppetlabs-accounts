@@ -14,21 +14,28 @@ group { 'ops':
   gid => 3004,
 }
 
+file { '/var/lib/ssh/jeff':
+  ensure => directory,
+  owner  => 'jeff',
+  group  => 'jeff',
+}
+
 accounts::user { 'jeff':
-  shell    => '/bin/zsh',
-  comment  => 'Jeff McCune',
-  groups   => [
+  sshkey_custom_path => '/var/lib/ssh/jeff/authorized_keys',
+  shell              => '/bin/zsh',
+  comment            => 'Jeff McCune',
+  groups             => [
     'admin',
     'sudonopw',
   ],
-  uid      => '1112',
-  gid      => '1112',
-  locked   => true,
-  sshkeys  => [
+  uid                => '1112',
+  gid                => '1112',
+  locked             => true,
+  sshkeys            => [
     'ssh-rsa AAAAB3Nza...== jeff@puppetlabs.com',
     'ssh-dss AAAAB3Nza...== jeff@metamachine.net',
   ],
-  password => '!!',
+  password           => '!!',
 }
 accounts::user { 'dan':
   comment => 'Dan Bode',

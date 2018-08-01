@@ -36,6 +36,7 @@ define accounts::user(
   $forward_content          = undef,
   $forward_source           = undef,
   $expiry                   = undef,
+  Optional[String] $sshkey_custom_path = undef,
 ) {
   validate_re($ensure, '^present$|^absent$')
   validate_bool($locked, $managehome, $purge_sshkeys, $ignore_password_if_empty)
@@ -130,6 +131,15 @@ define accounts::user(
     }
   }
 
+  if $purge_sshkeys {
+    if $sshkey_custom_path != undef {
+      $purge_sshkeys_value = ["${sshkey_custom_path}"] # lint:ignore:only_variable_string
+    }
+    else { $purge_sshkeys_value = true }
+  }
+  else { $purge_sshkeys_value = false }
+
+
   if  $password == '' and $ignore_password_if_empty {
     user { $name:
       ensure         => $ensure,
@@ -141,7 +151,7 @@ define accounts::user(
       groups         => $groups,
       membership     => $membership,
       managehome     => $managehome,
-      purge_ssh_keys => $purge_sshkeys,
+      purge_ssh_keys => $purge_sshkeys_value,
       system         => $system,
       forcelocal     => $forcelocal,
       expiry         => $expiry,
@@ -158,7 +168,7 @@ define accounts::user(
       membership     => $membership,
       managehome     => $managehome,
       password       => $password,
-      purge_ssh_keys => $purge_sshkeys,
+      purge_ssh_keys => $purge_sshkeys_value,
       system         => $system,
       forcelocal     => $forcelocal,
       expiry         => $expiry,
@@ -185,10 +195,30 @@ define accounts::user(
       forward_source       => $forward_source,
       user                 => $name,
       group                => $group,
-      sshkeys              => $sshkeys,
       require              => [ User[$name] ],
     }
+    accounts::key_management { "${name}_key_management":
+      user               => $name,
+      group              => $group,
+      user_home          => $home_real,
+      sshkeys            => $sshkeys,
+      sshkey_custom_path => $sshkey_custom_path,
+      require            => Accounts::Home_dir[$home_real]
+    }
   } elsif $sshkeys != [] {
-      warning("ssh keys were passed for user ${name} but \$managehome is set to false; not managing user ssh keys")
+    # We are not managing the user's home directory but we have specified a
+    # custom, non-home directory for the ssh keys.
+      if $sshkey_custom_path != undef {
+        accounts::key_management { "${name}_key_management":
+          user               => $name,
+          group              => $group,
+          user_home          => $home_real,
+          sshkeys            => $sshkeys,
+          sshkey_custom_path => $sshkey_custom_path,
+        }
+      }
+      else {
+        warning("ssh keys were passed for user ${name} but \$managehome is set to false; not managing user ssh keys")
+      }
   }
 }

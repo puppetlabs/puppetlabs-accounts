@@ -17,7 +17,6 @@ define accounts::home_dir(
   $forward_source       = undef,
   $mode                 = undef,
   $ensure               = 'present',
-  $sshkeys              = [],
 ) {
   validate_re($ensure, '^(present|absent)$')
 
@@ -28,9 +27,6 @@ define accounts::home_dir(
       force   => true,
     }
   } elsif $ensure == 'present' {
-
-    $key_file = "${name}/.ssh/authorized_keys"
-
     # Solaris homedirs are managed in zfs by `useradd -m`. If the directory
     # does not yet exist then we can't predict how it should be created, but we
     # should still manage the user/group/mode
@@ -39,13 +35,6 @@ define accounts::home_dir(
       owner  => $user,
       group  => $group,
       mode   => $mode,
-    }
-
-    file { "${name}/.ssh":
-      ensure => directory,
-      owner  => $user,
-      group  => $group,
-      mode   => '0700',
     }
 
     file { "${name}/.vim":
@@ -107,24 +96,6 @@ define accounts::home_dir(
       if $forward_source {
         File["${name}/.forward"] {
           source => $forward_source,
-        }
-      }
-    }
-
-    file { $key_file:
-      ensure => file,
-      owner  => $user,
-      group  => $group,
-      mode   => '0600',
-    }
-
-    if $sshkeys != [] {
-      $sshkeys.each |$sshkey| {
-        accounts::manage_keys { "${sshkey} for ${user}":
-          user     => $user,
-          key_file => $key_file,
-          require  => File["${name}/.ssh"],
-          before   => File[$key_file],
         }
       }
     }
