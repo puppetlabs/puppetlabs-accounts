@@ -253,6 +253,8 @@ Parses an ssh authorized_keys option string into an array using its expected pat
 
 ## Limitations
 
+For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-accounts/blob/master/metadata.json)
+
 This module works with Puppet Enterprise 2015.3 and later.
 
 ### Changes from pe\_accounts
