@@ -235,7 +235,14 @@ Manages the user shell. Default: '/bin/bash'.
 
 #### `sshkeys`
 
-An array of SSH public keys associated with the user. These should be complete public key strings that include the type and name of the key, exactly as the key would appear in its id\_rsa.pub or id\_dsa.pub file. Must be an array. Default: an empty array.
+An array of SSH public keys associated with the user. These should be complete public key strings that include the type, content and name of the key, exactly as it would appear in its `id_*.pub` file, or with an optional options string preceding the other components, as it would appear as an entry in an `authorized_keys` file.  Must be an array. Default: an empty array.
+
+Examples:
+
+* `ssh-rsa AAAAB3NzaC1y... bob@example.com`
+* `from="myhost.example.com,192.168.1.1" ssh-rsa AAAAQ4ngoeiC... bob2@example.com`
+
+Note that for multiple keys, the name component (the last) must be unique.
 
 #### `uid`
 
