@@ -18,7 +18,7 @@ define accounts::home_dir(
   $mode                 = undef,
   $ensure               = 'present',
 ) {
-  validate_re($ensure, '^(present|absent)$')
+  validate_legacy(String, 'validate_re', $ensure, '^(present|absent)$')
 
   if $ensure == 'absent' {
     file { $name:
