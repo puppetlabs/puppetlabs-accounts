@@ -7,7 +7,7 @@ define accounts::manage_keys(
 
   $key_def = $keyspec.match(/^((.*)\s+)?((ssh|ecdsa-sha2).*)\s+(.*)\s+(.*)$/)
   if (! $key_def) {
-    err("Could not interpret SSH key definition: '$keyspec'")
+    err("Could not interpret SSH key definition: '${keyspec}'")
   }
   else {
     if ($key_def[2]) {
