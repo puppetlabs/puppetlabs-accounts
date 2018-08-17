@@ -39,6 +39,7 @@ define accounts::key_management(
   if $sshkeys != [] {
     $sshkeys.each |$sshkey| {
       accounts::manage_keys { "${sshkey} for ${user}":
+        keyspec  => $sshkey,
         user     => $user,
         key_file => $key_file,
         require  => [
