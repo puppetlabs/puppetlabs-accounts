@@ -1,8 +1,8 @@
 #
 define accounts::manage_keys(
-  $keyspec,
-  $user,
-  $key_file,
+  String $keyspec,
+  String $user,
+  String $key_file,
 ) {
 
   $key_def = $keyspec.match(/^((.*)\s+)?((ssh|ecdsa-sha2).*)\s+(.*)\s+(.*)$/)
