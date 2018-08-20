@@ -19,7 +19,7 @@ pp_accounts_define = <<-PUPPETCODE
             bash_profile_content => file('accounts/shell/bash_profile'),
             sshkeys              => [
               'ssh-rsa #{test_key} vagrant',
-              'from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
+              'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
             ],
           }
 PUPPETCODE

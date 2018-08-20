@@ -39,10 +39,13 @@ define accounts::key_management(
   if $sshkeys != [] {
     $sshkeys.each |$sshkey| {
       accounts::manage_keys { "${sshkey} for ${user}":
+        keyspec  => $sshkey,
         user     => $user,
         key_file => $key_file,
-        require  => File["${user_home}/.ssh"],
-        before   => File[$key_file],
+        require  => [
+          File["${user_home}/.ssh"],
+          File[$key_file],
+        ],
       }
     }
   }
