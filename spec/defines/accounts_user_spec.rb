@@ -297,6 +297,10 @@ describe '::accounts::user' do
       params['managehome'] = 'false'
       is_expected.to raise_error Puppet::Error
     end
+    it 'does not accept non-boolean values for managevim' do
+      params['managevim'] = 'false'
+      is_expected.to raise_error Puppet::Error
+    end
     it 'does not accept non-date values for expiry' do
       params['expiry'] = 'notadate'
       is_expected.to raise_error Puppet::Error

@@ -88,6 +88,9 @@
 #   Specifies whether the user's home directory should be managed by puppet. In addition to the usual user resource managehome qualities, 
 #   this attribute also purges the user's homedir if ensure is set to 'absent' and managehome is set to true.
 #
+# @param managevim
+#   Specifies whether or not the .vim folder should be created within the managed accounts home directory.
+#
 # @param bashrc_content 
 #   The content to place in the user's ~/.bashrc file. Mutually exclusive to bashrc_source.
 #
@@ -123,33 +126,34 @@
 #   Name of the user.
 #
 define accounts::user(
-  Pattern[/^present$|^absent$/] $ensure         = 'present',
-  Pattern[/^\//] $shell                         = '/bin/bash',
-  String $comment                               = $name,
-  Optional[Pattern[/^\/$|^\/.*[^\/]$/]] $home   = undef,
-  Optional[String] $home_mode                   = undef,
-  Optional[Pattern[/^\d+$/]] $uid               = undef,
-  Optional[Pattern[/^\d+$/]] $gid               = undef,
-  String $group                                 = $name,
-  Array[String] $groups                         = [ ],
-  Boolean $create_group                         = true,
-  Pattern[/^inclusive$|^minimum$/] $membership  = 'minimum',
-  Optional[Boolean] $forcelocal                 = undef,
-  String $password                              = '!!',
-  Boolean $locked                               = false,
-  Array[String] $sshkeys                        = [],
-  Boolean $purge_sshkeys                        = false,
-  Boolean $managehome                           = true,
-  Optional[String] $bashrc_content              = undef,
-  Optional[String] $bashrc_source               = undef,
-  Optional[String] $bash_profile_content        = undef,
-  Optional[String] $bash_profile_source         = undef,
-  Boolean $system                               = false,
-  Boolean $ignore_password_if_empty             = false,
-  Optional[String] $forward_content             = undef,
-  Optional[String] $forward_source              = undef,
+  Pattern[/^present$|^absent$/] $ensure                     = 'present',
+  Pattern[/^\//] $shell                                     = '/bin/bash',
+  String $comment                                           = $name,
+  Optional[Pattern[/^\/$|^\/.*[^\/]$/]] $home               = undef,
+  Optional[String] $home_mode                               = undef,
+  Optional[Pattern[/^\d+$/]] $uid                           = undef,
+  Optional[Pattern[/^\d+$/]] $gid                           = undef,
+  String $group                                             = $name,
+  Array[String] $groups                                     = [ ],
+  Boolean $create_group                                     = true,
+  Pattern[/^inclusive$|^minimum$/] $membership              = 'minimum',
+  Optional[Boolean] $forcelocal                             = undef,
+  String $password                                          = '!!',
+  Boolean $locked                                           = false,
+  Array[String] $sshkeys                                    = [],
+  Boolean $purge_sshkeys                                    = false,
+  Boolean $managehome                                       = true,
+  Boolean $managevim                                        = true,
+  Optional[String] $bashrc_content                          = undef,
+  Optional[String] $bashrc_source                           = undef,
+  Optional[String] $bash_profile_content                    = undef,
+  Optional[String] $bash_profile_source                     = undef,
+  Boolean $system                                           = false,
+  Boolean $ignore_password_if_empty                         = false,
+  Optional[String] $forward_content                         = undef,
+  Optional[String] $forward_source                          = undef,
   Optional[Pattern[/^absent$|^\d{4}-\d{2}-\d{2}$/]] $expiry = undef,
-  Optional[String] $sshkey_custom_path          = undef,
+  Optional[String] $sshkey_custom_path                      = undef,
 ) {
 
   if $home {
@@ -257,6 +261,7 @@ define accounts::user(
     accounts::home_dir { $home_real:
       ensure               => $ensure,
       mode                 => $home_mode,
+      managevim            => $managevim,
       bashrc_content       => $bashrc_content,
       bashrc_source        => $bashrc_source,
       bash_profile_content => $bash_profile_content,

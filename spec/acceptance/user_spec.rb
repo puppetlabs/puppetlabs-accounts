@@ -5,146 +5,168 @@ test_key = 'AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4Tj
            'hQ=='
 
 pp_accounts_define = <<-PUPPETCODE
-          file { '/test':
-            ensure => directory,
-            before => Accounts::User['hunner'],
-          }
-          accounts::user { 'hunner':
-            groups               => ['root'],
-            password             => 'hi',
-            shell                => '/bin/true',
-            home                 => '/test/hunner',
-            home_mode            => '0700',
-            bashrc_content       => file('accounts/shell/bashrc'),
-            bash_profile_content => file('accounts/shell/bash_profile'),
-            sshkeys              => [
-              'ssh-rsa #{test_key} vagrant',
-              'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
-            ],
-          }
+  file { '/test':
+    ensure => directory,
+    before => Accounts::User['hunner'],
+  }
+  accounts::user { 'hunner':
+    groups               => ['root'],
+    password             => 'hi',
+    shell                => '/bin/true',
+    home                 => '/test/hunner',
+    home_mode            => '0700',
+    managevim            => false,
+    bashrc_content       => file('accounts/shell/bashrc'),
+    bash_profile_content => file('accounts/shell/bash_profile'),
+    sshkeys              => [
+      'ssh-rsa #{test_key} vagrant',
+      'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
+    ],
+  }
 PUPPETCODE
 
 pp_without_managehome = <<-PUPPETCODE
-        accounts::user { 'hunner':
-          managehome => false,
-          sshkeys    => [
-            'ssh-rsa #{test_key} vagrant',
-          ],
-        }
+  accounts::user { 'hunner':
+    managehome => false,
+    sshkeys    => [
+      'ssh-rsa #{test_key} vagrant',
+    ],
+  }
+PUPPETCODE
+
+pp_with_managevim = <<-PUPPETCODE
+  file { '/test':
+    ensure => directory,
+    before => Accounts::User['hunner'],
+  }
+  accounts::user { 'hunner':
+    groups               => ['root'],
+    password             => 'hi',
+    shell                => '/bin/true',
+    home                 => '/test/hunner',
+    home_mode            => '0700',
+    managevim            => true,
+    bashrc_content       => file('accounts/shell/bashrc'),
+    bash_profile_content => file('accounts/shell/bash_profile'),
+    sshkeys              => [
+      'ssh-rsa #{test_key} vagrant',
+      'from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
+    ],
+  }
 PUPPETCODE
 
 pp_locked_user = <<-PUPPETCODE
-          accounts::user { 'hunner':
-            locked => true,
-          }
+  accounts::user { 'hunner':
+    locked => true,
+  }
 PUPPETCODE
 
 pp_custom_group_name = <<-PUPPETCODE
-          file { '/test':
-            ensure => directory,
-            before => Accounts::User['cuser'],
-          }
-          accounts::user { 'cuser':
-            group                => 'staff',
-            password             => '!!',
-            home                 => '/test/cuser',
-            home_mode            => '0700',
-          }
+  file { '/test':
+    ensure => directory,
+    before => Accounts::User['cuser'],
+  }
+  accounts::user { 'cuser':
+    group                => 'staff',
+    password             => '!!',
+    home                 => '/test/cuser',
+    home_mode            => '0700',
+  }
 PUPPETCODE
 
 pp_create_group_false = <<-PUPPETCODE
-          accounts::user { 'grp_flse':
-            group                => 'newgrp_1',
-            create_group         => false,
-            home                 => '/test/grp_flse',
-          }
+  accounts::user { 'grp_flse':
+    group                => 'newgrp_1',
+    create_group         => false,
+    home                 => '/test/grp_flse',
+  }
 PUPPETCODE
 
 pp_create_group_true = <<-PUPPETCODE
-          file { '/test':
-            ensure => directory,
-            before => Accounts::User['grp_true'],
-          }
-          accounts::user { 'grp_true':
-            group                => 'newgrp_2',
-            create_group         => true,
-            home                 => '/test/grp_true',
-          }
+  file { '/test':
+    ensure => directory,
+    before => Accounts::User['grp_true'],
+  }
+  accounts::user { 'grp_true':
+    group                => 'newgrp_2',
+    create_group         => true,
+    home                 => '/test/grp_true',
+  }
 PUPPETCODE
 
 pp_ignore_user_first_run = <<-PUPPETCODE
-          file { '/test':
-            ensure => directory,
-            before => Accounts::User['ignore_user'],
-          }
-          accounts::user { 'ignore_user':
-            group                    => 'staff',
-            password                 => 'foo',
-          }
+  file { '/test':
+    ensure => directory,
+    before => Accounts::User['ignore_user'],
+  }
+  accounts::user { 'ignore_user':
+    group                    => 'staff',
+    password                 => 'foo',
+  }
 PUPPETCODE
 
 pp_ignore_user_second_run = <<-PUPPETCODE
-          file { '/test':
-            ensure => directory,
-            before => Accounts::User['ignore_user'],
-          }
-          accounts::user { 'ignore_user':
-            group                    => 'staff',
-            password                 => '',
-            ignore_password_if_empty => true,
-          }
+  file { '/test':
+    ensure => directory,
+    before => Accounts::User['ignore_user'],
+  }
+  accounts::user { 'ignore_user':
+    group                    => 'staff',
+    password                 => '',
+    ignore_password_if_empty => true,
+  }
 PUPPETCODE
 
 pp_no_ignore_user_first_run = <<-PUPPETCODE
-          file { '/test':
-            ensure => directory,
-            before => Accounts::User['no_ignore_user'],
-          }
-          accounts::user { 'no_ignore_user':
-            group                    => 'staff',
-            password                 => 'foo',
-          }
+  file { '/test':
+    ensure => directory,
+    before => Accounts::User['no_ignore_user'],
+  }
+  accounts::user { 'no_ignore_user':
+    group                    => 'staff',
+    password                 => 'foo',
+  }
 PUPPETCODE
 
 pp_no_ignore_user_second_run = <<-PUPPETCODE
-          file { '/test':
-            ensure => directory,
-            before => Accounts::User['no_ignore_user'],
-          }
-          accounts::user { 'no_ignore_user':
-            group                    => 'staff',
-            password                 => '',
-            ignore_password_if_empty => false,
-          }
+  file { '/test':
+    ensure => directory,
+    before => Accounts::User['no_ignore_user'],
+  }
+  accounts::user { 'no_ignore_user':
+    group                    => 'staff',
+    password                 => '',
+    ignore_password_if_empty => false,
+  }
 PUPPETCODE
 
 pp_specd_user_first_run = <<-PUPPETCODE
-          file { '/test':
-            ensure => directory,
-            before => Accounts::User['specd_user'],
-          }
-          accounts::user { 'specd_user':
-            group                    => 'staff',
-            password                 => 'foo',
-          }
+  file { '/test':
+    ensure => directory,
+    before => Accounts::User['specd_user'],
+  }
+  accounts::user { 'specd_user':
+    group                    => 'staff',
+    password                 => 'foo',
+  }
 PUPPETCODE
 
 pp_specd_user_second_run = <<-PUPPETCODE
-          file { '/test':
-            ensure => directory,
-            before => Accounts::User['specd_user'],
-          }
-          accounts::user { 'specd_user':
-            group                    => 'staff',
-            password                 => 'bar',
-            ignore_password_if_empty => true,
-          }
+  file { '/test':
+    ensure => directory,
+    before => Accounts::User['specd_user'],
+  }
+  accounts::user { 'specd_user':
+    group                    => 'staff',
+    password                 => 'bar',
+    ignore_password_if_empty => true,
+  }
 PUPPETCODE
 
 describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
   describe 'main tests' do
     describe user('hunner') do
-      it 'creates groups of matching names, assigns non-matching group, manages homedir, manages other properties, gives key, makes dotfiles' do
+      it 'creates groups of matching names, assigns non-matching group, manages homedir, manages other properties, gives key, makes dotfiles, managevim false' do
         apply_manifest(pp_accounts_define, catch_failures: true)
       end
       it { is_expected.to exist }
@@ -175,7 +197,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
       its(:content) { is_expected.to match(%r{Get the aliases and functions}) }
     end
     describe file('/test/hunner/.vim') do
-      it { is_expected.to be_directory }
+      it { is_expected.not_to exist }
     end
   end
   describe 'warn for sshkeys without managehome' do
@@ -183,6 +205,14 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
       apply_manifest(pp_without_managehome, catch_failures: true) do |r|
         expect(r.stderr).to match(%r{Warning:.*ssh keys were passed for user hunner})
       end
+    end
+  end
+  describe 'managevim set to true' do
+    it '.vim file will be created' do
+      apply_manifest(pp_with_managevim, catch_failures: true)
+    end
+    describe file('/test/hunner/.vim') do
+      it { is_expected.to be_directory }
     end
   end
   describe 'locking users' do

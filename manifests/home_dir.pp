@@ -7,6 +7,9 @@
 # @param user 
 #   Name of the user that owns all of the files being created.
 #
+# @param managevim
+#   Specifies whether or not the .vim folder should be created within the managed account's home directory.
+#
 # @param bashrc_content 
 #   The content to place in the user's ~/.bashrc file. Mutually exclusive to bashrc_source.
 #
@@ -40,6 +43,7 @@
 define accounts::home_dir(
   String $user,
   String $group,
+  Boolean $managevim                     = true,
   Optional[String] $bashrc_content       = undef,
   Optional[String] $bashrc_source        = undef,
   Optional[String] $bash_profile_content = undef,
@@ -67,11 +71,13 @@ define accounts::home_dir(
       mode   => $mode,
     }
 
-    file { "${name}/.vim":
-      ensure => directory,
-      owner  => $user,
-      group  => $group,
-      mode   => '0700',
+    if $managevim {
+      file { "${name}/.vim":
+        ensure => directory,
+        owner  => $user,
+        group  => $group,
+        mode   => '0700',
+      }
     }
 
     if $bashrc_content or $bashrc_source {
