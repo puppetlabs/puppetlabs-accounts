@@ -1,7 +1,7 @@
 #
 define accounts::manage_keys(
-  $user,
-  $key_file,
+  String $user,
+  String $key_file,
 ) {
 
   $key_array   = split($name, ' ')

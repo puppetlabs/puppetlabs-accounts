@@ -7,18 +7,17 @@
 # [*sshkeys*] List of ssh keys to be added for this user in this
 # directory
 define accounts::home_dir(
-  $user,
-  $group,
-  $bashrc_content       = undef,
-  $bashrc_source        = undef,
-  $bash_profile_content = undef,
-  $bash_profile_source  = undef,
-  $forward_content      = undef,
-  $forward_source       = undef,
-  $mode                 = undef,
-  $ensure               = 'present',
+  String $user,
+  String $group,
+  Optional[String] $bashrc_content       = undef,
+  Optional[String] $bashrc_source        = undef,
+  Optional[String] $bash_profile_content = undef,
+  Optional[String] $bash_profile_source  = undef,
+  Optional[String] $forward_content      = undef,
+  Optional[String] $forward_source       = undef,
+  Optional[String] $mode                 = undef,
+  Pattern[/^(present|absent)$/] $ensure  = 'present',
 ) {
-  validate_re($ensure, '^(present|absent)$')
 
   if $ensure == 'absent' {
     file { $name:

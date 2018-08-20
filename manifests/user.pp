@@ -10,70 +10,35 @@
 # [*system*] Whether the account should be a member of the system accounts
 #
 define accounts::user(
-  $ensure                   = 'present',
-  $shell                    = '/bin/bash',
-  $comment                  = $name,
-  $home                     = undef,
-  $home_mode                = undef,
-  $uid                      = undef,
-  $gid                      = undef,
-  $group                    = $name,
-  $groups                   = [ ],
-  $create_group             = true,
-  $membership               = 'minimum',
-  $forcelocal               = undef,
-  $password                 = '!!',
-  $locked                   = false,
-  $sshkeys                  = [],
-  $purge_sshkeys            = false,
-  $managehome               = true,
-  $bashrc_content           = undef,
-  $bashrc_source            = undef,
-  $bash_profile_content     = undef,
-  $bash_profile_source      = undef,
-  $system                   = false,
-  $ignore_password_if_empty = false,
-  $forward_content          = undef,
-  $forward_source           = undef,
-  $expiry                   = undef,
-  Optional[String] $sshkey_custom_path = undef,
+  Pattern[/^present$|^absent$/] $ensure         = 'present',
+  Pattern[/^\//] $shell                         = '/bin/bash',
+  String $comment                               = $name,
+  Optional[Pattern[/^\/$|^\/.*[^\/]$/]] $home   = undef,
+  Optional[String] $home_mode                   = undef,
+  Optional[Pattern[/^\d+$/]] $uid               = undef,
+  Optional[Pattern[/^\d+$/]] $gid               = undef,
+  String $group                                 = $name,
+  Array[String] $groups                         = [ ],
+  Boolean $create_group                         = true,
+  Pattern[/^inclusive$|^minimum$/] $membership  = 'minimum',
+  Optional[Boolean] $forcelocal                 = undef,
+  String $password                              = '!!',
+  Boolean $locked                               = false,
+  Array[String] $sshkeys                        = [],
+  Boolean $purge_sshkeys                        = false,
+  Boolean $managehome                           = true,
+  Optional[String] $bashrc_content              = undef,
+  Optional[String] $bashrc_source               = undef,
+  Optional[String] $bash_profile_content        = undef,
+  Optional[String] $bash_profile_source         = undef,
+  Boolean $system                               = false,
+  Boolean $ignore_password_if_empty             = false,
+  Optional[String] $forward_content             = undef,
+  Optional[String] $forward_source              = undef,
+  Optional[Pattern[/^absent$|^\d{4}-\d{2}-\d{2}$/]] $expiry = undef,
+  Optional[String] $sshkey_custom_path          = undef,
 ) {
-  validate_re($ensure, '^present$|^absent$')
-  validate_bool($locked, $managehome, $purge_sshkeys, $ignore_password_if_empty)
-  validate_re($shell, '^/')
-  validate_string($comment, $password, $group)
-  validate_array($groups, $sshkeys)
-  validate_re($membership, '^inclusive$|^minimum$')
-  if $bashrc_content {
-    validate_string($bashrc_content)
-  }
-  if $bashrc_source {
-    validate_string($bashrc_source)
-  }
-  if $bash_profile_content {
-    validate_string($bash_profile_content)
-  }
-  if $bash_profile_source {
-    validate_string($bash_profile_source)
-  }
-  if $forward_content {
-    validate_string($forward_content)
-  }
-  if $forward_source {
-    validate_string($forward_source)
-  }
-  if $expiry {
-    unless $expiry == 'absent' {
-      validate_re($expiry,'^\d{4}-\d{2}-\d{2}$')
-    }
-  }
-
-  if $home {
-    validate_re($home, '^/')
-    # If the home directory is not / (root on solaris) then disallow trailing slashes.
-    validate_re($home, '^/$|[^/]$')
-  }
-
+  
   if $home {
     $home_real = $home
   } elsif $name == 'root' {
@@ -86,14 +51,6 @@ define accounts::user(
       'Solaris' => "/export/home/${name}",
       default   => "/home/${name}",
     }
-  }
-
-  if $uid != undef {
-    validate_re($uid, '^\d+$')
-  }
-
-  if $gid != undef {
-    validate_re($gid, '^\d+$')
   }
 
   if $locked {

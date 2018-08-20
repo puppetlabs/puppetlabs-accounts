@@ -8,11 +8,11 @@
 # [*sshkey_custom_path*] Path for custom file for ssh key management
 #
 define accounts::key_management(
-  $user,
-  $group,
-  $user_home,
-  $sshkeys            = [],
-  $sshkey_custom_path = undef,
+  String $user,
+  String $group,
+  String $user_home,
+  Array[String] $sshkeys = [],
+  Optional[String] $sshkey_custom_path = undef,
 ) {
 
   file { "${user_home}/.ssh":
