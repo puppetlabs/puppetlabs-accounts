@@ -77,6 +77,8 @@ describe '::accounts::user' do
       params['groups']     = ['admin']
       params['membership'] = 'inclusive'
       params['password']   = 'foo'
+      params['iterations'] = 'undef'
+      params['salt']       = 'undef'
       params['sshkeys']    = ['1 2 3', '2 3 4']
       params['expiry']     = '2018-06-22'
     end
@@ -90,6 +92,8 @@ describe '::accounts::user' do
     it { is_expected.to contain_user('dan').with('groups' => ['admin']) }
     it { is_expected.to contain_user('dan').with('membership' => 'inclusive') }
     it { is_expected.to contain_user('dan').with('password' => 'foo') }
+    it { is_expected.to contain_user('dan').with('iterations' => 'undef') }
+    it { is_expected.to contain_user('dan').with('salt' => 'undef') }
     it { is_expected.to contain_user('dan').with('expiry' => '2018-06-22') }
     it { is_expected.to contain_group('dan').with('ensure' => 'present') }
     it { is_expected.to contain_group('dan').with('gid' => '456') }

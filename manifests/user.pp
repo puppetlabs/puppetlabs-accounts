@@ -23,6 +23,8 @@ define accounts::user(
   Pattern[/^inclusive$|^minimum$/] $membership  = 'minimum',
   Optional[Boolean] $forcelocal                 = undef,
   String $password                              = '!!',
+  Optional[String] $salt                        = undef,
+  Optional[Integer] $iterations                 = undef,
   Boolean $locked                               = false,
   Array[String] $sshkeys                        = [],
   Boolean $purge_sshkeys                        = false,
@@ -51,6 +53,11 @@ define accounts::user(
       'Solaris' => "/export/home/${name}",
       default   => "/home/${name}",
     }
+  }
+
+  $managehome_real = $::osfamily ? {
+    'Darwin' => false,
+    default  => $managehome,
   }
 
   if $locked {
@@ -107,7 +114,7 @@ define accounts::user(
       gid            => $group,
       groups         => $groups,
       membership     => $membership,
-      managehome     => $managehome,
+      managehome     => $managehome_real,
       purge_ssh_keys => $purge_sshkeys_value,
       system         => $system,
       forcelocal     => $forcelocal,
@@ -123,8 +130,10 @@ define accounts::user(
       gid            => $group,
       groups         => $groups,
       membership     => $membership,
-      managehome     => $managehome,
+      managehome     => $managehome_real,
       password       => $password,
+      salt           => $salt,
+      iterations     => $iterations,
       purge_ssh_keys => $purge_sshkeys_value,
       system         => $system,
       forcelocal     => $forcelocal,
