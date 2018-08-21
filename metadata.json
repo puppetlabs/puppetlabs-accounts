@@ -9,6 +9,10 @@
   "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
   "dependencies": [
     {
+      "name": "puppetlabs/translate",
+      "version_requirement": ">= 1.0.0 < 2.0.0"
+    },
+    {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 3.4.0 < 5.0.0"
     }
@@ -76,7 +80,6 @@
       "version_requirement": ">= 4.7.0 < 6.0.0"
     }
   ],
-  "description": "Account management module.",
   "template-url": "https://github.com/puppetlabs/pdk-templates",
   "template-ref": "1.7.0-0-g57412ed",
   "pdk-version": "1.7.0"
