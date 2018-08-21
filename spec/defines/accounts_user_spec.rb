@@ -77,8 +77,6 @@ describe '::accounts::user' do
       params['groups']     = ['admin']
       params['membership'] = 'inclusive'
       params['password']   = 'foo'
-      params['iterations'] = nil
-      params['salt']       = nil
       params['sshkeys']    = ['1 2 3', '2 3 4']
       params['expiry']     = '2018-06-22'
     end
