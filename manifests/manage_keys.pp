@@ -1,3 +1,13 @@
+# @summary
+#   This resource manages ssh keys for a user.
+#
+# @param user 
+#   User that owns the file supplied.
+#
+# @param key_file
+#   Specifies the path of the ssh key file.
+#
+# @api private
 #
 define accounts::manage_keys(
   String $keyspec,
