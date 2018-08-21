@@ -1,11 +1,42 @@
+# @summary
+#   This resource specifies how home directories are managed.
 #
-# Specified how home directories are managed.
+# @param group
+#   Name of the user's primary group.
 #
-# [*name*] Name of the home directory that is being managed.
-# [*group*] Name of the users primary group
-# [*user*] User that owns all of the files being created.
-# [*sshkeys*] List of ssh keys to be added for this user in this
-# directory
+# @param user 
+#   Name of the user that owns all of the files being created.
+#
+# @param bashrc_content 
+#   The content to place in the user's ~/.bashrc file. Mutually exclusive to bashrc_source.
+#
+# @param bashrc_source
+#   A source file containing the content to place in the user's ~/.bashrc file. Mutually exclusive to bashrc_content.
+#
+# @param bash_profile_content
+#   The content to place in the user's ~/.bash_profile file. Mutually exclusive to bash_profile_source.
+#
+# @param bash_profile_source
+#   A source file containing the content to place in the user's ~/.bash_profile file. Mutually exclusive to bash_profile_content. 
+#
+# @param forward_content
+#   The content to place in the user's ~/.forward file. Mutually exclusive to forward_source. 
+#
+# @param forward_source
+#   A source file containing the content to place in the user's ~/.forward file. Mutually exclusive to forward_content. 
+#
+# @param mode
+#   Manages the user's home directory permission mode. Valid values are in octal notation.
+#
+# @param ensure
+#   Specifies whether the user, its primary group, homedir, and ssh keys should exist. Valid values are 'present' and 'absent'. Note that 
+#   when a user is created, a group with the same name as the user is also created. 
+#
+# @param name 
+#   Path of the home directory that is being managed.
+#
+# @api private
+#
 define accounts::home_dir(
   String $user,
   String $group,
