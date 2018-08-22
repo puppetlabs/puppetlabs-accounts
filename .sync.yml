@@ -18,9 +18,22 @@ Gemfile:
           - mswin
           - mingw
           - x64_mingw
+    ':development':
+      - gem: puppet-lint-i18n
 
+Rakefile:
+  requires:
+    - puppet_pot_generator/rake_tasks
+    
 appveyor.yml:
   delete: true
+
+.rubocop.yml:
+   default_configs:
+    inherit_from: .rubocop_todo.yml
+    require:
+      - rubocop-i18n
+      - rubocop-rspec
 
 .gitlab-ci.yml:
   unmanaged: true

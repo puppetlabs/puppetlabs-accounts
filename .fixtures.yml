@@ -3,5 +3,7 @@ fixtures:
     "stdlib":
       "repo": "git://github.com/puppetlabs/puppetlabs-stdlib.git"
       "ref": "4.5.0"
+    "translate":
+      "repo": "https://github.com/puppetlabs/puppetlabs-translate"
   symlinks:
     "accounts": "#{source_dir}"
