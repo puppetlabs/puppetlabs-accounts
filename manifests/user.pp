@@ -62,6 +62,14 @@
 # @param password
 #   The user's password, in whatever encrypted format the local machine requires. Default: '!!', which prevents the user from logging in 
 #   with a password.
+#
+# @param salt
+#   This is the 32-byte salt used to generate the PBKDF2 password used in OS X. This field is required for managing passwords on 
+#   OS X >= 10.8.
+#
+# @param iterations
+#   This is the number of iterations of a chained computation of the PBKDF2 password hash. This field is required for managing passwords on 
+#   OS X >= 10.8.
 #   
 # @param locked
 #   Specifies whether the account should be locked and the user prevented from logging in. Set to true for users whose login privileges 
@@ -139,6 +147,8 @@ define accounts::user(
   Pattern[/^inclusive$|^minimum$/] $membership              = 'minimum',
   Optional[Boolean] $forcelocal                             = undef,
   String $password                                          = '!!',
+  Optional[String] $salt                                    = undef,
+  Optional[Integer] $iterations                             = undef,
   Boolean $locked                                           = false,
   Array[String] $sshkeys                                    = [],
   Boolean $purge_sshkeys                                    = false,
@@ -157,14 +167,14 @@ define accounts::user(
 ) {
 
   if $home {
-    $home_real = $home
+    $_home = $home
   } elsif $name == 'root' {
-    $home_real = $::osfamily ? {
+    $_home = $::osfamily ? {
       'Solaris' => '/',
       default   => '/root',
     }
   } else {
-    $home_real = $::osfamily ? {
+    $_home = $::osfamily ? {
       'Solaris' => "/export/home/${name}",
       default   => "/home/${name}",
     }
@@ -219,7 +229,7 @@ define accounts::user(
       ensure         => $ensure,
       shell          => $_shell,
       comment        => "${comment}", # lint:ignore:only_variable_string
-      home           => $home_real,
+      home           => $_home,
       uid            => $uid,
       gid            => $group,
       groups         => $groups,
@@ -235,13 +245,15 @@ define accounts::user(
       ensure         => $ensure,
       shell          => $_shell,
       comment        => "${comment}", # lint:ignore:only_variable_string
-      home           => $home_real,
+      home           => $_home,
       uid            => $uid,
       gid            => $group,
       groups         => $groups,
       membership     => $membership,
       managehome     => $managehome,
       password       => $password,
+      salt           => $salt,
+      iterations     => $iterations,
       purge_ssh_keys => $purge_sshkeys_value,
       system         => $system,
       forcelocal     => $forcelocal,
@@ -258,7 +270,7 @@ define accounts::user(
   }
 
   if $managehome {
-    accounts::home_dir { $home_real:
+    accounts::home_dir { $_home:
       ensure               => $ensure,
       mode                 => $home_mode,
       managevim            => $managevim,
@@ -275,10 +287,10 @@ define accounts::user(
     accounts::key_management { "${name}_key_management":
       user               => $name,
       group              => $group,
-      user_home          => $home_real,
+      user_home          => $_home,
       sshkeys            => $sshkeys,
       sshkey_custom_path => $sshkey_custom_path,
-      require            => Accounts::Home_dir[$home_real]
+      require            => Accounts::Home_dir[$_home]
     }
   } elsif $sshkeys != [] {
     # We are not managing the user's home directory but we have specified a
@@ -287,7 +299,7 @@ define accounts::user(
         accounts::key_management { "${name}_key_management":
           user               => $name,
           group              => $group,
-          user_home          => $home_real,
+          user_home          => $_home,
           sshkeys            => $sshkeys,
           sshkey_custom_path => $sshkey_custom_path,
         }

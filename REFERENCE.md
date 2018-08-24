@@ -161,6 +161,24 @@ with a password.
 
 Default value: '!!'
 
+##### `salt`
+
+Data type: `Optional[String]`
+
+This is the 32-byte salt used to generate the PBKDF2 password used in OS X. This field is required for managing passwords on
+OS X >= 10.8.
+
+Default value: `undef`
+
+##### `iterations`
+
+Data type: `Optional[Integer]`
+
+This is the number of iterations of a chained computation of the PBKDF2 password hash. This field is required for managing passwords on
+OS X >= 10.8.
+
+Default value: `undef`
+
 ##### `locked`
 
 Data type: `Boolean`
