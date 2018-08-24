@@ -270,6 +270,28 @@ describe '::accounts::user' do
     it { is_expected.to contain_user('dan').with('password' => 'foo') }
   end
 
+  describe 'when setting user parameters with specified password not ignored if false' do
+    before(:each) do
+      params['ensure']                   = 'present'
+      params['shell']                    = '/bin/csh'
+      params['comment']                  = 'comment'
+      params['home']                     = '/var/home/dan'
+      params['home_mode']                = '0755'
+      params['uid']                      = '123'
+      params['gid']                      = '456'
+      params['group']                    = 'dan'
+      params['groups']                   = ['admin']
+      params['membership']               = 'inclusive'
+      params['password']                 = 'foo'
+      params['salt']                     = 'bar'
+      params['iterations']               = 5
+      params['sshkeys']                  = ['1 2 3', '2 3 4']
+      params['ignore_password_if_empty'] = false
+    end
+    it { is_expected.to contain_user('dan').with('salt' => 'bar') }
+    it { is_expected.to contain_user('dan').with('iterations' => 5) }
+  end
+
   describe 'invalid parameter values' do
     it 'only accept absent and present for ensure' do
       params['ensure'] = 'invalid'
