@@ -180,6 +180,11 @@ define accounts::user(
     }
   }
 
+  $managehome_real = $::osfamily ? {
+    'Darwin' => false,
+    default  => $managehome,
+  }
+
   if $locked {
     case $::operatingsystem {
       'debian', 'ubuntu' : {
@@ -234,7 +239,7 @@ define accounts::user(
       gid            => $group,
       groups         => $groups,
       membership     => $membership,
-      managehome     => $managehome,
+      managehome     => $managehome_real,
       purge_ssh_keys => $purge_sshkeys_value,
       system         => $system,
       forcelocal     => $forcelocal,
@@ -250,7 +255,7 @@ define accounts::user(
       gid            => $group,
       groups         => $groups,
       membership     => $membership,
-      managehome     => $managehome,
+      managehome     => $managehome_real,
       password       => $password,
       salt           => $salt,
       iterations     => $iterations,
