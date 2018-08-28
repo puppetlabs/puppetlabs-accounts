@@ -1,7 +1,4 @@
-# Change log
-All notable changes to this project will be documented in this file.
-
-## Supported Release [2.0.0]
+## 2.0.0
 ### Summary
 This release drops support for Debian 7, adds support for Debian 9 and includes several small features and bug fixes.
 
