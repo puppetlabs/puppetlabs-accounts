@@ -105,11 +105,13 @@ accounts::user { 'jeff':
 ~~~
 
 The module supports placing sshkeys in a custom location. If you specify a value
-for the `sshkey_custom_path` attribute of the `accounts::user` defined type the
+for the `sshkey_custom_path` attribute of the `accounts::user` defined type, the
 module will place the keys in the specified file. The module will only manage
-the specified file and not the full path. If you set `purge_sshkeys` to true and
-you have set a custom path then only ssh keys in the custom path will be purged.
+the specified file and not the full path. If you set `purge_sshkeys` to true, and
+you have also set a custom path, it will only purge the ssh keys in the custom path.
+
 Example:
+
 ~~~puppet
 accounts::user { 'gerrard':
   sshkey_custom_path => '/var/lib/ssh/gerrard/authorized_keys',
@@ -128,7 +130,8 @@ accounts::user { 'gerrard':
   password           => '!!',
 }
 ~~~
-Setting `sshkey_custom_path` will typically be associated with setting `AuthorizedKeysFile /var/lib/ssh/%u/authorized_keys` in your sshd config file.
+
+Setting `sshkey_custom_path` is typically associated with setting `AuthorizedKeysFile /var/lib/ssh/%u/authorized_keys` in your sshd config file.
 
 ## Reference
 
