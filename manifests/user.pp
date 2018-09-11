@@ -284,18 +284,20 @@ define accounts::user(
       group                => $group,
       require              => [ User[$name] ],
     }
-    accounts::key_management { "${name}_key_management":
-      user               => $name,
-      group              => $group,
-      user_home          => $_home,
-      sshkeys            => $sshkeys,
-      sshkey_custom_path => $sshkey_custom_path,
-      require            => Accounts::Home_dir[$_home]
+    if ( $ensure == 'present' ) {
+      accounts::key_management { "${name}_key_management":
+        user               => $name,
+        group              => $group,
+        user_home          => $_home,
+        sshkeys            => $sshkeys,
+        sshkey_custom_path => $sshkey_custom_path,
+        require            => Accounts::Home_dir[$_home]
+      }
     }
   } elsif $sshkeys != [] {
     # We are not managing the user's home directory but we have specified a
     # custom, non-home directory for the ssh keys.
-      if $sshkey_custom_path != undef {
+      if (($sshkey_custom_path != undef) and ($ensure == 'present')) {
         accounts::key_management { "${name}_key_management":
           user               => $name,
           group              => $group,
