@@ -222,7 +222,7 @@ Data type: `Boolean`
 Specifies whether the user's home directory should be managed by puppet. In addition to the usual user resource managehome qualities,
 this attribute also purges the user's homedir if ensure is set to 'absent' and managehome is set to true.
 
-Default value: `true`
+Default value: `false`
 
 ##### `managevim`
 
