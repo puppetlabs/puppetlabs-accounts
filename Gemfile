@@ -41,6 +41,7 @@ group :system_tests do
   gem "puppet-module-win-system-r#{minor_version}",   require: false, platforms: [:mswin, :mingw, :x64_mingw]
 end
 
+gem "beaker-pe", git: 'https://github.com/tphoney/beaker-pe', branch: 'fix_moduledistdir'
 puppet_version = ENV['PUPPET_GEM_VERSION']
 puppet_type = gem_type(puppet_version)
 facter_version = ENV['FACTER_GEM_VERSION']
