@@ -44,7 +44,7 @@ pp_accounts_ssh_warn = <<-PUPPETCODE
   }
 PUPPETCODE
 
-describe 'accounts::user define', if: (fact('osfamily') == 'Debian' || fact('osfamily') == 'RedHat') && puppet_version =~ %r{(^4\.10\.[56789]|5\.\d\.\d)} do
+describe 'accounts::user define', if: (fact('osfamily') == 'Debian' || fact('osfamily') == 'RedHat') && (Gem::Version.new(puppet_version) >= Gem::Version.new('4.10.5')) do
   before :all do
     hosts.each do |host|
       on(host, "sed -i \"96i FastGettext.locale='ja'\" /opt/puppetlabs/puppet/lib/ruby/vendor_ruby/puppet.rb")
@@ -55,12 +55,12 @@ describe 'accounts::user define', if: (fact('osfamily') == 'Debian' || fact('osf
   describe 'i18n translations' do
     it 'When triggering error for uninterpretable key definition' do
       apply_manifest(pp_accounts_key_definition, catch_failures: true) do |r|
-        expect(r.stderr).to match(%r{Ƈǿŭŀḓ ƞǿŧ īƞŧḗřƥřḗŧ ŞŞĦ ķḗẏ ḓḗƒīƞīŧīǿƞ})
+        expect(r.stderr).to match(%r{SSHキーの定義が解釈できませんでした})
       end
     end
     it 'When triggering warning for sshkeys without managehome' do
       apply_manifest(pp_accounts_ssh_warn, catch_failures: true) do |r|
-        expect(r.stderr).to match(%r{şşħ ķḗẏş ẇḗřḗ ƥȧşşḗḓ ƒǿř ŭşḗř hunner})
+        expect(r.stderr).to match(%r{SSHキーがユーザhunnerに対して渡されましたが})
       end
     end
   end
