@@ -16,6 +16,7 @@ pp_accounts_key_definition = <<-PUPPETCODE
     shell                => '/bin/true',
     home                 => '/test/hunner',
     home_mode            => '0700',
+    managehome           => true,
     managevim            => false,
     bashrc_content       => file('accounts/shell/bashrc'),
     bash_profile_content => file('accounts/shell/bash_profile'),
