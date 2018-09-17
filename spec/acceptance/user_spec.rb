@@ -15,6 +15,7 @@ pp_accounts_define = <<-PUPPETCODE
     shell                => '/bin/true',
     home                 => '/test/hunner',
     home_mode            => '0700',
+    managehome           => true,
     managevim            => false,
     bashrc_content       => file('accounts/shell/bashrc'),
     bash_profile_content => file('accounts/shell/bash_profile'),
@@ -45,6 +46,7 @@ pp_with_managevim = <<-PUPPETCODE
     shell                => '/bin/true',
     home                 => '/test/hunner',
     home_mode            => '0700',
+    managehome           => true,
     managevim            => true,
     bashrc_content       => file('accounts/shell/bashrc'),
     bash_profile_content => file('accounts/shell/bash_profile'),
@@ -71,6 +73,7 @@ pp_custom_group_name = <<-PUPPETCODE
     password             => '!!',
     home                 => '/test/cuser',
     home_mode            => '0700',
+    managehome           => true,
   }
 PUPPETCODE
 
