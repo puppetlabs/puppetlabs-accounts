@@ -17,7 +17,7 @@ describe '::accounts::user' do
     it { is_expected.to contain_user('dan').with('comment'    => title) }
     it { is_expected.to contain_user('dan').with('gid'        => title) }
     it { is_expected.to contain_user('dan').with('groups'     => []) }
-    it { is_expected.to contain_user('dan').with('managehome' => true) }
+    it { is_expected.to contain_user('dan').with('managehome' => false) }
     it { is_expected.to contain_group('dan').with('ensure'    => 'present') }
     it { is_expected.to contain_group('dan').with('gid'       => nil) }
   end
@@ -69,6 +69,7 @@ describe '::accounts::user' do
       params['ensure']     = 'present'
       params['shell']      = '/bin/csh'
       params['comment']    = 'comment'
+      params['managehome'] = true
       params['home']       = '/var/home/dan'
       params['home_mode']  = '0755'
       params['uid']        = '123'
