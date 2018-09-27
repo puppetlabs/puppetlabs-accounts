@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [3.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/3.1.0) (2018-09-27)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/3.0.0...3.1.0)
+
+### Added
+
+- pdksync - \(FM-7392\) puppet 6 testing changes [\#187](https://github.com/puppetlabs/puppetlabs-accounts/pull/187) ([tphoney](https://github.com/tphoney))
+- pdksync - \(MODULES-6805\) metadata.json shows support for puppet 6 [\#185](https://github.com/puppetlabs/puppetlabs-accounts/pull/185) ([tphoney](https://github.com/tphoney))
+- \(LOC-173\) Delivering translation for readmes/README\_ja\_JP.markdown [\#177](https://github.com/puppetlabs/puppetlabs-accounts/pull/177) ([ehom](https://github.com/ehom))
+
+### Fixed
+
+- \(maint\) corrected filename extension for both en and ja [\#182](https://github.com/puppetlabs/puppetlabs-accounts/pull/182) ([ehom](https://github.com/ehom))
+- Only take care of ssh-keys if ensure is set to 'present' [\#174](https://github.com/puppetlabs/puppetlabs-accounts/pull/174) ([opteamax](https://github.com/opteamax))
+- Rename README.markdown to README.MD [\#173](https://github.com/puppetlabs/puppetlabs-accounts/pull/173) ([clairecadman](https://github.com/clairecadman))
+
 ## [3.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/3.0.0) (2018-09-07)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/2.0.0...3.0.0)
