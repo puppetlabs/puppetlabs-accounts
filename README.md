@@ -15,7 +15,7 @@
 
 ## Description
 
-The accounts module manages resources related to login and service accounts. This module replaces Puppet Enterprise's built-in pe\_accounts module, which is no longer included in PE 2015.3 and later versions.
+The accounts module manages resources related to login and service accounts.
 
 This module works on many UNIX/Linux operating systems. It does not support configuring accounts on Microsoft Windows platforms.
 
