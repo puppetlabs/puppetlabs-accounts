@@ -141,8 +141,6 @@ See [REFERENCE.md](https://github.com/puppetlabs/puppetlabs-accounts/blob/master
 
 For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-accounts/blob/master/metadata.json)
 
-This module works with Puppet Enterprise 2015.3 and later.
-
 ### Changes from pe\_accounts
 
 The accounts module is designed to take the place of the pe\_accounts module that shipped with PE versions 2015.2 and earlier. Some of the changes include the removal of the base class, improving the validation, and allowing more flexibility regarding which files should or should not be managed in a user's home directory.
