@@ -21,23 +21,26 @@
 define accounts::key_management(
   String $user,
   String $group,
-  String $user_home,
+  Optional[String] $user_home = undef,
   Array[String] $sshkeys = [],
   Optional[String] $sshkey_custom_path = undef,
 ) {
 
-  file { "${user_home}/.ssh":
-    ensure => directory,
-    owner  => $user,
-    group  => $group,
-    mode   => '0700',
+  if $user_home {
+    file { "${user_home}/.ssh":
+      ensure => directory,
+      owner  => $user,
+      group  => $group,
+      mode   => '0700',
+    }
   }
 
-  if $sshkey_custom_path != undef {
+  if $sshkey_custom_path {
     $key_file = $sshkey_custom_path
-  }
-  else {
+  } elsif $user_home {
     $key_file = "${user_home}/.ssh/authorized_keys"
+  } else {
+    fail('Either user_home or sshkey_custom_path must be specified')
   }
 
   file { $key_file:
@@ -48,15 +51,17 @@ define accounts::key_management(
   }
 
   if $sshkeys != [] {
+    if $user_home {
+      $requires = [File["${user_home}/.ssh"], File[$key_file]]
+    } else {
+      $requires = [File[$key_file]]
+    }
     $sshkeys.each |$sshkey| {
       accounts::manage_keys { "${sshkey} for ${user}":
         keyspec  => $sshkey,
         user     => $user,
         key_file => $key_file,
-        require  => [
-          File["${user_home}/.ssh"],
-          File[$key_file],
-        ],
+        require  => $requires,
       }
     }
   }
