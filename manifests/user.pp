@@ -43,6 +43,9 @@
 # @param gid 
 #   Specifies the gid of the user's primary group. Must be specified numerically. 
 #
+# @param allowdupe
+#   Whether to allow duplicate UIDs. By default false
+#
 # @param group
 #   Specifies the name of the user's primary group. By default, this uses a group named the same as user name
 #
@@ -141,6 +144,7 @@ define accounts::user(
   Optional[String] $home_mode                               = undef,
   Optional[Pattern[/^\d+$/]] $uid                           = undef,
   Optional[Pattern[/^\d+$/]] $gid                           = undef,
+  Boolean $allowdupe                                        = false,
   String $group                                             = $name,
   Array[String] $groups                                     = [ ],
   Boolean $create_group                                     = true,
@@ -232,6 +236,7 @@ define accounts::user(
       home           => $_home,
       uid            => $uid,
       gid            => $group,
+      allowdupe      => $allowdupe,
       groups         => $groups,
       membership     => $membership,
       managehome     => $managehome,
@@ -248,6 +253,7 @@ define accounts::user(
       home           => $_home,
       uid            => $uid,
       gid            => $group,
+      allowdupe      => $allowdupe,
       groups         => $groups,
       membership     => $membership,
       managehome     => $managehome,
