@@ -40,7 +40,7 @@ define accounts::key_management(
   } elsif $user_home {
     $key_file = "${user_home}/.ssh/authorized_keys"
   } else {
-    fail('Either user_home or sshkey_custom_path must be specified')
+    err(translate('Either user_home or sshkey_custom_path must be specified'))
   }
 
   file { $key_file:

@@ -1,4 +1,4 @@
-# #-#-#-#-#  puppetlabs-accounts.pot (puppetlabs-accounts 2.0.0-28-g3dd9ac3)  #-#-#-#-#
+# #-#-#-#-#  puppetlabs-accounts.pot (puppetlabs-accounts 3.1.0-8-gadb40e5)  #-#-#-#-#
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2018 Puppet, Inc.
 # This file is distributed under the same license as the puppetlabs-accounts package.
@@ -12,7 +12,7 @@ msgstr ""
 "#-#-#-#-#  puppet.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 11:16:27 +0100\n"
+"POT-Creation-Date: 2018-11-26 09:22:30 +0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,13 +20,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 2.0.0\n"
-"#-#-#-#-#  puppetlabs-accounts.pot (puppetlabs-accounts 2.0.0-28-g3dd9ac3)  "
-"#-#-#-#-#\n"
-"Project-Id-Version: puppetlabs-accounts 2.0.0-28-g3dd9ac3\n"
+"#-#-#-#-#  puppetlabs-accounts.pot (puppetlabs-accounts 3.1.0-8-gadb40e5)  #-"
+"#-#-#-#\n"
+"Project-Id-Version: puppetlabs-accounts 3.1.0-8-gadb40e5\n"
 "\n"
 "Report-Msgid-Bugs-To: docs@puppet.com\n"
-"POT-Creation-Date: 2018-08-21 11:16+0100\n"
-"PO-Revision-Date: 2018-08-21 11:16+0100\n"
+"POT-Creation-Date: 2018-11-26 09:22+0000\n"
+"PO-Revision-Date: 2018-11-26 09:22+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -37,7 +37,7 @@ msgstr ""
 "#-#-#-#-#  puppetlabs-accounts_metadata.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To:\n"
-"POT-Creation-Date: 2018-08-21T11:16:32+01:00\n"
+"POT-Creation-Date: 2018-11-26T09:22:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,17 +46,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 2.0.0\n"
 
+#. ./manifests/key_management.pp:43
+msgid "Either user_home or sshkey_custom_path must be specified"
+msgstr ""
+
 #. ./manifests/manage_keys.pp:20
 msgid "Could not interpret SSH key definition: '%{keyspec}'"
 msgstr ""
 
-#. ./manifests/user.pp:291
+#. ./manifests/user.pp:309
 msgid ""
 "ssh keys were passed for user %{name} but $managehome is set to false; not "
 "managing user ssh keys"
 msgstr ""
 
-#: ../lib/puppet/functions/accounts_ssh_options_parser.rb:14
+#: ../lib/puppet/functions/accounts_ssh_options_parser.rb:16
 msgid "Unmatched double quote: %{str_inspect}"
 msgstr ""
 
