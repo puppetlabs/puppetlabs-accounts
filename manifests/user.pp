@@ -301,7 +301,6 @@ define accounts::user(
         accounts::key_management { "${name}_key_management":
           user               => $name,
           group              => $group,
-          user_home          => $_home,
           sshkeys            => $sshkeys,
           sshkey_custom_path => $sshkey_custom_path,
         }
