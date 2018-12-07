@@ -163,6 +163,17 @@ pp_specd_user_second_run = <<-PUPPETCODE
   }
 PUPPETCODE
 
+pp_user_with_duplicate_uid = <<-PUPPETCODE
+  accounts::user { 'duplicate_user1':
+    allowdupe  => true,
+    uid         => '1234',
+  }
+  accounts::user { 'duplicate_user2':
+    allowdupe  => true,
+    uid         => '1234',
+  }
+PUPPETCODE
+
 describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
   describe 'main tests' do
     describe user('hunner') do
@@ -298,6 +309,19 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
       end
       it { is_expected.to exist }
       it { is_expected.to contain_password 'bar' }
+    end
+  end
+  describe 'create duplicate users with same uid' do
+    it 'runs with no errors' do
+      apply_manifest(pp_user_with_duplicate_uid, catch_failures: true)
+    end
+    describe user('duplicate_user1') do
+      it { is_expected.to exist }
+      it { is_expected.to have_uid 1234 }
+    end
+    describe user('duplicate_user2') do
+      it { is_expected.to exist }
+      it { is_expected.to have_uid 1234 }
     end
   end
 end
