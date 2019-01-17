@@ -1,0 +1,18 @@
+---
+HOSTS:
+  sles15-64-1:
+    pe_dir:
+    pe_ver:
+    pe_upgrade_dir:
+    pe_upgrade_ver:
+    hypervisor: vmpooler
+    platform: sles-15-x86_64
+    packaging_platform: sles-15-x86_64
+    template: sles-15-x86_64
+    roles:
+    - agent
+    - mdca
+CONFIG:
+  nfs_server: none
+  consoleport: 443
+  pooling_api: http://vmpooler.delivery.puppetlabs.net/
