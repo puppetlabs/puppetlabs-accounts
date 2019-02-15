@@ -18,7 +18,6 @@ describe '::accounts::user' do
     it { is_expected.to contain_user('dan').with('gid'          => title) }
     it { is_expected.to contain_user('dan').with('groups'       => []) }
     it { is_expected.to contain_user('dan').with('allowdupe'    => false) }
-    it { is_expected.to contain_user('dan').with('sshkey_owner' => 'dan') }
     it { is_expected.to contain_user('dan').with('managehome'   => true) }
     it { is_expected.to contain_group('dan').with('ensure'      => 'present') }
     it { is_expected.to contain_group('dan').with('gid'         => nil) }
@@ -92,7 +91,6 @@ describe '::accounts::user' do
     it { is_expected.to contain_user('dan').with('uid' => '123') }
     it { is_expected.to contain_user('dan').with('gid' => 'dan') }
     it { is_expected.to contain_user('dan').with('allowdupe' => true) }
-    it { is_expected.to contain_user('dan').with('sshkey_owner' => 'dan') }
     it { is_expected.to contain_user('dan').with('groups' => ['admin']) }
     it { is_expected.to contain_user('dan').with('membership' => 'inclusive') }
     it { is_expected.to contain_user('dan').with('password' => 'foo') }
