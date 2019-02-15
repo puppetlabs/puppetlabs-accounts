@@ -165,12 +165,14 @@ PUPPETCODE
 
 pp_user_with_duplicate_uid = <<-PUPPETCODE
   accounts::user { 'duplicate_user1':
-    allowdupe  => true,
-    uid         => '1234',
+    allowdupe    => true,
+    uid          => '1234',
+    sshkey_owner => 'duplicate_user1',
   }
   accounts::user { 'duplicate_user2':
-    allowdupe  => true,
-    uid         => '1234',
+    allowdupe    => true,
+    uid          => '1234',
+    sshkey_owner => 'duplicate_user1',
   }
 PUPPETCODE
 

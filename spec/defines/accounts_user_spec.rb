@@ -67,20 +67,21 @@ describe '::accounts::user' do
     end
 
     before(:each) do
-      params['ensure']     = 'present'
-      params['shell']      = '/bin/csh'
-      params['comment']    = 'comment'
-      params['home']       = '/var/home/dan'
-      params['home_mode']  = '0755'
-      params['uid']        = '123'
-      params['gid']        = '456'
-      params['group']      = 'dan'
-      params['groups']     = ['admin']
-      params['allowdupe']  = true
-      params['membership'] = 'inclusive'
-      params['password']   = 'foo'
-      params['sshkeys']    = ['1 2 3', '2 3 4']
-      params['expiry']     = '2018-06-22'
+      params['ensure']       = 'present'
+      params['shell']        = '/bin/csh'
+      params['comment']      = 'comment'
+      params['home']         = '/var/home/dan'
+      params['home_mode']    = '0755'
+      params['uid']          = '123'
+      params['gid']          = '456'
+      params['group']        = 'dan'
+      params['groups']       = ['admin']
+      params['allowdupe']    = true
+      params['sshkey_owner'] = 'dan'
+      params['membership']   = 'inclusive'
+      params['password']     = 'foo'
+      params['sshkeys']      = ['1 2 3', '2 3 4']
+      params['expiry']       = '2018-06-22'
     end
 
     it { is_expected.to contain_user('dan').with('ensure' => 'present') }
@@ -90,6 +91,7 @@ describe '::accounts::user' do
     it { is_expected.to contain_user('dan').with('uid' => '123') }
     it { is_expected.to contain_user('dan').with('gid' => 'dan') }
     it { is_expected.to contain_user('dan').with('allowdupe' => true) }
+    it { is_expected.to contain_user('dan').with('sshkey_owner' => 'dan') }
     it { is_expected.to contain_user('dan').with('groups' => ['admin']) }
     it { is_expected.to contain_user('dan').with('membership' => 'inclusive') }
     it { is_expected.to contain_user('dan').with('password' => 'foo') }
