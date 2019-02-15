@@ -11,16 +11,17 @@ describe '::accounts::user' do
   end
 
   describe 'expected defaults' do
-    it { is_expected.to contain_user('dan').with('shell'      => '/bin/bash') }
-    it { is_expected.to contain_user('dan').with('home'       => "/home/#{title}") }
-    it { is_expected.to contain_user('dan').with('ensure'     => 'present') }
-    it { is_expected.to contain_user('dan').with('comment'    => title) }
-    it { is_expected.to contain_user('dan').with('gid'        => title) }
-    it { is_expected.to contain_user('dan').with('groups'     => []) }
-    it { is_expected.to contain_user('dan').with('allowdupe'  => false) }
-    it { is_expected.to contain_user('dan').with('managehome' => true) }
-    it { is_expected.to contain_group('dan').with('ensure'    => 'present') }
-    it { is_expected.to contain_group('dan').with('gid'       => nil) }
+    it { is_expected.to contain_user('dan').with('shell'        => '/bin/bash') }
+    it { is_expected.to contain_user('dan').with('home'         => "/home/#{title}") }
+    it { is_expected.to contain_user('dan').with('ensure'       => 'present') }
+    it { is_expected.to contain_user('dan').with('comment'      => title) }
+    it { is_expected.to contain_user('dan').with('gid'          => title) }
+    it { is_expected.to contain_user('dan').with('groups'       => []) }
+    it { is_expected.to contain_user('dan').with('allowdupe'    => false) }
+    it { is_expected.to contain_user('dan').with('sshkey_owner' => 'dan') }
+    it { is_expected.to contain_user('dan').with('managehome'   => true) }
+    it { is_expected.to contain_group('dan').with('ensure'      => 'present') }
+    it { is_expected.to contain_group('dan').with('gid'         => nil) }
   end
 
   describe 'expected home defaults' do
