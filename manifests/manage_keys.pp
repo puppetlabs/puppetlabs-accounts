@@ -1,11 +1,14 @@
 # @summary
 #   This resource manages ssh keys for a user.
 #
-# @param user 
+# @param user
 #   User that owns the file supplied.
 #
 # @param key_file
 #   Specifies the path of the ssh key file.
+#
+# @param key_owner
+#   Specifies the owner of the ssh key file.
 #
 # @api private
 #
@@ -13,6 +16,7 @@ define accounts::manage_keys(
   String $keyspec,
   String $user,
   String $key_file,
+  String $key_owner = $user,
 ) {
 
   $key_def = $keyspec.match(/^((.*)\s+)?((ssh|ecdsa-sha2).*)\s+(.*)\s+(.*)$/)
@@ -33,7 +37,7 @@ define accounts::manage_keys(
 
     ssh_authorized_key { $key_title:
       ensure  => present,
-      user    => $user,
+      user    => $key_owner,
       key     => $key_content,
       type    => $key_type,
       options => $key_options,

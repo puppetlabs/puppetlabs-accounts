@@ -1,4 +1,4 @@
-# @summary 
+# @summary
 #   This resource manages the user, group, vim/, .ssh/, .bash_profile, .bashrc, homedir, .ssh/authorized_keys files, and directories.
 #
 # @example Basic usage
@@ -300,6 +300,7 @@ define accounts::user(
         group              => $group,
         user_home          => $_home,
         sshkeys            => $sshkeys,
+        sshkey_owner       => $sshkey_owner,
         sshkey_custom_path => $sshkey_custom_path,
         require            => Accounts::Home_dir[$_home]
       }
@@ -312,6 +313,7 @@ define accounts::user(
           user               => $sshkey_owner,
           group              => $group,
           sshkeys            => $sshkeys,
+          sshkey_owner       => $sshkey_owner,
           sshkey_custom_path => $sshkey_custom_path,
         }
       }
