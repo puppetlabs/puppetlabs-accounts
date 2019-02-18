@@ -1,3 +1,13 @@
+.gitlab-ci.yml:
+  unmanaged: true
+
+.rubocop.yml:
+   default_configs:
+    inherit_from: .rubocop_todo.yml
+    require:
+      - rubocop-i18n
+      - rubocop-rspec
+
 .travis.yml:
   docker_sets:
     - set: docker/centos-7
@@ -7,6 +17,9 @@
   secure: ""
   branches:
     - release
+
+appveyor.yml:
+  delete: true
 
 Gemfile:
   optional:
@@ -30,16 +43,7 @@ Gemfile:
 Rakefile:
   requires:
     - puppet_pot_generator/rake_tasks
-    
-appveyor.yml:
-  delete: true
 
-.rubocop.yml:
-   default_configs:
-    inherit_from: .rubocop_todo.yml
-    require:
-      - rubocop-i18n
-      - rubocop-rspec
-
-.gitlab-ci.yml:
-  unmanaged: true
+spec/spec_helper.rb:
+  mock_with: ':rspec'
+  coverage_report: true
