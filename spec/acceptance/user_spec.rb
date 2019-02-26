@@ -189,10 +189,10 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       # Solaris does not offer a means of testing the password
       it('contains password', unless: os[:family] == 'solaris') { is_expected.to contain_password 'hi' }
       # Solaris 10's /bin/sh can't expand ~username paths and thus can't read ~hunner/.ssh/authorized_keys
-      it('has authorized_key - vagrant', unless: os[:family] == 'solaris' && os[:release].start_with('10')) {
+      it 'has authorized_key - vagrant' {
         is_expected.to have_authorized_key "ssh-rsa #{test_key} vagrant"
       }
-      it('has authorized_key - hunner_ssh-rsa_vagrant2', unless: (os[:family] == 'solaris' && os[:release].start_with('10'))) {
+      it 'has authorized_key - hunner_ssh-rsa_vagrant2' {
         is_expected.to have_authorized_key "from=\"myhost.example.com,192.168.1.1\" ssh-rsa #{test_key} hunner_ssh-rsa_vagrant2"
       }
     end
