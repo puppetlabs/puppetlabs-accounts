@@ -44,7 +44,7 @@ pp_accounts_ssh_warn = <<-PUPPETCODE
   }
 PUPPETCODE
 
-describe 'accounts::user define', if: (fact('osfamily') == 'Debian' || fact('osfamily') == 'RedHat') && (Gem::Version.new(puppet_version) >= Gem::Version.new('4.10.5')) do
+describe 'accounts::user define', if: (os[:family] == 'debian' || os[:family] == 'redhat') && (Gem::Version.new(puppet_version) >= Gem::Version.new('4.10.5')) do
   before :all do
     hosts.each do |host|
       on(host, "sed -i \"96i FastGettext.locale='ja'\" /opt/puppetlabs/puppet/lib/ruby/vendor_ruby/puppet.rb")

@@ -174,11 +174,12 @@ pp_user_with_duplicate_uid = <<-PUPPETCODE
   }
 PUPPETCODE
 
-describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
+describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) do
   describe 'main tests' do
     describe user('hunner') do
       it 'creates groups of matching names, assigns non-matching group, manages homedir, manages other properties, gives key, makes dotfiles, managevim false' do
         apply_manifest(pp_accounts_define, catch_failures: true)
+        
       end
       it { is_expected.to exist }
       it { is_expected.to belong_to_group 'hunner' }
@@ -186,12 +187,12 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
       it { is_expected.to have_login_shell '/bin/true' }
       it { is_expected.to have_home_directory '/test/hunner' }
       # Solaris does not offer a means of testing the password
-      it('contains password', unless: default['platform'].match(%r{solaris})) { is_expected.to contain_password 'hi' }
+      it('contains password', unless: os[:family] == 'solaris') { is_expected.to contain_password 'hi' }
       # Solaris 10's /bin/sh can't expand ~username paths and thus can't read ~hunner/.ssh/authorized_keys
-      it('has authorized_key - vagrant', unless: default['platform'].match(%r{solaris-10})) {
+      it('has authorized_key - vagrant', unless: os[:family] == 'solaris' && os[:release].start_with('10')) {
         is_expected.to have_authorized_key "ssh-rsa #{test_key} vagrant"
       }
-      it('has authorized_key - hunner_ssh-rsa_vagrant2', unless: default['platform'].match(%r{solaris-10})) {
+      it('has authorized_key - hunner_ssh-rsa_vagrant2', unless: (os[:family] == 'solaris' && os[:release].start_with('10'))) {
         is_expected.to have_authorized_key "from=\"myhost.example.com,192.168.1.1\" ssh-rsa #{test_key} hunner_ssh-rsa_vagrant2"
       }
     end
@@ -232,10 +233,13 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
         apply_manifest(pp_locked_user, catch_failures: true)
       end
       login_shell = '/sbin/nologin'
-      case fact('osfamily')
-      when 'Debian'
+
+      case os[:family]
+      when 'debian'
         login_shell = '/usr/sbin/nologin'
-      when 'Solaris'
+      when 'ubuntu'
+        login_shell = '/usr/sbin/nologin' 
+      when 'solaris'
         login_shell = '/usr/bin/false'
       end
       it {
@@ -280,7 +284,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
     end
   end
   # Solaris does not offer a means of testing the password
-  describe 'ignore password if ignore set to true', unless: default['platform'].match(%r{solaris}) do
+  describe 'ignore password if ignore set to true', unless: os[:family] == 'solaris' do
     describe user('ignore_user') do
       it 'creates group of matching names, assigns non-matching group, empty password, ignore true, ignores password' do
         apply_manifest(pp_ignore_user_first_run, catch_failures: true)
@@ -291,7 +295,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
     end
   end
   # Solaris does not offer a means of testing the password
-  describe 'do not ignore password if ignore set to false', unless: default['platform'].match(%r{solaris}) do
+  describe 'do not ignore password if ignore set to false', unless: os[:family] == 'solaris' do
     describe user('no_ignore_user') do
       it 'creates group of matching names, assigns non-matching group, empty password, ignore false, should not ignore password' do
         apply_manifest(pp_no_ignore_user_first_run, catch_failures: true)
@@ -301,7 +305,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
       it { is_expected.to contain_password '' }
     end
   end
-  describe 'do not ignore password if set and ignore set to true', unless: default['platform'].match(%r{solaris}) do
+  describe 'do not ignore password if set and ignore set to true', unless: os[:family] == 'solaris' do
     describe user('specd_user') do
       it 'creates group of matching names, assigns non-matching group, specify password, ignore, should not ignore password' do
         apply_manifest(pp_specd_user_first_run, catch_failures: true)
