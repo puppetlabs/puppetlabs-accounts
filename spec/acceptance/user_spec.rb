@@ -174,43 +174,33 @@ pp_user_with_duplicate_uid = <<-PUPPETCODE
   }
 PUPPETCODE
 
-describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
+describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) do
   describe 'main tests' do
-    describe user('hunner') do
-      it 'creates groups of matching names, assigns non-matching group, manages homedir, manages other properties, gives key, makes dotfiles, managevim false' do
-        apply_manifest(pp_accounts_define, catch_failures: true)
-      end
-      it { is_expected.to exist }
-      it { is_expected.to belong_to_group 'hunner' }
-      it { is_expected.to belong_to_group 'root' }
-      it { is_expected.to have_login_shell '/bin/true' }
-      it { is_expected.to have_home_directory '/test/hunner' }
-      # Solaris does not offer a means of testing the password
-      it('contains password', unless: default['platform'].match(%r{solaris})) { is_expected.to contain_password 'hi' }
-      # Solaris 10's /bin/sh can't expand ~username paths and thus can't read ~hunner/.ssh/authorized_keys
-      it('has authorized_key - vagrant', unless: default['platform'].match(%r{solaris-10})) {
-        is_expected.to have_authorized_key "ssh-rsa #{test_key} vagrant"
-      }
-      it('has authorized_key - hunner_ssh-rsa_vagrant2', unless: default['platform'].match(%r{solaris-10})) {
-        is_expected.to have_authorized_key "from=\"myhost.example.com,192.168.1.1\" ssh-rsa #{test_key} hunner_ssh-rsa_vagrant2"
-      }
-    end
-    describe file('/test/hunner') do
-      it { is_expected.to be_directory }
-      it { is_expected.to be_mode 700 }
-      it { is_expected.to be_owned_by 'hunner' }
-      it { is_expected.to be_grouped_into 'hunner' }
-    end
-    describe file('/test/hunner/.bashrc') do
-      its(:content) { is_expected.to match(%r{managed by Puppet}) }
-    end
-    describe file('/test/hunner/.bash_profile') do
-      its(:content) { is_expected.to match(%r{Get the aliases and functions}) }
-    end
-    describe file('/test/hunner/.vim') do
-      it { is_expected.not_to exist }
+    it 'creates groups of matching names, assigns non-matching group, manages homedir, manages other properties, gives key, makes dotfiles, managevim false' do
+      apply_manifest(pp_accounts_define, catch_failures: true)
+
+      expect(user('hunner')).to exist
+      expect(user('hunner')).to belong_to_group 'hunner'
+      expect(user('hunner')).to belong_to_group 'root'
+      expect(user('hunner')).to have_login_shell '/bin/true'
+      expect(user('hunner')).to have_home_directory '/test/hunner'
+      expect(user('hunner')).to contain_password 'hi' unless os[:family] =~ %r{solaris}
+
+      expect(file('/test/hunner')).to be_directory
+      expect(file('/test/hunner')).to be_mode 700
+      expect(file('/test/hunner')).to be_owned_by 'hunner'
+      expect(file('/test/hunner')).to be_grouped_into 'hunner'
+
+      expect(file('/test/hunner/.bashrc')).to be_file
+      expect(file('/test/hunner/.bashrc').content).to match %r{managed by Puppet}
+
+      expect(file('/test/hunner/.bash_profile')).to be_file
+      expect(file('/test/hunner/.bash_profile').content).to match %r{Get the aliases and functions}
+
+      expect(file('/test/hunner/.vim')).not_to exist
     end
   end
+
   describe 'warn for sshkeys without managehome' do
     it 'creates groups of matching names, assigns non-matching group, manages homedir, manages other properties, gives key, makes dotfiles' do
       apply_manifest(pp_without_managehome, catch_failures: true) do |r|
@@ -218,110 +208,110 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
       end
     end
   end
+
   describe 'managevim set to true' do
     it '.vim file will be created' do
       apply_manifest(pp_with_managevim, catch_failures: true)
-    end
-    describe file('/test/hunner/.vim') do
-      it { is_expected.to be_directory }
+      expect(file('/test/hunner/.vim')).to be_directory
     end
   end
+
   describe 'locking users' do
-    describe user('hunner') do
-      it 'locks a user' do
-        apply_manifest(pp_locked_user, catch_failures: true)
+    let(:login_shell) do
+      case os[:family]
+      when 'debian'
+        '/usr/sbin/nologin'
+      when 'ubuntu'
+        '/usr/sbin/nologin'
+      when 'solaris'
+        '/usr/bin/false'
+      else
+        '/sbin/nologin'
       end
-      login_shell = '/sbin/nologin'
-      case fact('osfamily')
-      when 'Debian'
-        login_shell = '/usr/sbin/nologin'
-      when 'Solaris'
-        login_shell = '/usr/bin/false'
-      end
-      it {
-        is_expected.to have_login_shell login_shell
-      }
+    end
+
+    it 'locks a user' do
+      apply_manifest(pp_locked_user, catch_failures: true)
+      expect(user('hunner')).to have_login_shell login_shell
     end
   end
+
   describe 'create user with custom group name' do
-    describe user('cuser') do
-      it 'creates group of matching names, assigns non-matching group, manages homedir' do
-        apply_manifest(pp_custom_group_name, catch_failures: true)
-      end
-      it { is_expected.to exist }
-      it { is_expected.to belong_to_group 'staff' }
-      it { is_expected.to have_home_directory '/test/cuser' }
-    end
-    describe file('/test/cuser') do
-      it { is_expected.to be_directory }
-      it { is_expected.to be_mode 700 }
-      it { is_expected.to be_owned_by 'cuser' }
-      it { is_expected.to be_grouped_into 'staff' }
+    it 'creates group of matching names, assigns non-matching group, manages homedir' do
+      apply_manifest(pp_custom_group_name, catch_failures: true)
+
+      expect(user('cuser')).to exist
+      expect(user('cuser')).to belong_to_group 'staff'
+      expect(user('cuser')).to have_home_directory '/test/cuser'
+
+      expect(file('/test/cuser')).to be_directory
+      expect(file('/test/cuser')).to be_mode 700
+      expect(file('/test/cuser')).to be_owned_by 'cuser'
+      expect(file('/test/cuser')).to be_grouped_into 'staff'
     end
   end
+
   describe 'group set to false does not create group' do
-    describe user('grp_flse') do
-      it 'does not create group' do
-        apply_manifest(pp_create_group_false, expect_failures: true) do |r|
-          expect(r.stderr).to match(%r{(.*group '?newgrp_1'? does not exist.*|.*Unknown group `?newgrp_1'?.*)})
-        end
+    it 'does not create group' do
+      apply_manifest(pp_create_group_false, expect_failures: true) do |r|
+        expect(r.stderr).to match(%r{(.*group '?newgrp_1'? does not exist.*|.*Unknown group `?newgrp_1'?.*)})
       end
-      it { is_expected.not_to exist }
-      it { is_expected.not_to belong_to_group 'new_group_1' }
+
+      expect(user('grp_flse')).not_to exist
+      expect(user('grp_flse')).not_to belong_to_group 'new_group_1'
     end
   end
+
   describe 'group set to true creates group' do
-    describe user('grp_true') do
-      it 'creates group' do
-        apply_manifest(pp_create_group_true, catch_failures: true)
-      end
-      it { is_expected.to exist }
-      it { is_expected.to belong_to_group 'newgrp_2' }
+    it 'creates group' do
+      apply_manifest(pp_create_group_true, catch_failures: true)
+
+      expect(user('grp_true')).to exist
+      expect(user('grp_true')).to belong_to_group 'newgrp_2'
     end
   end
+
   # Solaris does not offer a means of testing the password
-  describe 'ignore password if ignore set to true', unless: default['platform'].match(%r{solaris}) do
-    describe user('ignore_user') do
-      it 'creates group of matching names, assigns non-matching group, empty password, ignore true, ignores password' do
-        apply_manifest(pp_ignore_user_first_run, catch_failures: true)
-        apply_manifest(pp_ignore_user_second_run, catch_failures: true)
-      end
-      it { is_expected.to exist }
-      it { is_expected.to contain_password 'foo' }
+  describe 'ignore password if ignore set to true', unless: os[:family] == 'solaris' do
+    it 'creates group of matching names, assigns non-matching group, empty password, ignore true, ignores password' do
+      apply_manifest(pp_ignore_user_first_run, catch_failures: true)
+      apply_manifest(pp_ignore_user_second_run, catch_failures: true)
+
+      expect(user('ignore_user')).to exist
+      expect(user('ignore_user')).to contain_password 'foo'
     end
   end
+
   # Solaris does not offer a means of testing the password
-  describe 'do not ignore password if ignore set to false', unless: default['platform'].match(%r{solaris}) do
-    describe user('no_ignore_user') do
-      it 'creates group of matching names, assigns non-matching group, empty password, ignore false, should not ignore password' do
-        apply_manifest(pp_no_ignore_user_first_run, catch_failures: true)
-        apply_manifest(pp_no_ignore_user_second_run, catch_failures: true)
-      end
-      it { is_expected.to exist }
-      it { is_expected.to contain_password '' }
+  describe 'do not ignore password if ignore set to false', unless: os[:family] == 'solaris' do
+    it 'creates group of matching names, assigns non-matching group, empty password, ignore false, should not ignore password' do
+      apply_manifest(pp_no_ignore_user_first_run, catch_failures: true)
+      apply_manifest(pp_no_ignore_user_second_run, catch_failures: true)
+
+      expect(user('no_ignore_user')).to exist
+      expect(user('no_ignore_user')).to contain_password ''
     end
   end
-  describe 'do not ignore password if set and ignore set to true', unless: default['platform'].match(%r{solaris}) do
-    describe user('specd_user') do
-      it 'creates group of matching names, assigns non-matching group, specify password, ignore, should not ignore password' do
-        apply_manifest(pp_specd_user_first_run, catch_failures: true)
-        apply_manifest(pp_specd_user_second_run, catch_failures: true)
-      end
-      it { is_expected.to exist }
-      it { is_expected.to contain_password 'bar' }
+
+  describe 'do not ignore password if set and ignore set to true', unless: os[:family] == 'solaris' do
+    it 'creates group of matching names, assigns non-matching group, specify password, ignore, should not ignore password' do
+      apply_manifest(pp_specd_user_first_run, catch_failures: true)
+      apply_manifest(pp_specd_user_second_run, catch_failures: true)
+
+      expect(user('specd_user')).to exist
+      expect(user('specd_user')).to contain_password 'bar'
     end
   end
+
   describe 'create duplicate users with same uid' do
     it 'runs with no errors' do
       apply_manifest(pp_user_with_duplicate_uid, catch_failures: true)
-    end
-    describe user('duplicate_user1') do
-      it { is_expected.to exist }
-      it { is_expected.to have_uid 1234 }
-    end
-    describe user('duplicate_user2') do
-      it { is_expected.to exist }
-      it { is_expected.to have_uid 1234 }
+
+      expect(user('duplicate_user1')).to exist
+      expect(user('duplicate_user1')).to have_uid 1234
+
+      expect(user('duplicate_user2')).to exist
+      expect(user('duplicate_user2')).to have_uid 1234
     end
   end
 end
