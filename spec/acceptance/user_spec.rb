@@ -200,6 +200,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       expect(file('/test/hunner/.vim')).not_to exist
     end
   end
+
   describe 'warn for sshkeys without managehome' do
     it 'creates groups of matching names, assigns non-matching group, manages homedir, manages other properties, gives key, makes dotfiles' do
       apply_manifest(pp_without_managehome, catch_failures: true) do |r|
@@ -207,12 +208,14 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       end
     end
   end
+
   describe 'managevim set to true' do
     it '.vim file will be created' do
       apply_manifest(pp_with_managevim, catch_failures: true)
       expect(file('/test/hunner/.vim')).to be_directory
     end
   end
+
   describe 'locking users' do
     let(:login_shell) do
       case os[:family]
@@ -232,6 +235,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       expect(user('hunner')).to have_login_shell login_shell
     end
   end
+
   describe 'create user with custom group name' do
     it 'creates group of matching names, assigns non-matching group, manages homedir' do
       apply_manifest(pp_custom_group_name, catch_failures: true)
@@ -246,6 +250,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       expect(file('/test/cuser')).to be_grouped_into 'staff'
     end
   end
+  
   describe 'group set to false does not create group' do
     it 'does not create group' do
       apply_manifest(pp_create_group_false, expect_failures: true) do |r|
@@ -256,6 +261,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       expect(user('grp_flse')).not_to belong_to_group 'new_group_1'
     end
   end
+
   describe 'group set to true creates group' do
     it 'creates group' do
       apply_manifest(pp_create_group_true, catch_failures: true)
@@ -264,6 +270,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       expect(user('grp_true')).to belong_to_group 'newgrp_2'
     end
   end
+
   # Solaris does not offer a means of testing the password
   describe 'ignore password if ignore set to true', unless: os[:family] == 'solaris' do
     it 'creates group of matching names, assigns non-matching group, empty password, ignore true, ignores password' do
@@ -274,6 +281,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       expect(user('ignore_user')).to contain_password 'foo'
     end
   end
+
   # Solaris does not offer a means of testing the password
   describe 'do not ignore password if ignore set to false', unless: os[:family] == 'solaris' do
     it 'creates group of matching names, assigns non-matching group, empty password, ignore false, should not ignore password' do
@@ -284,6 +292,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       expect(user('no_ignore_user')).to contain_password ''
     end
   end
+
   describe 'do not ignore password if set and ignore set to true', unless: os[:family] == 'solaris' do
     it 'creates group of matching names, assigns non-matching group, specify password, ignore, should not ignore password' do
       apply_manifest(pp_specd_user_first_run, catch_failures: true)
@@ -293,6 +302,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       expect(user('specd_user')).to contain_password 'bar'
     end
   end
+  
   describe 'create duplicate users with same uid' do
     it 'runs with no errors' do
       apply_manifest(pp_user_with_duplicate_uid, catch_failures: true)
