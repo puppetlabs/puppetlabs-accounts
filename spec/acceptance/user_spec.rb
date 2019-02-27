@@ -250,7 +250,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       expect(file('/test/cuser')).to be_grouped_into 'staff'
     end
   end
-  
+
   describe 'group set to false does not create group' do
     it 'does not create group' do
       apply_manifest(pp_create_group_false, expect_failures: true) do |r|
@@ -302,7 +302,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       expect(user('specd_user')).to contain_password 'bar'
     end
   end
-  
+
   describe 'create duplicate users with same uid' do
     it 'runs with no errors' do
       apply_manifest(pp_user_with_duplicate_uid, catch_failures: true)
