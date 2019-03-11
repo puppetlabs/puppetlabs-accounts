@@ -1,19 +1,22 @@
 # @summary
 #   This resource specifies where ssh keys are managed.
 #
-# @param group 
+# @param group
 #   Name of the users primary group.
 #
-# @param user 
+# @param user
 #   User that owns all of the files being created.
 #
 # @param user_home
 #   Specifies the path to the user's home directory.
 #
-# @param sshkeys 
+# @param sshkeys
 #   List of ssh keys to be added for this user in this directory.
 #
-# @param sshkey_custom_path 
+# @param sshkey_owner
+#   Specifies the owner of the ssh key file.
+#
+# @param sshkey_custom_path
 #   Path to custom file for ssh key management.
 #
 # @api private
@@ -23,6 +26,7 @@ define accounts::key_management(
   String $group,
   Optional[String] $user_home = undef,
   Array[String] $sshkeys = [],
+  String $sshkey_owner = $user,
   Optional[String] $sshkey_custom_path = undef,
 ) {
 
@@ -58,10 +62,11 @@ define accounts::key_management(
     }
     $sshkeys.each |$sshkey| {
       accounts::manage_keys { "${sshkey} for ${user}":
-        keyspec  => $sshkey,
-        user     => $user,
-        key_file => $key_file,
-        require  => $requires,
+        keyspec   => $sshkey,
+        user      => $user,
+        key_owner => $sshkey_owner,
+        key_file  => $key_file,
+        require   => $requires,
       }
     }
   }

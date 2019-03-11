@@ -11,16 +11,16 @@ describe '::accounts::user' do
   end
 
   describe 'expected defaults' do
-    it { is_expected.to contain_user('dan').with('shell'      => '/bin/bash') }
-    it { is_expected.to contain_user('dan').with('home'       => "/home/#{title}") }
-    it { is_expected.to contain_user('dan').with('ensure'     => 'present') }
-    it { is_expected.to contain_user('dan').with('comment'    => title) }
-    it { is_expected.to contain_user('dan').with('gid'        => title) }
-    it { is_expected.to contain_user('dan').with('groups'     => []) }
-    it { is_expected.to contain_user('dan').with('allowdupe'  => false) }
-    it { is_expected.to contain_user('dan').with('managehome' => true) }
-    it { is_expected.to contain_group('dan').with('ensure'    => 'present') }
-    it { is_expected.to contain_group('dan').with('gid'       => nil) }
+    it { is_expected.to contain_user('dan').with('shell'        => '/bin/bash') }
+    it { is_expected.to contain_user('dan').with('home'         => "/home/#{title}") }
+    it { is_expected.to contain_user('dan').with('ensure'       => 'present') }
+    it { is_expected.to contain_user('dan').with('comment'      => title) }
+    it { is_expected.to contain_user('dan').with('gid'          => title) }
+    it { is_expected.to contain_user('dan').with('groups'       => []) }
+    it { is_expected.to contain_user('dan').with('allowdupe'    => false) }
+    it { is_expected.to contain_user('dan').with('managehome'   => true) }
+    it { is_expected.to contain_group('dan').with('ensure'      => 'present') }
+    it { is_expected.to contain_group('dan').with('gid'         => nil) }
   end
 
   describe 'expected home defaults' do
@@ -67,20 +67,21 @@ describe '::accounts::user' do
     end
 
     before(:each) do
-      params['ensure']     = 'present'
-      params['shell']      = '/bin/csh'
-      params['comment']    = 'comment'
-      params['home']       = '/var/home/dan'
-      params['home_mode']  = '0755'
-      params['uid']        = '123'
-      params['gid']        = '456'
-      params['group']      = 'dan'
-      params['groups']     = ['admin']
-      params['allowdupe']  = true
-      params['membership'] = 'inclusive'
-      params['password']   = 'foo'
-      params['sshkeys']    = ['1 2 3', '2 3 4']
-      params['expiry']     = '2018-06-22'
+      params['ensure']       = 'present'
+      params['shell']        = '/bin/csh'
+      params['comment']      = 'comment'
+      params['home']         = '/var/home/dan'
+      params['home_mode']    = '0755'
+      params['uid']          = '123'
+      params['gid']          = '456'
+      params['group']        = 'dan'
+      params['groups']       = ['admin']
+      params['allowdupe']    = true
+      params['sshkey_owner'] = 'dan'
+      params['membership']   = 'inclusive'
+      params['password']     = 'foo'
+      params['sshkeys']      = ['1 2 3', '2 3 4']
+      params['expiry']       = '2018-06-22'
     end
 
     it { is_expected.to contain_user('dan').with('ensure' => 'present') }
