@@ -17,6 +17,7 @@ define accounts::manage_keys(
   String $user,
   String $key_file,
   String $key_owner = $user,
+  Enum['present','absent'] $ensure = 'present',
 ) {
 
   $key_def = $keyspec.match(/^((.*)\s+)?((ssh|ecdsa-sha2).*)\s+(.*)\s+(.*)$/)
@@ -35,8 +36,12 @@ define accounts::manage_keys(
 
     $key_title = "${user}_${key_type}_${key_name}"
 
+    if $ensure == 'absent' {
+      Ssh_authorized_key[$key_title] -> User[$user]
+    }
+
     ssh_authorized_key { $key_title:
-      ensure  => present,
+      ensure  => $ensure,
       user    => $key_owner,
       key     => $key_content,
       type    => $key_type,
