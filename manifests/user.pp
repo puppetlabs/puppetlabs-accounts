@@ -139,6 +139,9 @@
 # @param name
 #   Name of the user.
 #
+# @param purge_user_home
+#   Whether to force recurse remove user home directories when removing a user. Defaults to false.
+#
 define accounts::user(
   Pattern[/^present$|^absent$/] $ensure                     = 'present',
   Pattern[/^\//] $shell                                     = '/bin/bash',
@@ -172,6 +175,7 @@ define accounts::user(
   Optional[String] $forward_source                          = undef,
   Optional[Pattern[/^absent$|^\d{4}-\d{2}-\d{2}$/]] $expiry = undef,
   Optional[String] $sshkey_custom_path                      = undef,
+  Boolean $purge_user_home  = false,
 ) {
 
   if $home {
@@ -294,22 +298,22 @@ define accounts::user(
       group                => $group,
       require              => [ User[$name] ],
     }
-    if ( $ensure == 'present' ) {
-      accounts::key_management { "${name}_key_management":
-        user               => $name,
-        group              => $group,
-        user_home          => $_home,
-        sshkeys            => $sshkeys,
-        sshkey_owner       => $sshkey_owner,
-        sshkey_custom_path => $sshkey_custom_path,
-        require            => Accounts::Home_dir[$_home]
-      }
+    accounts::key_management { "${name}_key_management":
+      ensure             => $ensure,
+      user               => $name,
+      group              => $group,
+      user_home          => $_home,
+      sshkeys            => $sshkeys,
+      sshkey_custom_path => $sshkey_custom_path,
+      purge_user_home    => $purge_user_home,
+      require            => Accounts::Home_dir[$_home]
     }
   } elsif $sshkeys != [] {
     # We are not managing the user's home directory but we have specified a
     # custom, non-home directory for the ssh keys.
       if (($sshkey_custom_path != undef) and ($ensure == 'present')) {
         accounts::key_management { "${name}_key_management":
+          ensure             => $ensure,
           user               => $sshkey_owner,
           group              => $group,
           sshkeys            => $sshkeys,

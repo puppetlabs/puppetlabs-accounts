@@ -118,13 +118,23 @@ describe '::accounts::user' do
         params['ensure'] = 'absent'
       end
 
-      it { is_expected.to contain_user('dan').with('ensure' => 'absent') }
-      it { is_expected.to contain_user('dan').that_comes_before('Group[dan]') }
-      it { is_expected.to contain_group('dan').with('ensure' => 'absent') }
-      it do
-        is_expected.not_to contain_accounts__home_dir('/var/home/dan').with('ensure' => 'absent',
-                                                                            'recurse' => true,
-                                                                            'force' => true)
+      context 'with default sshkey path' do
+        it { is_expected.to contain_user('dan').with('ensure' => 'absent') }
+        it { is_expected.to contain_user('dan').that_comes_before('Group[dan]') }
+        it { is_expected.to contain_group('dan').with('ensure' => 'absent') }
+        it do
+          is_expected.not_to contain_accounts__home_dir('/var/home/dan').with('ensure' => 'absent',
+                                                                              'recurse' => true,
+                                                                              'force' => true)
+        end
+      end
+
+      context 'with custom sshkey location' do
+        before(:each) do
+          params['sshkey_custom_path'] = '/var/lib/ssh/dan/custom_key_file'
+        end
+
+        it { is_expected.to contain_file('/var/lib/ssh/dan/custom_key_file').with('ensure' => 'absent').that_comes_before('User[dan]') }
       end
     end
 
