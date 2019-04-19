@@ -1,5 +1,6 @@
 # @summary
-#   This resource manages the user, group, vim/, .ssh/, .bash_profile, .bashrc, homedir, .ssh/authorized_keys files, and directories.
+#   This resource manages the user, group, vim/, .ssh/, .bash_profile, .bashrc,
+#   homedir, .ssh/authorized_keys files, and directories.
 #
 # @example Basic usage
 #   accounts::user { 'bob':
@@ -12,14 +13,61 @@
 #   }
 #
 # @param ensure
-#   Specifies whether the user, its primary group, homedir, and ssh keys should exist. Valid values are 'present' and 'absent'. Note that
-#   when a user is created, a group with the same name as the user is also created.
+#   Specifies whether the user, its primary group, homedir, and ssh keys should
+#   exist. Valid values are 'present' and 'absent'. Note that when a user is
+#   created, a group with the same name as the user is also created.
 #
-# @param shell
-#   Manages the user shell.
+# @param allowdupe
+#   Whether to allow duplicate UIDs. By default false
+#
+# @param bash_profile_content
+#   The content to place in the user's ~/.bash_profile file. Mutually exclusive
+#   to bash_profile_source.
+#
+# @param bash_profile_source
+#   A source file containing the content to place in the user's ~/.bash_profile
+#   file. Mutually exclusive to bash_profile_content.
+#
+# @param bashrc_content
+#   The content to place in the user's ~/.bashrc file. Mutually exclusive to
+#   bashrc_source.
+#
+# @param bashrc_source
+#   A source file containing the content to place in the user's ~/.bashrc file.
+#   Mutually exclusive to bashrc_content.
 #
 # @param comment
 #   A comment describing or regarding the user.
+#
+# @param create_group
+#   Specifies if you want to create a group with the user's name.
+#
+# @param expiry
+#   Specifies the date the user account expires on. Valid values: YYYY-MM-DD
+#   date format, or 'absent' to remove expiry date.
+#
+# @param forcelocal
+#   Specifies whether you want to manage a local user/group that is also managed
+#   by a network name service.
+#
+# @param forward_content
+#   The content to place in the user's ~/.forward file. Mutually exclusive to
+#   forward_source.
+#
+# @param forward_source
+#   A source file containing the content to place in the user's ~/.forward file.
+#   Mutually exclusive to forward_content.
+#
+# @param gid
+#   Specifies the gid of the user's primary group. Must be specified
+#   numerically.
+#
+# @param group
+#   Specifies the name of the user's primary group. By default, this uses a
+#   group named the same as user name
+#
+# @param groups
+#   Specifies the user's group memberships.
 #
 # @param home
 #   Specifies the path to the user's home directory.
@@ -33,114 +81,92 @@
 #   - Solaris, root user: '/'
 #
 # @param home_mode
-#   Manages the user's home directory permission mode. Valid values are in octal notation, specified as a string. Defaults to undef,
-#   which creates a home directory with 0700 permissions. It does not touch them if the directory already exists. Keeping it undef also
-#   allows a user to manage their own permissions. If home_mode is set, Puppet enforces the permissions on every run.
+#   Manages the user's home directory permission mode. Valid values are in octal
+#   notation, specified as a string. Defaults to undef, which creates a home
+#   directory with 0700 permissions. It does not touch them if the directory
+#   already exists. Keeping it undef also allows a user to manage their own
+#   permissions. If home_mode is set, Puppet enforces the permissions on every
+#   run.
 #
-# @param uid
-#   Specifies the user's uid number. Must be specified numerically.
-#
-# @param gid
-#   Specifies the gid of the user's primary group. Must be specified numerically.
-#
-# @param allowdupe
-#   Whether to allow duplicate UIDs. By default false
-#
-# @param group
-#   Specifies the name of the user's primary group. By default, this uses a group named the same as user name
-#
-# @param groups
-#   Specifies the user's group memberships.
-#
-# @param create_group
-#   Specifies if you want to create a group with the user's name.
-#
-# @param membership
-#   Establishes whether specified groups should be considered the complete list (inclusive) or the minimum list (minimum) of groups to
-#   which the user belongs. Valid values: 'inclusive', 'minimum'.
-#
-# @param forcelocal
-#   Specifies whether you want to manage a local user/group that is also managed by a network name service.
-#
-# @param password
-#   The user's password, in whatever encrypted format the local machine requires. Default: '!!', which prevents the user from logging in
-#   with a password.
-#
-# @param salt
-#   This is the 32-byte salt used to generate the PBKDF2 password used in OS X. This field is required for managing passwords on
-#   OS X >= 10.8.
+# @param ignore_password_if_empty
+#   Specifies whether an empty password field should be ignored. If set to true,
+#   this ignores a password field that is defined but empty. If set to false, it
+#   sets the password to an empty value.
 #
 # @param iterations
-#   This is the number of iterations of a chained computation of the PBKDF2 password hash. This field is required for managing passwords on
-#   OS X >= 10.8.
+#   This is the number of iterations of a chained computation of the PBKDF2
+#   password hash. This field is required for managing passwords on OS X >=
+#   10.8.
 #
 # @param locked
-#   Specifies whether the account should be locked and the user prevented from logging in. Set to true for users whose login privileges
-#   have been revoked.
+#   Specifies whether the account should be locked and the user prevented from
+#   logging in. Set to true for users whose login privileges have been revoked.
+#
+# @param managehome
+#   Specifies whether the user's home directory should be managed by puppet. In
+#   addition to the usual user resource managehome qualities, this attribute
+#   also purges the user's homedir if ensure is set to 'absent' and managehome
+#   is set to true.
+#
+# @param managevim
+#   Specifies whether or not the .vim folder should be created within the
+#   managed accounts home directory.
+#
+# @param membership
+#   Establishes whether specified groups should be considered the complete list
+#   (inclusive) or the minimum list (minimum) of groups to which the user
+#   belongs. Valid values: 'inclusive', 'minimum'.
+#
+# @param name
+#   Name of the user.
+#
+# @param password
+#   The user's password, in whatever encrypted format the local machine
+#   requires. Default: '!!', which prevents the user from logging in with a
+#   password.
+#
+# @param purge_sshkeys
+#   Whether keys not included in sshkeys should be removed from the user. If
+#   purge_sshkeys is true and sshkeys is an empty array, all SSH keys will be
+#   removed from the user.
+#
+# @param purge_user_home
+#   Whether to force recurse remove user home directories when removing a user.
+#   Defaults to false.
+#
+# @param salt
+#   This is the 32-byte salt used to generate the PBKDF2 password used in OS X.
+#   This field is required for managing passwords on OS X >= 10.8.
+#
+# @param shell
+#   Manages the user shell.
+#
+# @param sshkey_custom_path
+#   Custom location for ssh public key file.
+#
+# @param sshkey_owner
+#   Specifies the owner of the sshkey file .ssh/authorized_keys.
 #
 # @param sshkeys
-#   An array of SSH public keys associated with the user. These should be complete public key strings that include the type, content and
-#   name of the key, exactly as it would appear in its id_*.pub file, or with an optional options string preceding the other components,
-#   as it would appear as an entry in an authorized_keys file. Must be an array.
+#   An array of SSH public keys associated with the user. These should be
+#   complete public key strings that include the type, content and name of the
+#   key, exactly as it would appear in its id_*.pub file, or with an optional
+#   options string preceding the other components, as it would appear as an
+#   entry in an authorized_keys file. Must be an array.
 #
 #   Examples:
 #
 #   - ssh-rsa AAAAB3NzaC1y... bob@example.com
 #
-#   - from="myhost.example.com,192.168.1.1" ssh-rsa AAAAQ4ngoeiC... bob2@example.com
+#   - from="myhost.example.com,192.168.1.1" ssh-rsa AAAAQ4ng... bob2@example.com
 #
 #   Note that for multiple keys, the name component (the last) must be unique.
-#
-# @param purge_sshkeys
-#   Whether keys not included in sshkeys should be removed from the user. If purge_sshkeys is true and sshkeys is an empty array, all SSH
-#   keys will be removed from the user.
-#
-# @param sshkey_owner
-#   Specifies the owner of the sshkey file .ssh/authorized_keys.
-#
-# @param managehome
-#   Specifies whether the user's home directory should be managed by puppet. In addition to the usual user resource managehome qualities,
-#   this attribute also purges the user's homedir if ensure is set to 'absent' and managehome is set to true.
-#
-# @param managevim
-#   Specifies whether or not the .vim folder should be created within the managed accounts home directory.
-#
-# @param bashrc_content
-#   The content to place in the user's ~/.bashrc file. Mutually exclusive to bashrc_source.
-#
-# @param bashrc_source
-#   A source file containing the content to place in the user's ~/.bashrc file. Mutually exclusive to bashrc_content.
-#
-# @param bash_profile_content
-#   The content to place in the user's ~/.bash_profile file. Mutually exclusive to bash_profile_source.
-#
-# @param bash_profile_source
-#   A source file containing the content to place in the user's ~/.bash_profile file. Mutually exclusive to bash_profile_content.
 #
 # @param system
 #   Specifies if you want to create a system account.
 #
-# @param ignore_password_if_empty
-#   Specifies whether an empty password field should be ignored. If set to true, this ignores a password field that is defined but
-#   empty. If set to false, it sets the password to an empty value.
-#
-# @param forward_content
-#   The content to place in the user's ~/.forward file. Mutually exclusive to forward_source.
-#
-# @param forward_source
-#   A source file containing the content to place in the user's ~/.forward file. Mutually exclusive to forward_content.
-#
-# @param expiry
-#   Specifies the date the user account expires on. Valid values: YYYY-MM-DD date format, or 'absent' to remove expiry date.
-#
-# @param sshkey_custom_path
-#   Custom location for ssh public key file.
-#
-# @param name
-#   Name of the user.
-#
-# @param purge_user_home
-#   Whether to force recurse remove user home directories when removing a user. Defaults to false.
+# @param uid
+#   Specifies the user's uid number. Must be specified numerically.
 #
 define accounts::user (
   Enum['absent','present']             $ensure                   = 'present',

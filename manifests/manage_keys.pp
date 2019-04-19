@@ -1,11 +1,17 @@
 # @summary
 #   This resource manages ssh keys for a user.
 #
-# @param user
-#   User that owns the file supplied.
-#
 # @param key_file
 #   Specifies the path of the ssh key file.
+#
+# @param $keyspec
+#   Specifies the content of the ssh key file.
+#
+# @param $user
+#   Specifies the ssh login username.
+#
+# @param $ensure
+#   Specifies whether the keys will be added ('present') or removed ('absent').
 #
 # @param key_owner
 #   Specifies the owner of the ssh key file.

@@ -7,33 +7,42 @@
 # @param user 
 #   Name of the user that owns all of the files being created.
 #
-# @param managevim
-#   Specifies whether or not the .vim folder should be created within the managed account's home directory.
-#
-# @param bashrc_content 
-#   The content to place in the user's ~/.bashrc file. Mutually exclusive to bashrc_source.
-#
-# @param bashrc_source
-#   A source file containing the content to place in the user's ~/.bashrc file. Mutually exclusive to bashrc_content.
+# @param ensure
+#   Specifies whether the user, its primary group, homedir, and ssh keys should
+#   exist. Valid values are 'present' and 'absent'. Note that when a user is
+#   created, a group with the same name as the user is also created. 
 #
 # @param bash_profile_content
-#   The content to place in the user's ~/.bash_profile file. Mutually exclusive to bash_profile_source.
+#   The content to place in the user's ~/.bash_profile file. Mutually exclusive
+#   to bash_profile_source.
 #
 # @param bash_profile_source
-#   A source file containing the content to place in the user's ~/.bash_profile file. Mutually exclusive to bash_profile_content. 
+#   A source file containing the content to place in the user's ~/.bash_profile
+#   file. Mutually exclusive to bash_profile_content. 
+#
+# @param bashrc_content 
+#   The content to place in the user's ~/.bashrc file. Mutually exclusive to
+#   bashrc_source.
+#
+# @param bashrc_source
+#   A source file containing the content to place in the user's ~/.bashrc file.
+#   Mutually exclusive to bashrc_content.
 #
 # @param forward_content
-#   The content to place in the user's ~/.forward file. Mutually exclusive to forward_source. 
+#   The content to place in the user's ~/.forward file. Mutually exclusive to
+#   forward_source. 
 #
 # @param forward_source
-#   A source file containing the content to place in the user's ~/.forward file. Mutually exclusive to forward_content. 
+#   A source file containing the content to place in the user's ~/.forward file.
+#   Mutually exclusive to forward_content. 
+#
+# @param managevim
+#   Specifies whether or not the .vim folder should be created within the
+#   managed account's home directory.
 #
 # @param mode
-#   Manages the user's home directory permission mode. Valid values are in octal notation.
-#
-# @param ensure
-#   Specifies whether the user, its primary group, homedir, and ssh keys should exist. Valid values are 'present' and 'absent'. Note that 
-#   when a user is created, a group with the same name as the user is also created. 
+#   Manages the user's home directory permission mode. Valid values are in octal
+#   notation.
 #
 # @param name 
 #   Path of the home directory that is being managed.
