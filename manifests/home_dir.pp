@@ -41,17 +41,17 @@
 # @api private
 #
 define accounts::home_dir(
-  Accounts::User::Name         $user,
   Accounts::User::Name         $group,
-  Boolean                      $managevim            = true,
-  Optional[String]             $bashrc_content       = undef,
-  Optional[Stdlib::Filesource] $bashrc_source        = undef,
+  Accounts::User::Name         $user,
+  Enum['absent', 'present']    $ensure               = 'present',
   Optional[String]             $bash_profile_content = undef,
   Optional[Stdlib::Filesource] $bash_profile_source  = undef,
+  Optional[String]             $bashrc_content       = undef,
+  Optional[Stdlib::Filesource] $bashrc_source        = undef,
   Optional[String]             $forward_content      = undef,
   Optional[Stdlib::Filesource] $forward_source       = undef,
+  Boolean                      $managevim            = true,
   Optional[Stdlib::Filemode]   $mode                 = undef,
-  Enum['absent', 'present']    $ensure               = 'present',
 ) {
 
   assert_type(Stdlib::Unixpath, $name)

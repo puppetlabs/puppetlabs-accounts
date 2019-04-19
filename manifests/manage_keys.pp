@@ -13,11 +13,11 @@
 # @api private
 #
 define accounts::manage_keys(
+  Stdlib::Unixpath          $key_file,
   String                    $keyspec,
   Accounts::User::Name      $user,
-  String                    $key_file,
-  Accounts::User::Name      $key_owner = $user,
   Enum['absent', 'present'] $ensure    = 'present',
+  Accounts::User::Name      $key_owner = $user,
 ) {
 
   $key_def = $keyspec.match(/^((.*)\s+)?((ssh|ecdsa-sha2).*)\s+(.*)\s+(.*)$/)
