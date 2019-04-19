@@ -14,10 +14,10 @@
 #
 define accounts::manage_keys(
   String $keyspec,
-  String $user,
+  Accounts::User::Name      $user,
   String $key_file,
-  String $key_owner = $user,
-  Enum['present','absent'] $ensure = 'present',
+  Accounts::User::Name      $key_owner = $user,
+  Enum['absent', 'present'] $ensure    = 'present',
 ) {
 
   $key_def = $keyspec.match(/^((.*)\s+)?((ssh|ecdsa-sha2).*)\s+(.*)\s+(.*)$/)

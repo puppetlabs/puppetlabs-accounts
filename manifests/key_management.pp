@@ -25,14 +25,14 @@
 # @api private
 #
 define accounts::key_management(
-  String $user,
-  String $group,
+  Accounts::User::Name       $user,
+  Accounts::User::Name       $group,
   Boolean $purge_user_home,
-  Optional[String] $user_home = undef,
+  Optional[Stdlib::Unixpath] $user_home          = undef,
   Array[String] $sshkeys = [],
-  String $sshkey_owner = $user,
-  Optional[String] $sshkey_custom_path = undef,
-  Enum['present','absent'] $ensure = 'present',
+  Accounts::User::Name       $sshkey_owner       = $user,
+  Optional[Stdlib::Unixpath] $sshkey_custom_path = undef,
+  Enum['absent', 'present']  $ensure             = 'present',
 ) {
 
   if $sshkey_custom_path != undef {

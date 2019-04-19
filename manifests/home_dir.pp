@@ -41,19 +41,20 @@
 # @api private
 #
 define accounts::home_dir(
-  String $user,
-  String $group,
+  Accounts::User::Name         $user,
+  Accounts::User::Name         $group,
   Boolean $managevim                     = true,
   Optional[String] $bashrc_content       = undef,
-  Optional[String] $bashrc_source        = undef,
+  Optional[Stdlib::Filesource] $bashrc_source       = undef,
   Optional[String] $bash_profile_content = undef,
-  Optional[String] $bash_profile_source  = undef,
+  Optional[Stdlib::Filesource] $bash_profile_source = undef,
   Optional[String] $forward_content      = undef,
-  Optional[String] $forward_source       = undef,
-  Optional[String] $mode                 = undef,
-  Pattern[/^(present|absent)$/] $ensure  = 'present',
+  Optional[Stdlib::Filesource] $forward_source      = undef,
+  Optional[Stdlib::Filemode]   $mode                = undef,
+  Enum['absent', 'present']    $ensure              = 'present',
 ) {
 
+  assert_type(Stdlib::Unixpath, $name)
   if $ensure == 'absent' {
     file { $name:
       ensure  => absent,
