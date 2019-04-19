@@ -27,9 +27,9 @@
 define accounts::key_management(
   Accounts::User::Name       $user,
   Accounts::User::Name       $group,
-  Boolean $purge_user_home,
+  Boolean                    $purge_user_home,
   Optional[Stdlib::Unixpath] $user_home          = undef,
-  Array[String] $sshkeys = [],
+  Array[String]              $sshkeys            = [],
   Accounts::User::Name       $sshkey_owner       = $user,
   Optional[Stdlib::Unixpath] $sshkey_custom_path = undef,
   Enum['absent', 'present']  $ensure             = 'present',

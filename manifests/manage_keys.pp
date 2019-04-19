@@ -13,9 +13,9 @@
 # @api private
 #
 define accounts::manage_keys(
-  String $keyspec,
+  String                    $keyspec,
   Accounts::User::Name      $user,
-  String $key_file,
+  String                    $key_file,
   Accounts::User::Name      $key_owner = $user,
   Enum['absent', 'present'] $ensure    = 'present',
 ) {
