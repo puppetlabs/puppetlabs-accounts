@@ -4,13 +4,13 @@
 # @param key_file
 #   Specifies the path of the ssh key file.
 #
-# @param $keyspec
+# @param keyspec
 #   Specifies the content of the ssh key file.
 #
-# @param $user
+# @param user
 #   Specifies the ssh login username.
 #
-# @param $ensure
+# @param ensure
 #   Specifies whether the keys will be added ('present') or removed ('absent').
 #
 # @param key_owner

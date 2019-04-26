@@ -90,26 +90,9 @@ end
 ## Inline Hiera Helpers ##
 ## These will be integrated into core Beaker at some point ##
 
-# Set things up for the inline hieradata functions 'set_hieradata_on'
-# and 'clear_temp_hieradata'
-#
-#
-require 'rspec'
-RSpec.configure do |c|
-  c.before(:all) do
-    @temp_hieradata_dirs = @temp_hieradata_dirs || []
-  end
-
-  # We can't guarantee that the upstream vendor isn't disabling interfaces so
-  # we need to turn them on at each context run
-  # c.before(:context) do
-  #  activate_interfaces(hosts) unless ENV['BEAKER_no_fix_interfaces']
-  # end
-
-  c.after(:all) do
-    clear_temp_hieradata
-  end
-end
+j###########################################################################
+# Moved before(:all) / after(:all) code to main Rspec.configure loop.     #
+###########################################################################
 
 # Writes a YAML file in the Hiera :datadir of a Beaker::Host.
 #
@@ -121,16 +104,13 @@ end
 # @param hieradata [Hash, String] The full hiera data structure to write to
 #   the system.
 #
-# @param terminus [String]  DEPRECATED - This will be removed in a future
-#   release and currently has no effect.
-#
 # @return [Nil]
 #
 # @note This creates a tempdir on the host machine which should be removed
 #   using `#clear_temp_hieradata` in the `after(:all)` hook.  It may also be
 #   retained for debugging purposes.
 #
-def write_hieradata_to(sut, hieradata, terminus = 'deprecated')
+def write_hieradata_to(sut, hieradata)
   @temp_hieradata_dirs ||= []
   data_dir = Dir.mktmpdir('hieradata')
   @temp_hieradata_dirs << data_dir
@@ -214,13 +194,9 @@ end
 # @param heradata [Hash, String] The full hiera data structure to write to
 #   the system.
 #
-# @param terminus [String] DEPRECATED - Will be removed in a future release.
-#        All hieradata is written to the first discovered path via 'puppet
-#        lookup'
-#
 # @return [Nil]
 #
-def set_hieradata_on(sut, hieradata, terminus = 'deprecated')
+def set_hieradata_on(sut, hieradata)
   write_hieradata_to sut, hieradata
 end
 
@@ -242,6 +218,29 @@ end
 # rubocop:enable all
 
 RSpec.configure do |c|
+# rubocop:disable all
+###########################################################################
+# Copied from simp/rubygem-simp-beaker-helpers/lib/simp/beaker_helpers.rb #
+# Original copyright therefrom applies.                                   #
+###########################################################################
+  c.before(:all) do
+    @temp_hieradata_dirs = @temp_hieradata_dirs || []
+  end
+
+  # We can't guarantee that the upstream vendor isn't disabling interfaces so
+  # we need to turn them on at each context run
+  # c.before(:context) do
+  #  activate_interfaces(hosts) unless ENV['BEAKER_no_fix_interfaces']
+  # end
+
+  c.after(:all) do
+    clear_temp_hieradata
+  end
+###########################################################################
+# End copying simp/rubygem-simp-beaker-helpers/lib/simp/beaker_helpers.rb #
+###########################################################################
+# rubocop:enable all
+
   c.formatter = :documentation
   # Configure all nodes in nodeset
   c.before :suite do
