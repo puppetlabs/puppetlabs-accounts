@@ -236,3 +236,9 @@ For example, the .bashrc and .bash\_profile files are not managed by default but
 If you run into an issue with this module, or if you would like to request a feature, please [file a ticket](https://tickets.puppetlabs.com/browse/MODULES/).
 
 If you have problems getting this module up and running, please [contact Support](http://puppetlabs.com/services/customer-support).
+
+If you submit a change to this module, be sure to regenerate the reference documentation as follows:
+
+```bash
+puppet strings generate --format markdown --out REFERENCE.md
+```
