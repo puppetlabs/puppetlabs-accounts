@@ -3,11 +3,16 @@
 
 ## Table of Contents
 
+**Classes**
+
+* [`accounts`](#accounts): This class auto-creates user and group resources from hiera data.
+
 **Defined types**
 
 _Public Defined types_
 
-* [`accounts::user`](#accountsuser): This resource manages the user, group, vim/, .ssh/, .bash_profile, .bashrc, homedir, .ssh/authorized_keys files, and directories.
+* [`accounts::user`](#accountsuser): This resource manages the user, group, vim/, .ssh/, .bash_profile, .bashrc,
+homedir, .ssh/authorized_keys files, and directories.
 
 _Private Defined types_
 
@@ -19,11 +24,57 @@ _Private Defined types_
 
 * [`accounts_ssh_options_parser`](#accounts_ssh_options_parser): Parse an ssh authorized_keys option string into an array using its expected pattern which matches a crazy regex slightly modified from shell 
 
+## Classes
+
+### accounts
+
+This class auto-creates user and group resources from hiera data.
+
+#### Parameters
+
+The following parameters are available in the `accounts` class.
+
+##### `group_defaults`
+
+Data type: `Accounts::Group::Resource`
+
+Hash of default attributes for group resources managed by this class.
+
+Default value: {}
+
+##### `group_list`
+
+Data type: `Accounts::Group::Hash`
+
+Hash of group resources for this class to manage. The hash is keyed by
+group name.
+
+Default value: {}
+
+##### `user_defaults`
+
+Data type: `Accounts::User::Resource`
+
+Hash of default attributes for accounts::user resources managed by this
+class.
+
+Default value: {}
+
+##### `user_list`
+
+Data type: `Accounts::User::Hash`
+
+Hash of accounts::user resources for this class to manage. The hash is
+keyed by user name.
+
+Default value: {}
+
 ## Defined types
 
 ### accounts::user
 
-This resource manages the user, group, vim/, .ssh/, .bash_profile, .bashrc, homedir, .ssh/authorized_keys files, and directories.
+This resource manages the user, group, vim/, .ssh/, .bash_profile, .bashrc,
+homedir, .ssh/authorized_keys files, and directories.
 
 #### Examples
 
@@ -46,20 +97,57 @@ The following parameters are available in the `accounts::user` defined type.
 
 ##### `ensure`
 
-Data type: `Pattern[/^present$|^absent$/]`
+Data type: `Enum['absent','present']`
 
-Specifies whether the user, its primary group, homedir, and ssh keys should exist. Valid values are 'present' and 'absent'. Note that
-when a user is created, a group with the same name as the user is also created.
+Specifies whether the user, its primary group, homedir, and ssh keys should
+exist. Valid values are 'present' and 'absent'. Note that when a user is
+created, a group with the same name as the user is also created.
 
 Default value: 'present'
 
-##### `shell`
+##### `allowdupe`
 
-Data type: `Pattern[/^\//]`
+Data type: `Boolean`
 
-Manages the user shell.
+Whether to allow duplicate UIDs. By default false
 
-Default value: '/bin/bash'
+Default value: `false`
+
+##### `bash_profile_content`
+
+Data type: `Optional[String]`
+
+The content to place in the user's ~/.bash_profile file. Mutually exclusive
+to bash_profile_source.
+
+Default value: `undef`
+
+##### `bash_profile_source`
+
+Data type: `Optional[Stdlib::Filesource]`
+
+A source file containing the content to place in the user's ~/.bash_profile
+file. Mutually exclusive to bash_profile_content.
+
+Default value: `undef`
+
+##### `bashrc_content`
+
+Data type: `Optional[String]`
+
+The content to place in the user's ~/.bashrc file. Mutually exclusive to
+bashrc_source.
+
+Default value: `undef`
+
+##### `bashrc_source`
+
+Data type: `Optional[Stdlib::Filesource]`
+
+A source file containing the content to place in the user's ~/.bashrc file.
+Mutually exclusive to bashrc_content.
+
+Default value: `undef`
 
 ##### `comment`
 
@@ -69,9 +157,79 @@ A comment describing or regarding the user.
 
 Default value: $name
 
+##### `create_group`
+
+Data type: `Boolean`
+
+Specifies if you want to create a group with the user's name.
+
+Default value: `true`
+
+##### `expiry`
+
+Data type: `Optional[Accounts::User::Expiry]`
+
+Specifies the date the user account expires on. Valid values: YYYY-MM-DD
+date format, or 'absent' to remove expiry date.
+
+Default value: `undef`
+
+##### `forcelocal`
+
+Data type: `Optional[Boolean]`
+
+Specifies whether you want to manage a local user/group that is also managed
+by a network name service.
+
+Default value: `undef`
+
+##### `forward_content`
+
+Data type: `Optional[String]`
+
+The content to place in the user's ~/.forward file. Mutually exclusive to
+forward_source.
+
+Default value: `undef`
+
+##### `forward_source`
+
+Data type: `Optional[Stdlib::Filesource]`
+
+A source file containing the content to place in the user's ~/.forward file.
+Mutually exclusive to forward_content.
+
+Default value: `undef`
+
+##### `gid`
+
+Data type: `Optional[Accounts::User::Uid]`
+
+Specifies the gid of the user's primary group. Must be specified
+numerically.
+
+Default value: `undef`
+
+##### `group`
+
+Data type: `Accounts::User::Name`
+
+Specifies the name of the user's primary group. By default, this uses a
+group named the same as user name
+
+Default value: $name
+
+##### `groups`
+
+Data type: `Array[Accounts::User::Name]`
+
+Specifies the user's group memberships.
+
+Default value: []
+
 ##### `home`
 
-Data type: `Optional[Pattern[/^\/$|^\/.*[^\/]$/]]`
+Data type: `Optional[Stdlib::Unixpath]`
 
 Specifies the path to the user's home directory.
 
@@ -87,95 +245,34 @@ Default value: `undef`
 
 ##### `home_mode`
 
-Data type: `Optional[String]`
+Data type: `Optional[Stdlib::Filemode]`
 
-Manages the user's home directory permission mode. Valid values are in octal notation, specified as a string. Defaults to undef,
-which creates a home directory with 0700 permissions. It does not touch them if the directory already exists. Keeping it undef also
-allows a user to manage their own permissions. If home_mode is set, Puppet enforces the permissions on every run.
-
-Default value: `undef`
-
-##### `uid`
-
-Data type: `Optional[Pattern[/^\d+$/]]`
-
-Specifies the user's uid number. Must be specified numerically.
+Manages the user's home directory permission mode. Valid values are in octal
+notation, specified as a string. Defaults to undef, which creates a home
+directory with 0700 permissions. It does not touch them if the directory
+already exists. Keeping it undef also allows a user to manage their own
+permissions. If home_mode is set, Puppet enforces the permissions on every
+run.
 
 Default value: `undef`
 
-##### `gid`
-
-Data type: `Optional[Pattern[/^\d+$/]]`
-
-Specifies the gid of the user's primary group. Must be specified numerically.
-
-Default value: `undef`
-
-##### `group`
-
-Data type: `String`
-
-Specifies the name of the user's primary group. By default, this uses a group named the same as user name
-
-Default value: $name
-
-##### `groups`
-
-Data type: `Array[String]`
-
-Specifies the user's group memberships.
-
-Default value: [ ]
-
-##### `create_group`
+##### `ignore_password_if_empty`
 
 Data type: `Boolean`
 
-Specifies if you want to create a group with the user's name.
+Specifies whether an empty password field should be ignored. If set to true,
+this ignores a password field that is defined but empty. If set to false, it
+sets the password to an empty value.
 
-Default value: `true`
-
-##### `membership`
-
-Data type: `Pattern[/^inclusive$|^minimum$/]`
-
-Establishes whether specified groups should be considered the complete list (inclusive) or the minimum list (minimum) of groups to
-which the user belongs. Valid values: 'inclusive', 'minimum'.
-
-Default value: 'minimum'
-
-##### `forcelocal`
-
-Data type: `Optional[Boolean]`
-
-Specifies whether you want to manage a local user/group that is also managed by a network name service.
-
-Default value: `undef`
-
-##### `password`
-
-Data type: `String`
-
-The user's password, in whatever encrypted format the local machine requires. Default: '!!', which prevents the user from logging in
-with a password.
-
-Default value: '!!'
-
-##### `salt`
-
-Data type: `Optional[String]`
-
-This is the 32-byte salt used to generate the PBKDF2 password used in OS X. This field is required for managing passwords on
-OS X >= 10.8.
-
-Default value: `undef`
+Default value: `false`
 
 ##### `iterations`
 
-Data type: `Optional[Integer]`
+Data type: `Optional[Accounts::User::Iterations]`
 
-This is the number of iterations of a chained computation of the PBKDF2 password hash. This field is required for managing passwords on
-OS X >= 10.8.
+This is the number of iterations of a chained computation of the PBKDF2
+password hash. This field is required for managing passwords on OS X >=
+10.8.
 
 Default value: `undef`
 
@@ -183,35 +280,8 @@ Default value: `undef`
 
 Data type: `Boolean`
 
-Specifies whether the account should be locked and the user prevented from logging in. Set to true for users whose login privileges
-have been revoked.
-
-Default value: `false`
-
-##### `sshkeys`
-
-Data type: `Array[String]`
-
-An array of SSH public keys associated with the user. These should be complete public key strings that include the type, content and
-name of the key, exactly as it would appear in its id_*.pub file, or with an optional options string preceding the other components,
-as it would appear as an entry in an authorized_keys file. Must be an array.
-
-Examples:
-
-- ssh-rsa AAAAB3NzaC1y... bob@example.com
-
-- from="myhost.example.com,192.168.1.1" ssh-rsa AAAAQ4ngoeiC... bob2@example.com
-
-Note that for multiple keys, the name component (the last) must be unique.
-
-Default value: []
-
-##### `purge_sshkeys`
-
-Data type: `Boolean`
-
-Whether keys not included in sshkeys should be removed from the user. If purge_sshkeys is true and sshkeys is an empty array, all SSH
-keys will be removed from the user.
+Specifies whether the account should be locked and the user prevented from
+logging in. Set to true for users whose login privileges have been revoked.
 
 Default value: `false`
 
@@ -219,8 +289,10 @@ Default value: `false`
 
 Data type: `Boolean`
 
-Specifies whether the user's home directory should be managed by puppet. In addition to the usual user resource managehome qualities,
-this attribute also purges the user's homedir if ensure is set to 'absent' and managehome is set to true.
+Specifies whether the user's home directory should be managed by puppet. In
+addition to the usual user resource managehome qualities, this attribute
+also purges the user's homedir if ensure is set to 'absent' and managehome
+is set to true.
 
 Default value: `true`
 
@@ -228,41 +300,106 @@ Default value: `true`
 
 Data type: `Boolean`
 
-Specifies whether or not the .vim folder should be created within the managed accounts home directory.
+Specifies whether or not the .vim folder should be created within the
+managed accounts home directory.
 
 Default value: `true`
 
-##### `bashrc_content`
+##### `membership`
+
+Data type: `Enum['inclusive','minimum']`
+
+Establishes whether specified groups should be considered the complete list
+(inclusive) or the minimum list (minimum) of groups to which the user
+belongs. Valid values: 'inclusive', 'minimum'.
+
+Default value: 'minimum'
+
+##### `name`
+
+Name of the user.
+
+##### `password`
+
+Data type: `String`
+
+The user's password, in whatever encrypted format the local machine
+requires. Default: '!!', which prevents the user from logging in with a
+password.
+
+Default value: '!!'
+
+##### `purge_sshkeys`
+
+Data type: `Boolean`
+
+Whether keys not included in sshkeys should be removed from the user. If
+purge_sshkeys is true and sshkeys is an empty array, all SSH keys will be
+removed from the user.
+
+Default value: `false`
+
+##### `purge_user_home`
+
+Data type: `Boolean`
+
+Whether to force recurse remove user home directories when removing a user.
+Defaults to false.
+
+Default value: `false`
+
+##### `salt`
 
 Data type: `Optional[String]`
 
-The content to place in the user's ~/.bashrc file. Mutually exclusive to bashrc_source.
+This is the 32-byte salt used to generate the PBKDF2 password used in OS X.
+This field is required for managing passwords on OS X >= 10.8.
 
 Default value: `undef`
 
-##### `bashrc_source`
+##### `shell`
 
-Data type: `Optional[String]`
+Data type: `Optional[Stdlib::Unixpath]`
 
-A source file containing the content to place in the user's ~/.bashrc file. Mutually exclusive to bashrc_content.
+Manages the user shell.
 
-Default value: `undef`
+Default value: '/bin/bash'
 
-##### `bash_profile_content`
+##### `sshkey_custom_path`
 
-Data type: `Optional[String]`
+Data type: `Optional[Stdlib::Unixpath]`
 
-The content to place in the user's ~/.bash_profile file. Mutually exclusive to bash_profile_source.
-
-Default value: `undef`
-
-##### `bash_profile_source`
-
-Data type: `Optional[String]`
-
-A source file containing the content to place in the user's ~/.bash_profile file. Mutually exclusive to bash_profile_content.
+Custom location for ssh public key file.
 
 Default value: `undef`
+
+##### `sshkey_owner`
+
+Data type: `Optional[Accounts::User::Name]`
+
+Specifies the owner of the sshkey file .ssh/authorized_keys.
+
+Default value: $name
+
+##### `sshkeys`
+
+Data type: `Array[String]`
+
+An array of SSH public keys associated with the user. These should be
+complete public key strings that include the type, content and name of the
+key, exactly as it would appear in its id_*.pub file, or with an optional
+options string preceding the other components, as it would appear as an
+entry in an authorized_keys file. Must be an array.
+
+Examples:
+
+- ssh-rsa AAAAB3NzaC1y... bob@example.com
+
+- from="myhost.example.com,192.168.1.1" ssh-rsa AAAAQ4ng... bob2@example.com
+
+Note that for multiple keys, the name component (the last) must be unique.
+
+Default value: []
 
 ##### `system`
 
@@ -272,50 +409,13 @@ Specifies if you want to create a system account.
 
 Default value: `false`
 
-##### `ignore_password_if_empty`
+##### `uid`
 
-Data type: `Boolean`
+Data type: `Optional[Accounts::User::Uid]`
 
-Specifies whether an empty password field should be ignored. If set to true, this ignores a password field that is defined but
-empty. If set to false, it sets the password to an empty value.
-
-Default value: `false`
-
-##### `forward_content`
-
-Data type: `Optional[String]`
-
-The content to place in the user's ~/.forward file. Mutually exclusive to forward_source.
+Specifies the user's uid number. Must be specified numerically.
 
 Default value: `undef`
-
-##### `forward_source`
-
-Data type: `Optional[String]`
-
-A source file containing the content to place in the user's ~/.forward file. Mutually exclusive to forward_content.
-
-Default value: `undef`
-
-##### `expiry`
-
-Data type: `Optional[Pattern[/^absent$|^\d{4}-\d{2}-\d{2}$/]]`
-
-Specifies the date the user account expires on. Valid values: YYYY-MM-DD date format, or 'absent' to remove expiry date.
-
-Default value: `undef`
-
-##### `sshkey_custom_path`
-
-Data type: `Optional[String]`
-
-Custom location for ssh public key file.
-
-Default value: `undef`
-
-##### `name`
-
-Name of the user.
 
 ## Functions
 
@@ -326,12 +426,28 @@ Type: Ruby 4.x API
 Parse an ssh authorized_keys option string into an array using its expected pattern which matches a crazy regex slightly modified
 from shell words. The pattern should be a string.
 
+#### Examples
+
+##### Calling the function
+
+```puppet
+accounts_ssh_option_parser_string()
+```
+
 #### `accounts_ssh_options_parser(String $str)`
 
 Parse an ssh authorized_keys option string into an array using its expected pattern which matches a crazy regex slightly modified
 from shell words. The pattern should be a string.
 
 Returns: `Array` Separated components of the string
+
+##### Examples
+
+###### Calling the function
+
+```puppet
+accounts_ssh_option_parser_string()
+```
 
 ##### `str`
 

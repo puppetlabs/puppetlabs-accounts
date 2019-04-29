@@ -4,35 +4,38 @@
 # @param group
 #   Name of the users primary group.
 #
+# @param purge_user_home
+#   Whether to force recurse remove user home directories when removing a user.
+#
 # @param user
 #   User that owns all of the files being created.
 #
-# @param user_home
-#   Specifies the path to the user's home directory.
-#
-# @param sshkeys
-#   List of ssh keys to be added for this user in this directory.
-#
-# @param sshkey_owner
-#   Specifies the owner of the ssh key file.
+# @param ensure
+#   Specifies whether the key will be added ('present') or removed ('absent').
 #
 # @param sshkey_custom_path
 #   Path to custom file for ssh key management.
 #
-# @param purge_user_home
-#   Whether to force recurse remove user home directories when removing a user
+# @param sshkey_owner
+#   Specifies the owner of the ssh key file.
+#
+# @param sshkeys
+#   List of ssh keys to be added for this user in this directory.
+#
+# @param user_home
+#   Specifies the path to the user's home directory.
 #
 # @api private
 #
 define accounts::key_management(
-  String $user,
-  String $group,
-  Boolean $purge_user_home,
-  Optional[String] $user_home = undef,
-  Array[String] $sshkeys = [],
-  String $sshkey_owner = $user,
-  Optional[String] $sshkey_custom_path = undef,
-  Enum['present','absent'] $ensure = 'present',
+  Accounts::User::Name       $group,
+  Boolean                    $purge_user_home,
+  Accounts::User::Name       $user,
+  Enum['absent', 'present']  $ensure             = 'present',
+  Optional[Stdlib::Unixpath] $sshkey_custom_path = undef,
+  Accounts::User::Name       $sshkey_owner       = $user,
+  Array[String]              $sshkeys            = [],
+  Optional[Stdlib::Unixpath] $user_home          = undef,
 ) {
 
   if $sshkey_custom_path != undef {

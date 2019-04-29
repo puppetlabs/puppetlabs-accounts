@@ -8,7 +8,9 @@
 	* [Customize the home directory](#customize-the-home-directory)
 	* [Lock accounts](#lock-accounts)
 	* [Manage SSH keys](#manage-ssh-keys)
+	* [Data in hiera](#data-in-hiera)
 4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+        * [Data Types](#data-types)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 
@@ -133,9 +135,91 @@ accounts::user { 'gerrard':
 
 Setting `sshkey_custom_path` is typically associated with setting `AuthorizedKeysFile /var/lib/ssh/%u/authorized_keys` in your sshd config file.
 
+<a id="data-in-hiera"></a>
+### Data in hiera
+
+The module supports placing all account data into hiera.
+
+Example:
+
+~~~yaml
+accounts::group_defaults:
+  system: true
+accounts::group_list:
+  admins: {}
+  users:  {}
+accounts::user_defaults:
+  groups: [ 'users' ]
+  manage_home: true
+  system:      false
+accounts::user_list:
+  admin:
+    groups: ['admins', 'users']
+  joe:
+    sshkeys:
+      - &joe_sshkey 'ssh-rsa ... joe@corp.com'
+  sally:
+    sshkeys:
+      - &sally_sshkey 'ssh-rsa ... sally@corp.com'
+  dba:
+    sshkeys:
+      - *joe_sshkey
+      - *sally_sshkey
+    system: true
+~~~
+
+~~~puppet
+include ::accounts
+~~~
+
 ## Reference
 
 See [REFERENCE.md](https://github.com/puppetlabs/puppetlabs-accounts/blob/master/REFERENCE.md)
+
+<a id="data-types"></a>
+### Data types
+
+#### `Accounts::Group::Hash`
+
+A hash of [`group`](https://puppet.com/docs/puppet/latesttypes/group.html#group) data suitable for passing as the second parameter to [`ensure_resources`](https://github.com/puppetlabs/puppetlabs-stdlib#ensure_resources).
+
+#### `Accounts::Group::Provider`
+
+The allowed values for the [`provider`](https://puppet.com/docs/puppet/latest/types/group.html#group-attribute-provider) attribute.  Currently, this is:
+* `aix`
+* `directoryservice`
+* `groupadd`
+* `ldap`
+* `pw`
+* `windows_adsi`
+
+#### `Accounts::Group::Resource`
+
+A struct of [`group` attributes](https://puppet.com/docs/puppet/latest/types/group.html#group-attributes) suitable for passing as the third parameter to [`ensure_resource`](https://github.com/puppetlabs/puppetlabs-stdlib#ensure_resource).
+
+#### `Accounts::User::Expiry`
+
+Allows either `'absent'` or a `YYY-MM-DD` datestring.
+
+#### `Accounts::User::Hash`
+
+A hash of [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user) data suitable for passing as the second parameter to [`ensure_resources`](https://github.com/puppetlabs/puppetlabs-stdlib#ensure_resources).
+
+#### `Accounts::User::Iterations`
+
+The [`iterations`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-iterations) attribute allows any positive integer, optionally expressed as a string.
+
+#### `Accounts::User::Name`
+
+Allows strings up to 32 characters long that begin with a lower case letter or underscore, followed by lower case letters, digits, underscores, or dashes, and optionally ending in a dollar sign.  See [`useradd(8)`](http://manpages.ubuntu.com/manpages/precise/man8/useradd.8.html#caveats)
+
+#### `Accounts::User::Resource`
+
+A struct of [`user` attributes](https://puppet.com/docs/puppet/latest/types/user.html#user-attributes) suitable for passing as the third parameter to [`ensure_resource`](https://github.com/puppetlabs/puppetlabs-stdlib#ensure_resource).
+
+#### `Accounts::User::Uid`
+
+Allows any integer from `0` to `4294967295` (2<sup>32</sup> - 1), optionally expressed as a string.
 
 ## Limitations
 
@@ -152,3 +236,9 @@ For example, the .bashrc and .bash\_profile files are not managed by default but
 If you run into an issue with this module, or if you would like to request a feature, please [file a ticket](https://tickets.puppetlabs.com/browse/MODULES/).
 
 If you have problems getting this module up and running, please [contact Support](http://puppetlabs.com/services/customer-support).
+
+If you submit a change to this module, be sure to regenerate the reference documentation as follows:
+
+```bash
+puppet strings generate --format markdown --out REFERENCE.md
+```
