@@ -64,12 +64,12 @@ PUPPETCODE
 pp_custom_group_name = <<-PUPPETCODE
   file { '/test':
     ensure => directory,
-    before => Accounts::User['cuser'],
+    before => Accounts::User['first.last'],
   }
-  accounts::user { 'cuser':
+  accounts::user { 'first.last':
     group                => 'staff',
     password             => '!!',
-    home                 => '/test/cuser',
+    home                 => '/test/first.last',
     home_mode            => '0700',
   }
 PUPPETCODE
@@ -242,14 +242,14 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
     it 'creates group of matching names, assigns non-matching group, manages homedir' do
       apply_manifest(pp_custom_group_name, catch_failures: true)
 
-      expect(user('cuser')).to exist
-      expect(user('cuser')).to belong_to_group 'staff'
-      expect(user('cuser')).to have_home_directory '/test/cuser'
+      expect(user('first.last')).to exist
+      expect(user('first.last')).to belong_to_group 'staff'
+      expect(user('first.last')).to have_home_directory '/test/first.last'
 
-      expect(file('/test/cuser')).to be_directory
-      expect(file('/test/cuser')).to be_mode 700
-      expect(file('/test/cuser')).to be_owned_by 'cuser'
-      expect(file('/test/cuser')).to be_grouped_into 'staff'
+      expect(file('/test/first.last')).to be_directory
+      expect(file('/test/first.last')).to be_mode 700
+      expect(file('/test/first.last')).to be_owned_by 'first.last'
+      expect(file('/test/first.last')).to be_grouped_into 'staff'
     end
   end
 
