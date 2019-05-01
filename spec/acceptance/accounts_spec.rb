@@ -85,10 +85,10 @@ hd_locked_user = hd_defaults.merge(
 
 hd_custom_group_name = hd_defaults.merge(
   'accounts::user_list' => {
-    'cuser' => {
+    'first.last' => {
       'group'     => 'staff',
       'password'  => '!!',
-      'home'      => '/test/cuser',
+      'home'      => '/test/first.last',
     },
   },
 )
@@ -210,7 +210,7 @@ pp_cleanup = <<-PUPPETCODE
   ensure_resource('file', $files, $file_params)
   $users = [
     'hunner',
-    'cuser',
+    'first.last',
     'grp_flse',
     'grp_true',
     'ignore_user',
@@ -347,14 +347,14 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
           set_hieradata_on(host, hd_custom_group_name)
           apply_manifest_on(host, pp_manifest, catch_failures: true)
 
-          expect(user('cuser')).to exist
-          expect(user('cuser')).to belong_to_group 'staff'
-          expect(user('cuser')).to have_home_directory '/test/cuser'
+          expect(user('first.last')).to exist
+          expect(user('first.last')).to belong_to_group 'staff'
+          expect(user('first.last')).to have_home_directory '/test/first.last'
 
-          expect(file('/test/cuser')).to be_directory
-          expect(file('/test/cuser')).to be_mode 700
-          expect(file('/test/cuser')).to be_owned_by 'cuser'
-          expect(file('/test/cuser')).to be_grouped_into 'staff'
+          expect(file('/test/first.last')).to be_directory
+          expect(file('/test/first.last')).to be_mode 700
+          expect(file('/test/first.last')).to be_owned_by 'first.last'
+          expect(file('/test/first.last')).to be_grouped_into 'staff'
         end
       end
     end
@@ -476,7 +476,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
           expect(file('/home/duplicate_user1')).not_to exist
           expect(file('/home/duplicate_user2')).not_to exist
           expect(user('hunner')).not_to exist
-          expect(user('cuser')).not_to exist
+          expect(user('first.last')).not_to exist
           expect(user('grp_flse')).not_to exist
           expect(user('grp_true')).not_to exist
           expect(user('ignore_user')).not_to exist
