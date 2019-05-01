@@ -213,6 +213,10 @@ The [`iterations`](https://puppet.com/docs/puppet/latest/types/user.html#user-at
 
 Allows strings up to 32 characters long that begin with a lower case letter or underscore, followed by lower case letters, digits, underscores, or dashes, and optionally ending in a dollar sign.  See [`useradd(8)`](http://manpages.ubuntu.com/manpages/precise/man8/useradd.8.html#caveats)
 
+#### `Accounts::User::PasswordMaxAge`
+
+Maximum number of days a password may be used before it must be changed. Allows any integer from `0` to `99999`. See [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_max_age) resource.
+
 #### `Accounts::User::Resource`
 
 A struct of [`user` attributes](https://puppet.com/docs/puppet/latest/types/user.html#user-attributes) suitable for passing as the third parameter to [`ensure_resource`](https://github.com/puppetlabs/puppetlabs-stdlib#ensure_resource).

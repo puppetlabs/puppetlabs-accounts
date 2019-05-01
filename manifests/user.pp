@@ -193,6 +193,7 @@ define accounts::user (
   Boolean                              $managevim                = true,
   Enum['inclusive','minimum']          $membership               = 'minimum',
   String                               $password                 = '!!',
+  Optional[Integer[0,99999]]           $password_max_age         = undef,
   Boolean                              $purge_sshkeys            = false,
   Boolean                              $purge_user_home          = false,
   Optional[String]                     $salt                     = undef,
@@ -282,23 +283,24 @@ define accounts::user (
     }
   } else {
     user { $name:
-      ensure         => $ensure,
-      shell          => $_shell,
-      comment        => "${comment}", # lint:ignore:only_variable_string
-      home           => $_home,
-      uid            => $uid,
-      gid            => $group,
-      allowdupe      => $allowdupe,
-      groups         => $groups,
-      membership     => $membership,
-      managehome     => $managehome,
-      password       => $password,
-      salt           => $salt,
-      iterations     => $iterations,
-      purge_ssh_keys => $purge_sshkeys_value,
-      system         => $system,
-      forcelocal     => $forcelocal,
-      expiry         => $expiry,
+      ensure           => $ensure,
+      shell            => $_shell,
+      comment          => "${comment}", # lint:ignore:only_variable_string
+      home             => $_home,
+      uid              => $uid,
+      gid              => $group,
+      allowdupe        => $allowdupe,
+      groups           => $groups,
+      membership       => $membership,
+      managehome       => $managehome,
+      password         => $password,
+      password_max_age => $password_max_age,
+      salt             => $salt,
+      iterations       => $iterations,
+      purge_ssh_keys   => $purge_sshkeys_value,
+      system           => $system,
+      forcelocal       => $forcelocal,
+      expiry           => $expiry,
     }
   }
 
