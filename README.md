@@ -136,9 +136,9 @@ accounts::user { 'gerrard':
 Setting `sshkey_custom_path` is typically associated with setting `AuthorizedKeysFile /var/lib/ssh/%u/authorized_keys` in your sshd config file.
 
 <a id="data-in-hiera"></a>
-### Data in hiera
+### Data in Hiera
 
-The module supports placing all account data into hiera.
+The accounts module supports storing all account data in Hiera.
 
 Example:
 
