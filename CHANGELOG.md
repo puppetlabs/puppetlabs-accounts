@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v4.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v4.0.0) (2019-05-07)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/3.2.0...v4.0.0)
+
+### Changed
+
+- pdksync - \(MODULES-8444\) - Raise lower Puppet bound [\#218](https://github.com/puppetlabs/puppetlabs-accounts/pull/218) ([david22swan](https://github.com/david22swan))
+- \(MODULES-8909\) Add type-aliases and auto-loading. [\#214](https://github.com/puppetlabs/puppetlabs-accounts/pull/214) ([pillarsdotnet](https://github.com/pillarsdotnet))
+
+### Fixed
+
+- \(MODULES-8909\) Allow periods in usernames. [\#220](https://github.com/puppetlabs/puppetlabs-accounts/pull/220) ([pillarsdotnet](https://github.com/pillarsdotnet))
+- Remove user when custom sshkey file is set [\#213](https://github.com/puppetlabs/puppetlabs-accounts/pull/213) ([tuxmea](https://github.com/tuxmea))
+
 ## [3.2.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/3.2.0) (2019-01-18)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/3.1.0...3.2.0)
