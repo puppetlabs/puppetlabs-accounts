@@ -176,7 +176,7 @@ pp_user_with_duplicate_uid = <<-PUPPETCODE
   }
 PUPPETCODE
 
-describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('os')['family']) do
+describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) do
   describe 'main tests' do
     it 'creates groups of matching names, assigns non-matching group, manages homedir, manages other properties, gives key, makes dotfiles, managevim false' do
       apply_manifest(pp_accounts_define, catch_failures: true)
@@ -186,7 +186,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
       expect(user('hunner')).to belong_to_group 'root'
       expect(user('hunner')).to have_login_shell '/bin/true'
       expect(user('hunner')).to have_home_directory '/test/hunner'
-      expect(user('hunner')).to contain_password 'hi' unless fact('os')['family'] == 'Solaris'
+      expect(user('hunner')).to contain_password 'hi' unless os[:family] == 'solaris'
 
       expect(file('/test/hunner')).to be_directory
       expect(file('/test/hunner')).to be_mode 700
@@ -220,10 +220,10 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
 
   describe 'locking users' do
     let(:login_shell) do
-      case fact('os')['family']
-      when 'Debian'
+      case os[:family]
+      when %r{debian|ubuntu} # Are there Debian-related distros besides Ubuntu?
         '/usr/sbin/nologin'
-      when 'Solaris'
+      when 'solaris'
         '/usr/bin/false'
       else
         '/sbin/nologin'
@@ -272,7 +272,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
   end
 
   # Solaris does not offer a means of testing the password
-  describe 'ignore password if ignore set to true', unless: fact('os')['family'] == 'Solaris' do
+  describe 'ignore password if ignore set to true', unless: os[:family] == 'solaris' do
     it 'creates group of matching names, assigns non-matching group, empty password, ignore true, ignores password' do
       apply_manifest(pp_ignore_user_first_run, catch_failures: true)
       apply_manifest(pp_ignore_user_second_run, catch_failures: true)
@@ -283,7 +283,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
   end
 
   # Solaris does not offer a means of testing the password
-  describe 'do not ignore password if ignore set to false', unless: fact('os')['family'] == 'Solaris' do
+  describe 'do not ignore password if ignore set to false', unless: os[:family] == 'solaris' do
     it 'creates group of matching names, assigns non-matching group, empty password, ignore false, should not ignore password' do
       apply_manifest(pp_no_ignore_user_first_run, catch_failures: true)
       apply_manifest(pp_no_ignore_user_second_run, catch_failures: true)
@@ -293,7 +293,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(fact('o
     end
   end
 
-  describe 'do not ignore password if set and ignore set to true', unless: fact('os')['family'] == 'Solaris' do
+  describe 'do not ignore password if set and ignore set to true', unless: os[:family] == 'solaris' do
     it 'creates group of matching names, assigns non-matching group, specify password, ignore, should not ignore password' do
       apply_manifest(pp_specd_user_first_run, catch_failures: true)
       apply_manifest(pp_specd_user_second_run, catch_failures: true)

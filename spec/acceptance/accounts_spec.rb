@@ -241,7 +241,7 @@ pp_cleanup = <<-PUPPETCODE
   }
 PUPPETCODE
 
-describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(fact('os')['family']) do
+describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) do
   describe 'group test' do
     hosts.each do |host|
       context "on #{host}" do
@@ -270,7 +270,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(fact('os')['f
           expect(user('hunner')).to belong_to_group 'root'
           expect(user('hunner')).to have_login_shell '/bin/true'
           expect(user('hunner')).to have_home_directory '/test/hunner'
-          expect(user('hunner')).to contain_password 'hi' unless fact('os')['family'] == 'Solaris'
+          expect(user('hunner')).to contain_password 'hi' unless os[:family] == 'solaris'
           expect(user('hunner').maximum_days_between_password_change).to match 60
 
           expect(file('/test/hunner')).to be_directory
@@ -319,10 +319,10 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(fact('os')['f
 
   describe 'locking users' do
     let(:login_shell) do
-      case fact('os')['family']
-      when 'Debian'
+      case os[:family]
+      when %r{debian|ubuntu}
         '/usr/sbin/nologin'
-      when 'Solaris'
+      when 'solaris'
         '/usr/bin/false'
       else
         '/sbin/nologin'
@@ -392,7 +392,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(fact('os')['f
 
   # Solaris does not offer a means of testing the password
   describe 'ignore password if ignore set to true',
-           unless: fact('os')['family'] == 'Solaris' do
+           unless: os[:family] == 'solaris' do
     hosts.each do |host|
       context "on #{host}" do
         it 'creates group of matching names, assigns non-matching group,'\
@@ -411,7 +411,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(fact('os')['f
 
   # Solaris does not offer a means of testing the password
   describe 'do not ignore password if ignore set to false',
-           unless: fact('os')['family'] == 'Solaris' do
+           unless: os[:family] == 'solaris' do
     hosts.each do |host|
       context "on #{host}" do
         it 'creates group of matching names, assigns non-matching group,'\
@@ -428,7 +428,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(fact('os')['f
     end
   end
 
-  describe 'do not ignore password if set and ignore set to true', unless: fact('os')['family'] == 'Solaris' do
+  describe 'do not ignore password if set and ignore set to true', unless: os[:family] == 'solaris' do
     hosts.each do |host|
       context "on #{host}" do
         it 'creates group of matching names, assigns non-matching group, '\

@@ -6,7 +6,7 @@ require 'beaker/module_install_helper'
 require 'beaker/i18n_helper'
 require 'beaker-task_helper'
 
-UNSUPPORTED_PLATFORMS = ['windows', 'Darwin'].freeze
+UNSUPPORTED_PLATFORMS = ['windows', 'darwin'].freeze
 
 run_puppet_install_helper
 configure_type_defaults_on(hosts)
@@ -247,22 +247,20 @@ RSpec.configure do |c|
     run_puppet_access_login(user: 'admin') if pe_install? && (Gem::Version.new(puppet_version) >= Gem::Version.new('5.0.0'))
     hosts.each do |host|
       # This will be removed, this is temporary to test localisation.
-      if (fact('os')['family'] =~ %r{Debian|RedHat}) &&
+      if (os[:family] =~ %r{debian|ubuntu|redhat|fedora}) &&
          (Gem::Version.new(puppet_version) >= Gem::Version.new('4.10.5') &&
           Gem::Version.new(puppet_version) < Gem::Version.new('5.2.0'))
         on(host, 'mkdir /opt/puppetlabs/puppet/share/locale/ja')
         on(host, 'touch /opt/puppetlabs/puppet/share/locale/ja/puppet.po')
       end
-      if fact('os')['family'] == 'Debian'
-        # install language on Debian systems
+      if os[:family] =~ %r{debian|ubuntu}
+        # install language on Debian and Ubuntu systems
         install_language_on(host, 'ja_JP.utf-8') if not_controller(host)
         # This will be removed, this is temporary to test localisation.
       end
       # Required for binding tests.
-      if fact('os')['family'] == 'RedHat'
-        if fact('os')['release']['major'] == '7' || fact('os')['name'] == 'Fedora'
-          shell('yum install -y bzip2')
-        end
+      if (os[:family] == 'redhat' && os[:release] == '7') || os[:family] == 'fedora'
+        shell('yum install -y bzip2')
       end
       on host, puppet('module', 'install', 'stahnma/epel')
     end

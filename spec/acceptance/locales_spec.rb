@@ -46,7 +46,7 @@ pp_accounts_ssh_warn = <<-PUPPETCODE
 PUPPETCODE
 
 describe 'accounts::user define',
-         if: (fact('os')['family'] =~ %r{Debian|RedHat}) &&
+         if: (os[:family] =~ %r{debian|ubuntu|redhat|fedora}) &&
              (Gem::Version.new(puppet_version) >= Gem::Version.new('4.10.5')) do
   before :all do
     hosts.each do |host|
