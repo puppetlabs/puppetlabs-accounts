@@ -289,10 +289,8 @@ Default value: `false`
 
 Data type: `Boolean`
 
-Specifies whether the user's home directory should be managed by puppet. In
-addition to the usual user resource managehome qualities, this attribute
-also purges the user's homedir if ensure is set to 'absent' and managehome
-is set to true.
+Specifies whether the user's home directory should be created when adding a
+user.
 
 Default value: `true`
 
@@ -328,6 +326,17 @@ requires. Default: '!!', which prevents the user from logging in with a
 password.
 
 Default value: '!!'
+
+##### `password_max_age`
+
+Data type: `Optional[Accounts::User::PasswordMaxAge]`
+
+Maximum number of days a password may be used before it must be changed.
+Allows any integer from `0` to `99999`. See the
+[`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_max_age)
+resource.
+
+Default value: `undef`
 
 ##### `purge_sshkeys`
 
