@@ -103,10 +103,8 @@
 #   logging in. Set to true for users whose login privileges have been revoked.
 #
 # @param managehome
-#   Specifies whether the user's home directory should be managed by puppet. In
-#   addition to the usual user resource managehome qualities, this attribute
-#   also purges the user's homedir if ensure is set to 'absent' and managehome
-#   is set to true.
+#   Specifies whether the user's home directory should be created when adding a
+#   user.
 #
 # @param managevim
 #   Specifies whether or not the .vim folder should be created within the
@@ -124,6 +122,12 @@
 #   The user's password, in whatever encrypted format the local machine
 #   requires. Default: '!!', which prevents the user from logging in with a
 #   password.
+#
+# @param password_max_age
+#   Maximum number of days a password may be used before it must be changed.
+#   Allows any integer from `0` to `99999`. See the
+#   [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_max_age)
+#   resource.
 #
 # @param purge_sshkeys
 #   Whether keys not included in sshkeys should be removed from the user. If
@@ -169,180 +173,167 @@
 #   Specifies the user's uid number. Must be specified numerically.
 #
 define accounts::user (
-  Enum['absent','present']                  $ensure                   = 'present',
-  Boolean                                   $allowdupe                = false,
-  Optional[String]                          $bash_profile_content     = undef,
-  Optional[Stdlib::Filesource]              $bash_profile_source      = undef,
-  Optional[String]                          $bashrc_content           = undef,
-  Optional[Stdlib::Filesource]              $bashrc_source            = undef,
-  String                                    $comment                  = $name,
-  Boolean                                   $create_group             = true,
-  Optional[Accounts::User::Expiry]          $expiry                   = undef,
-  Optional[Boolean]                         $forcelocal               = undef,
-  Optional[String]                          $forward_content          = undef,
-  Optional[Stdlib::Filesource]              $forward_source           = undef,
-  Optional[Accounts::User::Uid]             $gid                      = undef,
-  Accounts::User::Name                      $group                    = $name,
-  Array[Accounts::User::Name]               $groups                   = [],
-  Optional[Stdlib::Unixpath]                $home                     = undef,
-  Optional[Stdlib::Filemode]                $home_mode                = undef,
-  Boolean                                   $ignore_password_if_empty = false,
-  Optional[Accounts::User::Iterations]      $iterations               = undef,
-  Boolean                                   $locked                   = false,
-  Boolean                                   $managehome               = true,
-  Boolean                                   $managevim                = true,
-  Enum['inclusive','minimum']               $membership               = 'minimum',
-  String                                    $password                 = '!!',
-  Optional[Accounts::User::PasswordMaxAge]  $password_max_age         = undef,
-  Boolean                                   $purge_sshkeys            = false,
-  Boolean                                   $purge_user_home          = false,
-  Optional[String]                          $salt                     = undef,
-  Optional[Stdlib::Unixpath]                $shell                    = '/bin/bash',
-  Optional[Stdlib::Unixpath]                $sshkey_custom_path       = undef,
-  Optional[Accounts::User::Name]            $sshkey_owner             = $name,
-  Array[String]                             $sshkeys                  = [],
-  Boolean                                   $system                   = false,
-  Optional[Accounts::User::Uid]             $uid                      = undef,
+  Enum['absent','present']                 $ensure                   = 'present',
+  Boolean                                  $allowdupe                = false,
+  Optional[String]                         $bash_profile_content     = undef,
+  Optional[Stdlib::Filesource]             $bash_profile_source      = undef,
+  Optional[String]                         $bashrc_content           = undef,
+  Optional[Stdlib::Filesource]             $bashrc_source            = undef,
+  String                                   $comment                  = $name,
+  Boolean                                  $create_group             = true,
+  Optional[Accounts::User::Expiry]         $expiry                   = undef,
+  Optional[Boolean]                        $forcelocal               = undef,
+  Optional[String]                         $forward_content          = undef,
+  Optional[Stdlib::Filesource]             $forward_source           = undef,
+  Optional[Accounts::User::Uid]            $gid                      = undef,
+  Accounts::User::Name                     $group                    = $name,
+  Array[Accounts::User::Name]              $groups                   = [],
+  Optional[Stdlib::Unixpath]               $home                     = undef,
+  Optional[Stdlib::Filemode]               $home_mode                = undef,
+  Boolean                                  $ignore_password_if_empty = false,
+  Optional[Accounts::User::Iterations]     $iterations               = undef,
+  Boolean                                  $locked                   = false,
+  Boolean                                  $managehome               = true,
+  Boolean                                  $managevim                = true,
+  Enum['inclusive','minimum']              $membership               = 'minimum',
+  String                                   $password                 = '!!',
+  Optional[Accounts::User::PasswordMaxAge] $password_max_age         = undef,
+  Boolean                                  $purge_sshkeys            = false,
+  Boolean                                  $purge_user_home          = false,
+  Optional[String]                         $salt                     = undef,
+  Optional[Stdlib::Unixpath]               $shell                    = '/bin/bash',
+  Optional[Stdlib::Unixpath]               $sshkey_custom_path       = undef,
+  Optional[Accounts::User::Name]           $sshkey_owner             = $name,
+  Array[String]                            $sshkeys                  = [],
+  Boolean                                  $system                   = false,
+  Optional[Accounts::User::Uid]            $uid                      = undef,
 ) {
 
   assert_type(Accounts::User::Name, $name)
-  if $home {
-    $_home = $home
-  } elsif $name == 'root' {
-    $_home = $::osfamily ? {
-      'Solaris' => '/',
-      default   => '/root',
-    }
-  } else {
-    $_home = $::osfamily ? {
-      'Solaris' => "/export/home/${name}",
-      default   => "/home/${name}",
-    }
+
+  $_home = $home ? {
+    undef => $name ? {
+      'root' => $facts['os']['family'] ? {
+        'Solaris' => '/',
+        default   => '/root',
+      },
+      default => $facts['os']['family'] ? {
+        'Solaris' => "/export/home/${name}",
+        default   => "/home/${name}",
+      },
+    },
+    default => $home,
   }
 
-  if $locked {
-    case $::operatingsystem {
-      'debian', 'ubuntu' : {
-        $_shell = '/usr/sbin/nologin'
-      }
-      'solaris' : {
-        $_shell = '/usr/bin/false'
-      }
-      default : {
-        $_shell = '/sbin/nologin'
-      }
-    }
-  } else {
-    $_shell = $shell
-  }
-
-  # Check if user wants to create the group
-  if $create_group {
-    # Ensure that the group hasn't already been defined
-    if $ensure == 'present' and ! defined(Group[$group]) {
-      group { $group:
-        ensure     => $ensure,
-        gid        => $gid,
-        system     => $system,
-        forcelocal => $forcelocal,
-      }
-    # Only remove the group if it is the same as user name as it may be shared
-    } elsif $ensure == 'absent' and $name == $group {
-      group { $group:
-        ensure     => $ensure,
-        forcelocal => $forcelocal,
-      }
-    }
-  }
-
-  if $purge_sshkeys {
-    if $sshkey_custom_path != undef {
-      $purge_sshkeys_value = ["${sshkey_custom_path}"] # lint:ignore:only_variable_string
-    }
-    else { $purge_sshkeys_value = true }
-  }
-  else { $purge_sshkeys_value = false }
-
-
-  if  $password == '' and $ignore_password_if_empty {
+  if $ensure == 'absent' {
     user { $name:
-      ensure         => $ensure,
-      shell          => $_shell,
-      comment        => "${comment}", # lint:ignore:only_variable_string
-      home           => $_home,
-      uid            => $uid,
-      gid            => $group,
-      allowdupe      => $allowdupe,
-      groups         => $groups,
-      membership     => $membership,
-      managehome     => $managehome,
-      purge_ssh_keys => $purge_sshkeys_value,
-      system         => $system,
-      forcelocal     => $forcelocal,
-      expiry         => $expiry,
+      ensure     => 'absent',
+      forcelocal => $forcelocal,
+      home       => $_home,
+      managehome => $purge_user_home,
     }
-  } else {
-    user { $name:
-      ensure           => $ensure,
-      shell            => $_shell,
-      comment          => "${comment}", # lint:ignore:only_variable_string
-      home             => $_home,
-      uid              => $uid,
-      gid              => $group,
-      allowdupe        => $allowdupe,
-      groups           => $groups,
-      membership       => $membership,
-      managehome       => $managehome,
-      password         => $password,
-      password_max_age => $password_max_age,
-      salt             => $salt,
-      iterations       => $iterations,
-      purge_ssh_keys   => $purge_sshkeys_value,
-      system           => $system,
-      forcelocal       => $forcelocal,
-      expiry           => $expiry,
-    }
-  }
-
-  if $create_group {
-    if $ensure == 'present' {
-      Group[$group] -> User[$name]
-    } else {
-      User[$name] -> Group[$group]
-    }
-  }
-
-  if $managehome {
-    accounts::home_dir { $_home:
-      ensure               => $ensure,
-      mode                 => $home_mode,
-      managevim            => $managevim,
-      bashrc_content       => $bashrc_content,
-      bashrc_source        => $bashrc_source,
-      bash_profile_content => $bash_profile_content,
-      bash_profile_source  => $bash_profile_source,
-      forward_content      => $forward_content,
-      forward_source       => $forward_source,
-      user                 => $name,
-      group                => $group,
-      require              => [ User[$name] ],
+    User[$name] -> Group <| |>
+    if $create_group {
+      # Only remove the group if it is the same as user name as it may be shared.
+      if $name == $group {
+        ensure_resource(
+          'group',
+          $group,
+          { 'ensure'     => 'absent',
+            'forcelocal' => $forcelocal,
+          }
+        )
+      }
     }
     accounts::key_management { "${name}_key_management":
-      ensure             => $ensure,
+      ensure             => 'absent',
       user               => $name,
-      group              => $group,
       user_home          => $_home,
       sshkeys            => $sshkeys,
       sshkey_custom_path => $sshkey_custom_path,
       purge_user_home    => $purge_user_home,
-      require            => Accounts::Home_dir[$_home]
     }
-  } elsif $sshkeys != [] {
-    # We are not managing the user's home directory but we have specified a
-    # custom, non-home directory for the ssh keys.
+  } else {
+    # Check if user wants to create the group
+    if $create_group {
+      Group[$group] -> User[$name]
+      ensure_resource(
+        'group',
+        $group,
+        { ensure     => 'present',
+          gid        => $gid,
+          system     => $system,
+          forcelocal => $forcelocal,
+        }
+      )
+    }
+    $_password = ($password == '' and $ignore_password_if_empty) ? {
+      true    => undef,
+      default => $password,
+    }
+    $_purge_sshkeys = $purge_sshkeys and $sshkey_custom_path != undef ? {
+      true => [String($sshkey_custom_path)],
+      default => $purge_sshkeys,
+    }
+    $_shell = $locked ? {
+      true => $facts['os']['family'] ? {
+        'Debian'  => '/usr/sbin/nologin',
+        'Solaris' => '/usr/bin/false',
+        default   => '/sbin/nologin',
+      },
+      default => $shell,
+    }
+    user { $name:
+      ensure           => 'present',
+      allowdupe        => $allowdupe,
+      comment          => String($comment),
+      expiry           => $expiry,
+      forcelocal       => $forcelocal,
+      gid              => $group,
+      groups           => $groups,
+      home             => $_home,
+      iterations       => $iterations,
+      managehome       => $managehome,
+      membership       => $membership,
+      password         => $_password,
+      password_max_age => $password_max_age,
+      purge_ssh_keys   => $_purge_sshkeys,
+      salt             => $salt,
+      shell            => $_shell,
+      system           => $system,
+      uid              => $uid,
+    }
+    if $managehome {
+      accounts::home_dir { $_home:
+        ensure               => 'present',
+        mode                 => $home_mode,
+        managevim            => $managevim,
+        bashrc_content       => $bashrc_content,
+        bashrc_source        => $bashrc_source,
+        bash_profile_content => $bash_profile_content,
+        bash_profile_source  => $bash_profile_source,
+        forward_content      => $forward_content,
+        forward_source       => $forward_source,
+        user                 => $name,
+        group                => $group,
+        require              => [ User[$name] ],
+      }
+      accounts::key_management { "${name}_key_management":
+        ensure             => 'present',
+        user               => $name,
+        group              => $group,
+        user_home          => $_home,
+        sshkeys            => $sshkeys,
+        sshkey_custom_path => $sshkey_custom_path,
+        purge_user_home    => $purge_user_home,
+        require            => Accounts::Home_dir[$_home]
+      }
+    } elsif $sshkeys != [] {
+      # We are not managing the user's home directory but we have specified a
+      # custom, non-home directory for the ssh keys.
       if (($sshkey_custom_path != undef) and ($ensure == 'present')) {
         accounts::key_management { "${name}_key_management":
-          ensure             => $ensure,
+          ensure             => 'present',
           user               => $sshkey_owner,
           group              => $group,
           sshkeys            => $sshkeys,
@@ -354,5 +345,6 @@ define accounts::user (
         warning(translate('ssh keys were passed for user %{name} but $managehome is set to false; not managing user ssh keys',
         {'name' => $name}))
       }
+    }
   }
 }

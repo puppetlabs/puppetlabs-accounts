@@ -1,16 +1,10 @@
 # @summary
 #   This resource specifies how home directories are managed.
 #
-# @param group
-#   Name of the user's primary group.
-#
-# @param user 
-#   Name of the user that owns all of the files being created.
-#
 # @param ensure
 #   Specifies whether the user, its primary group, homedir, and ssh keys should
 #   exist. Valid values are 'present' and 'absent'. Note that when a user is
-#   created, a group with the same name as the user is also created. 
+#   created, a group with the same name as the user is also created.
 #
 # @param bash_profile_content
 #   The content to place in the user's ~/.bash_profile file. Mutually exclusive
@@ -18,9 +12,9 @@
 #
 # @param bash_profile_source
 #   A source file containing the content to place in the user's ~/.bash_profile
-#   file. Mutually exclusive to bash_profile_content. 
+#   file. Mutually exclusive to bash_profile_content.
 #
-# @param bashrc_content 
+# @param bashrc_content
 #   The content to place in the user's ~/.bashrc file. Mutually exclusive to
 #   bashrc_source.
 #
@@ -30,11 +24,14 @@
 #
 # @param forward_content
 #   The content to place in the user's ~/.forward file. Mutually exclusive to
-#   forward_source. 
+#   forward_source.
 #
 # @param forward_source
 #   A source file containing the content to place in the user's ~/.forward file.
-#   Mutually exclusive to forward_content. 
+#   Mutually exclusive to forward_content.
+#
+# @param group
+#   Name of the user's primary group.
 #
 # @param managevim
 #   Specifies whether or not the .vim folder should be created within the
@@ -44,33 +41,33 @@
 #   Manages the user's home directory permission mode. Valid values are in octal
 #   notation.
 #
-# @param name 
+# @param name
 #   Path of the home directory that is being managed.
+#
+# @param user
+#   Name of the user that owns all of the files being created.
 #
 # @api private
 #
 define accounts::home_dir(
-  Accounts::User::Name         $group,
-  Accounts::User::Name         $user,
-  Enum['absent', 'present']    $ensure               = 'present',
-  Optional[String]             $bash_profile_content = undef,
-  Optional[Stdlib::Filesource] $bash_profile_source  = undef,
-  Optional[String]             $bashrc_content       = undef,
-  Optional[Stdlib::Filesource] $bashrc_source        = undef,
-  Optional[String]             $forward_content      = undef,
-  Optional[Stdlib::Filesource] $forward_source       = undef,
-  Boolean                      $managevim            = true,
-  Optional[Stdlib::Filemode]   $mode                 = undef,
+  Enum['absent','present']       $ensure               = 'present',
+  Optional[String]               $bash_profile_content = undef,
+  Optional[Stdlib::Filesource]   $bash_profile_source  = undef,
+  Optional[String]               $bashrc_content       = undef,
+  Optional[Stdlib::Filesource]   $bashrc_source        = undef,
+  Optional[String]               $forward_content      = undef,
+  Optional[Stdlib::Filesource]   $forward_source       = undef,
+  Optional[Accounts::User::Name] $group                = undef,
+  Boolean                        $managevim            = true,
+  Optional[Stdlib::Filemode]     $mode                 = undef,
+  Optional[Accounts::User::Name] $user                 = undef,
 ) {
-
   assert_type(Stdlib::Unixpath, $name)
   if $ensure == 'absent' {
-    file { $name:
-      ensure  => absent,
-      recurse => true,
-      force   => true,
-    }
-  } elsif $ensure == 'present' {
+    fail(translate('To remove home directories, use the `file` resource.'))
+  } else {
+    assert_type(Accounts::User::Name, $group)
+    assert_type(Accounts::User::Name, $user)
     # Solaris homedirs are managed in zfs by `useradd -m`. If the directory
     # does not yet exist then we can't predict how it should be created, but we
     # should still manage the user/group/mode

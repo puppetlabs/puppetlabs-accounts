@@ -247,20 +247,20 @@ RSpec.configure do |c|
     run_puppet_access_login(user: 'admin') if pe_install? && (Gem::Version.new(puppet_version) >= Gem::Version.new('5.0.0'))
     hosts.each do |host|
       # This will be removed, this is temporary to test localisation.
-      if (fact('osfamily') == 'Debian' || fact('osfamily') == 'RedHat') &&
+      if (fact('os')['family'] =~ %r{Debian|RedHat}) &&
          (Gem::Version.new(puppet_version) >= Gem::Version.new('4.10.5') &&
           Gem::Version.new(puppet_version) < Gem::Version.new('5.2.0'))
         on(host, 'mkdir /opt/puppetlabs/puppet/share/locale/ja')
         on(host, 'touch /opt/puppetlabs/puppet/share/locale/ja/puppet.po')
       end
-      if fact('osfamily') == 'Debian'
-        # install language on debian systems
+      if fact('os')['family'] == 'Debian'
+        # install language on Debian systems
         install_language_on(host, 'ja_JP.utf-8') if not_controller(host)
         # This will be removed, this is temporary to test localisation.
       end
       # Required for binding tests.
-      if fact('osfamily') == 'RedHat'
-        if fact('operatingsystemmajrelease') =~ %r{7} || fact('operatingsystem') =~ %r{Fedora}
+      if fact('os')['family'] == 'RedHat'
+        if fact('os')['release']['major'] == '7' || fact('os')['name'] == 'Fedora'
           shell('yum install -y bzip2')
         end
       end
