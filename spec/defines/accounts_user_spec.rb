@@ -110,10 +110,7 @@ describe '::accounts::user' do
       end
 
       context 'with default sshkey path' do
-        it do
-          is_expected.to contain_user('dan').with('ensure'     => 'absent',
-                                                  'managehome' => true)
-        end
+        it { is_expected.to contain_user('dan').with('ensure' => 'absent') }
         it { is_expected.to contain_user('dan').that_comes_before('Group[dan]') }
         it { is_expected.to contain_group('dan').with('ensure' => 'absent') }
         it { is_expected.not_to contain_accounts__home_dir('/var/home/dan') }
