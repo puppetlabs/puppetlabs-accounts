@@ -19,8 +19,8 @@ hd_group = {
     'system' => true,
   },
   'accounts::group_list' => {
-    'staff'    => {
-      'gid'    => 1234,
+    'staff' => {
+      'gid' => 1234,
     },
   },
 }
@@ -68,7 +68,7 @@ hd_with_managevim = hd_defaults.merge(
       'bashrc_source'       => 'puppet:///modules/accounts/shell/bashrc',
       'bash_profile_source' => 'puppet:///modules/accounts/shell/bash_profile',
       'sshkeys'             => [
-        "ssh-rsa #{test_key}} vagrant",
+        "ssh-rsa #{test_key} vagrant",
         'from="myhost.example.com,192.168.1.1" '\
         "ssh-rsa #{test_key} vagrant2",
       ],
@@ -87,9 +87,9 @@ hd_locked_user = hd_defaults.merge(
 hd_custom_group_name = hd_defaults.merge(
   'accounts::user_list' => {
     'first.last' => {
-      'group'     => 'staff',
-      'password'  => '!!',
-      'home'      => '/test/first.last',
+      'group'    => 'staff',
+      'password' => '!!',
+      'home'     => '/test/first.last',
     },
   },
 )
@@ -186,6 +186,45 @@ hd_user_with_duplicate_id = hd_defaults.merge(
   },
 )
 
+hd_delete_accounts = {
+  'accounts::group_defaults' => {
+    'ensure' => 'absent',
+  },
+  'accounts::group_list' => {
+    'newgrp_1' => {},
+    'newgrp_2' => {},
+    'staff'    => {},
+  },
+  'accounts::user_defaults' => {
+    'ensure'          => 'absent',
+    'create_group'    => true,
+    'purge_user_home' => true,
+  },
+  'accounts::user_list' => {
+    'hunner' => {
+      'home'    => '/test/hunner',
+      'sshkeys' => [
+        "ssh-rsa #{test_key} vagrant",
+        "ssh-rsa #{test_key} vagrant2",
+      ],
+    },
+    'first.last' => {
+      'home'  => '/test/first.last',
+    },
+    'grp_flse' => {
+      'home'  => '/test/grp_flse',
+    },
+    'grp_true' => {
+      'home'  => '/test/grp_true',
+    },
+    'ignore_user' => {},
+    'no_ignore_user' => {},
+    'specd_user' => {},
+    'duplicate_user1' => {},
+    'duplicate_user2' => {},
+  },
+}
+
 pp_manifest = <<-PUPPETCODE
   file { '/test':
     ensure => 'directory',
@@ -195,49 +234,11 @@ pp_manifest = <<-PUPPETCODE
 PUPPETCODE
 
 pp_cleanup = <<-PUPPETCODE
-  $files = [
-    '/test',
-    '/home/hunner',
-    '/home/ignore_user',
-    '/home/no_ignore_user',
-    '/home/specd_user',
-    '/home/duplicate_user1',
-    '/home/duplicate_user2',
-  ]
-  $file_params = {
-    'ensure' => 'absent',
-    'force'  => true,
+  include ::accounts
+  file { '/test':
+    ensure  => 'absent',
+    force   => true,
   }
-  ensure_resource('file', $files, $file_params)
-  $users = [
-    'hunner',
-    'first.last',
-    'grp_flse',
-    'grp_true',
-    'ignore_user',
-    'no_ignore_user',
-    'specd_user',
-    'duplicate_user1',
-    'duplicate_user2',
-  ]
-  $user_params =     {
-    'ensure'  => 'absent',
-    'require' => File[$files],
-  }
-  ensure_resource('user', $users, $user_params)
-  $groups = [
-    'staff',
-    'hunner',
-    'newgrp_1',
-    'newgrp_2',
-    'duplicate_user1',
-    'duplicate_user2',
-  ]
-  $group_params =     {
-    'ensure'  => 'absent',
-    'require' => User[$users],
-  }
-  ensure_resource('group', $groups, $group_params)
 PUPPETCODE
 
 describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) do
@@ -269,7 +270,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
           expect(user('hunner')).to belong_to_group 'root'
           expect(user('hunner')).to have_login_shell '/bin/true'
           expect(user('hunner')).to have_home_directory '/test/hunner'
-          expect(user('hunner')).to contain_password 'hi' unless os[:family] =~ %r{solaris}
+          expect(user('hunner')).to contain_password 'hi' unless os[:family] == 'solaris'
           expect(user('hunner').maximum_days_between_password_change).to match 60
 
           expect(file('/test/hunner')).to be_directory
@@ -319,9 +320,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
   describe 'locking users' do
     let(:login_shell) do
       case os[:family]
-      when 'debian'
-        '/usr/sbin/nologin'
-      when 'ubuntu'
+      when %r{debian|ubuntu}
         '/usr/sbin/nologin'
       when 'solaris'
         '/usr/bin/false'
@@ -463,15 +462,14 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
     end
   end
 
-  describe 'cleanup' do
+  describe 'delete accounts' do
     hosts.each do |host|
       context "on #{host}" do
         it 'removes users and groups' do
-          set_hieradata_on(host, {})
+          set_hieradata_on(host, hd_delete_accounts)
           apply_manifest_on(host, pp_cleanup, catch_failures: true)
 
           expect(file('/test')).not_to exist
-          expect(file('/home/hunner')).not_to exist
           expect(file('/home/ignore_user')).not_to exist
           expect(file('/home/no_ignore_user')).not_to exist
           expect(file('/home/specd_user')).not_to exist

@@ -186,7 +186,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       expect(user('hunner')).to belong_to_group 'root'
       expect(user('hunner')).to have_login_shell '/bin/true'
       expect(user('hunner')).to have_home_directory '/test/hunner'
-      expect(user('hunner')).to contain_password 'hi' unless os[:family] =~ %r{solaris}
+      expect(user('hunner')).to contain_password 'hi' unless os[:family] == 'solaris'
 
       expect(file('/test/hunner')).to be_directory
       expect(file('/test/hunner')).to be_mode 700
@@ -221,9 +221,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
   describe 'locking users' do
     let(:login_shell) do
       case os[:family]
-      when 'debian'
-        '/usr/sbin/nologin'
-      when 'ubuntu'
+      when %r{debian|ubuntu} # Are there Debian-related distros besides Ubuntu?
         '/usr/sbin/nologin'
       when 'solaris'
         '/usr/bin/false'

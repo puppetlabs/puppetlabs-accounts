@@ -4,10 +4,7 @@ describe '::accounts::user' do
   let(:title) { 'dan' }
   let(:params) { {} }
   let(:facts) do
-    {
-      osfamily: 'Debian',
-      operatingsystem: 'Debian',
-    }
+    { os: { family: 'Debian' } }
   end
 
   describe 'expected defaults' do
@@ -37,10 +34,7 @@ describe '::accounts::user' do
     context 'with normal user on Solaris' do
       let(:title) { 'dan' }
       let(:facts) do
-        {
-          osfamily: 'Solaris',
-          operatingsystem: 'Solaris',
-        }
+        { os: { family: 'Solaris' } }
       end
 
       it { is_expected.to contain_user('dan').with_home('/export/home/dan') }
@@ -48,10 +42,7 @@ describe '::accounts::user' do
     context 'with root user on Solaris' do
       let(:title) { 'root' }
       let(:facts) do
-        {
-          osfamily: 'Solaris',
-          operatingsystem: 'Solaris',
-        }
+        { os: { family: 'Solaris' } }
       end
 
       it { is_expected.to contain_user('root').with_home('/') }
@@ -60,10 +51,7 @@ describe '::accounts::user' do
 
   describe 'when setting user parameters' do
     let(:facts) do
-      {
-        osfamily: 'Debian',
-        operatingsystem: 'Debian',
-      }
+      { os: { family: 'Debian' } }
     end
 
     before(:each) do
@@ -118,17 +106,14 @@ describe '::accounts::user' do
 
       before(:each) do
         params['ensure'] = 'absent'
+        params['purge_user_home'] = true
       end
 
       context 'with default sshkey path' do
         it { is_expected.to contain_user('dan').with('ensure' => 'absent') }
         it { is_expected.to contain_user('dan').that_comes_before('Group[dan]') }
         it { is_expected.to contain_group('dan').with('ensure' => 'absent') }
-        it do
-          is_expected.not_to contain_accounts__home_dir('/var/home/dan').with('ensure' => 'absent',
-                                                                              'recurse' => true,
-                                                                              'force' => true)
-        end
+        it { is_expected.not_to contain_accounts__home_dir('/var/home/dan') }
       end
 
       context 'with custom sshkey location' do
@@ -140,16 +125,17 @@ describe '::accounts::user' do
       end
     end
 
-    describe 'when setting the user to absent with managehome off' do
-      # when deleting users the home dir is a File resource instead of a accounts::home_dir
-      let(:contain_home_dir) { contain_file('/var/home/dan') }
-
+    describe 'when setting the user to absent with purge_user_home off' do
       before(:each) do
         params['ensure'] = 'absent'
-        params['managehome'] = false
+        params['purge_user_home'] = false
       end
 
-      it { is_expected.not_to contain_home_dir }
+      it do
+        is_expected.to contain_user('dan').with('ensure'     => 'absent',
+                                                'managehome' => false)
+      end
+      it { is_expected.not_to contain_accounts__home_dir('/var/home/dan') }
       it { is_expected.not_to contain_file('/var/home/dan/.ssh') }
     end
 
@@ -309,77 +295,61 @@ describe '::accounts::user' do
   end
 
   describe 'invalid parameter values' do
-    it 'only accept absent and present for ensure' do
+    it "only accepts 'absent' and 'present' for ensure" do
       params['ensure'] = 'invalid'
       is_expected.to raise_error Puppet::Error
     end
-    it 'fails if locked is not a boolean' do
-      params['locked'] = 'true'
-      is_expected.to raise_error Puppet::Error
-    end
     ['home', 'shell'].each do |param|
-      it "should fail is #{param} does not start with '/'" do
+      it "should fail if #{param} does not start with '/'" do
         params[param] = 'no_leading_slash'
         is_expected.to raise_error Puppet::Error
       end
     end
-    it 'fails if gid is not composed of digits' do
-      params['gid'] = 'name'
-      is_expected.to raise_error Puppet::Error
-    end
-    it 'does not accept non-boolean values for allowdupe' do
-      params['allowdupe'] = 'false'
-      is_expected.to raise_error Puppet::Error
-    end
-    it 'does not accept non-boolean values for locked' do
-      params['locked'] = 'false'
-      is_expected.to raise_error Puppet::Error
-    end
-    it 'does not accept non-boolean values for managehome' do
-      params['managehome'] = 'false'
-      is_expected.to raise_error Puppet::Error
-    end
-    it 'does not accept non-boolean values for managevim' do
-      params['managevim'] = 'false'
-      is_expected.to raise_error Puppet::Error
-    end
     it 'does not accept non-date values for expiry' do
       params['expiry'] = 'notadate'
       is_expected.to raise_error Puppet::Error
+    end
+    ['gid', 'uid'].each do |param|
+      it "fails if #{param} is not composed of digits" do
+        params[param] = 'name'
+        is_expected.to raise_error Puppet::Error
+      end
+    end
+    [
+      'allowdupe',
+      'expiry',
+      'locked',
+      'managehome',
+      'managevim',
+      'purge_user_home',
+    ].each do |param|
+      it "fails if #{param} is not a boolean" do
+        params[param] = 'true'
+        is_expected.to raise_error Puppet::Error
+      end
     end
   end
 
   describe 'when locking users' do
     let(:params) { { 'locked' => true } }
 
-    describe 'on debian' do
+    describe 'on Debian' do
       before(:each) do
-        facts['operatingsystem'] = 'debian'
-        facts['osfamily'] = 'Debian'
+        facts[:os] = { family: 'Debian' }
       end
       it { is_expected.to contain_user('dan').with('shell' => '/usr/sbin/nologin') }
     end
 
-    describe 'on ubuntu' do
+    describe 'on Solaris' do
       before(:each) do
-        facts['operatingsystem'] = 'ubuntu'
-        facts['osfamily'] = 'Ubuntu'
-      end
-      it { is_expected.to contain_user('dan').with('shell' => '/usr/sbin/nologin') }
-    end
-
-    describe 'on solaris' do
-      before(:each) do
-        facts['operatingsystem'] = 'solaris'
-        facts['osfamily'] = 'Solaris'
+        facts[:os] = { family: 'Solaris' }
       end
       it { is_expected.to contain_user('dan').with('shell' => '/usr/bin/false') }
     end
 
     describe 'on all other platforms' do
       before(:each) do
-        facts['operatingsystem'] = 'anything_else'
-        facts['osfamily'] = 'anything_else'
+        facts[:os] = { family: 'anything_else' }
       end
       it { is_expected.to contain_user('dan').with('shell' => '/sbin/nologin') }
     end
@@ -394,8 +364,7 @@ describe '::accounts::user' do
 
   describe 'when supplying resource defaults' do
     before(:each) do
-      facts['osfamily'] = 'Debian'
-      facts['operatingsystem'] = 'debian'
+      facts[:os] = { family: 'Debian' }
     end
 
     let(:pre_condition) { "Accounts::User{ shell => '/bin/zsh' }" }
