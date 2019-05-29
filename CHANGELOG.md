@@ -2,7 +2,20 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v4.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v4.0.0) (2019-05-07)
+## [v4.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v4.1.0) (2019-05-29)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v4.0.0...v4.1.0)
+
+### Added
+
+- \(FM-8023\) Add RedHat 8 support [\#227](https://github.com/puppetlabs/puppetlabs-accounts/pull/227) ([eimlav](https://github.com/eimlav))
+- \(MODULES-7469\) Add password\_max\_age parameter [\#221](https://github.com/puppetlabs/puppetlabs-accounts/pull/221) ([eimlav](https://github.com/eimlav))
+
+### Fixed
+
+- \(MODULES-8968\) Test account removal. [\#226](https://github.com/puppetlabs/puppetlabs-accounts/pull/226) ([pillarsdotnet](https://github.com/pillarsdotnet))
+
+## [v4.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v4.0.0) (2019-05-10)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/3.2.0...v4.0.0)
 
