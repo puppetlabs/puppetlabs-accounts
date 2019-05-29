@@ -218,11 +218,11 @@ end
 # rubocop:enable all
 
 RSpec.configure do |c|
-# rubocop:disable all
-###########################################################################
-# Copied from simp/rubygem-simp-beaker-helpers/lib/simp/beaker_helpers.rb #
-# Original copyright therefrom applies.                                   #
-###########################################################################
+  # rubocop:disable all
+  ###########################################################################
+  # Copied from simp/rubygem-simp-beaker-helpers/lib/simp/beaker_helpers.rb #
+  # Original copyright therefrom applies.                                   #
+  ###########################################################################
   c.before(:all) do
     @temp_hieradata_dirs = @temp_hieradata_dirs || []
   end
@@ -236,35 +236,12 @@ RSpec.configure do |c|
   c.after(:all) do
     clear_temp_hieradata
   end
-###########################################################################
-# End copying simp/rubygem-simp-beaker-helpers/lib/simp/beaker_helpers.rb #
-###########################################################################
-# rubocop:enable all
+  ###########################################################################
+  # End copying simp/rubygem-simp-beaker-helpers/lib/simp/beaker_helpers.rb #
+  ###########################################################################
+  # rubocop:enable all
 
   c.formatter = :documentation
-  # Configure all nodes in nodeset
-  c.before :suite do
-    run_puppet_access_login(user: 'admin') if pe_install? && (Gem::Version.new(puppet_version) >= Gem::Version.new('5.0.0'))
-    hosts.each do |host|
-      # This will be removed, this is temporary to test localisation.
-      if (os[:family] =~ %r{debian|ubuntu|redhat|fedora}) &&
-         (Gem::Version.new(puppet_version) >= Gem::Version.new('4.10.5') &&
-          Gem::Version.new(puppet_version) < Gem::Version.new('5.2.0'))
-        on(host, 'mkdir /opt/puppetlabs/puppet/share/locale/ja')
-        on(host, 'touch /opt/puppetlabs/puppet/share/locale/ja/puppet.po')
-      end
-      if os[:family] =~ %r{debian|ubuntu}
-        # install language on Debian and Ubuntu systems
-        install_language_on(host, 'ja_JP.utf-8') if not_controller(host)
-        # This will be removed, this is temporary to test localisation.
-      end
-      # Required for binding tests.
-      if (os[:family] == 'redhat' && os[:release] == '7') || os[:family] == 'fedora'
-        shell('yum install -y bzip2')
-      end
-      on host, puppet('module', 'install', 'stahnma/epel')
-    end
-  end
 end
 
 RSpec::Matchers.define :contain_password do |password|
