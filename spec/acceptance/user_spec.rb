@@ -176,7 +176,19 @@ pp_user_with_duplicate_uid = <<-PUPPETCODE
   }
 PUPPETCODE
 
+pp_cleanup = <<-PUPPETCODE
+  file { '/test':
+    ensure  => 'absent',
+    force   => true,
+  }
+PUPPETCODE
+
 describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) do
+  after(:all) do
+    # Cleanup any files created to ensure tests can be ran multiple times
+    apply_manifest(pp_cleanup, catch_failures: true)
+  end
+
   describe 'main tests' do
     it 'creates groups of matching names, assigns non-matching group, manages homedir, manages other properties, gives key, makes dotfiles, managevim false' do
       apply_manifest(pp_accounts_define, catch_failures: true)

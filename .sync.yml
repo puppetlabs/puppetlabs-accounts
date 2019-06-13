@@ -42,12 +42,21 @@ Gemfile:
           - mswin
           - mingw
           - x64_mingw
+      - gem: 'puppet_litmus'
+        platforms:
+          - ruby
+          - mswin
+          - mingw
+          - x64_mingw
+        condition: "ENV['PUPPET_GEM_VERSION'].nil? or ENV['PUPPET_GEM_VERSION'] !~ %r{ 5}"
     ':development':
       - gem: puppet-lint-i18n
+      
 
 Rakefile:
   requires:
     - puppet_pot_generator/rake_tasks
+  use_litmus_tasks: true 
 
 spec/spec_helper.rb:
   mock_with: ':rspec'
