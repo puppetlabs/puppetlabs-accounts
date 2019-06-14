@@ -237,6 +237,8 @@ For example, the .bashrc and .bash\_profile files are not managed by default but
 
 ## Development
 
+We are experimenting with a new tool for running acceptance tests. It's name is [puppet_litmus](https://github.com/puppetlabs/puppet_litmus) this replaces beaker as the test runner. To run the acceptance tests follow the instructions [here](https://github.com/puppetlabs/puppet_litmus/wiki/Tutorial:-use-Litmus-to-execute-acceptance-tests-with-a-sample-module-(MoTD)#install-the-necessary-gems-for-the-module).
+
 If you run into an issue with this module, or if you would like to request a feature, please [file a ticket](https://tickets.puppetlabs.com/browse/MODULES/).
 
 If you have problems getting this module up and running, please [contact Support](http://puppetlabs.com/services/customer-support).

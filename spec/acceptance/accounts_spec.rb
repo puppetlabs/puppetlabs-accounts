@@ -243,77 +243,61 @@ PUPPETCODE
 
 describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) do
   describe 'group test' do
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'creates group with specified gid' do
-          set_hieradata_on(host, hd_group)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
+    it 'creates group with specified gid' do
+      set_hieradata(hd_group)
+      apply_manifest(pp_manifest, catch_failures: true)
 
-          expect(group('staff')).to exist
-          expect(group('staff')).to have_gid 1234
-        end
-      end
+      expect(group('staff')).to exist
+      expect(group('staff')).to have_gid 1234
     end
   end
 
   describe 'main tests' do
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'creates groups of matching names, assigns non-matching group, '\
-           'manages homedir, manages other properties, gives key, '\
-           'makes dotfiles, managevim false' do
-          set_hieradata_on(host, hd_accounts_define)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
+    it 'creates groups of matching names, assigns non-matching group, '\
+        'manages homedir, manages other properties, gives key, '\
+        'makes dotfiles, managevim false' do
+      set_hieradata(hd_accounts_define)
+      apply_manifest(pp_manifest, catch_failures: true)
 
-          expect(user('hunner')).to exist
-          expect(user('hunner')).to belong_to_group 'hunner'
-          expect(user('hunner')).to belong_to_group 'root'
-          expect(user('hunner')).to have_login_shell '/bin/true'
-          expect(user('hunner')).to have_home_directory '/test/hunner'
-          expect(user('hunner')).to contain_password 'hi' unless os[:family] == 'solaris'
-          expect(user('hunner').maximum_days_between_password_change).to match 60
+      expect(user('hunner')).to exist
+      expect(user('hunner')).to belong_to_group 'hunner'
+      expect(user('hunner')).to belong_to_group 'root'
+      expect(user('hunner')).to have_login_shell '/bin/true'
+      expect(user('hunner')).to have_home_directory '/test/hunner'
+      expect(user('hunner')).to contain_password 'hi' unless os[:family] == 'solaris'
+      expect(user('hunner').maximum_days_between_password_change).to match 60
 
-          expect(file('/test/hunner')).to be_directory
-          expect(file('/test/hunner')).to be_mode 700
-          expect(file('/test/hunner')).to be_owned_by 'hunner'
-          expect(file('/test/hunner')).to be_grouped_into 'hunner'
+      expect(file('/test/hunner')).to be_directory
+      expect(file('/test/hunner')).to be_mode 700
+      expect(file('/test/hunner')).to be_owned_by 'hunner'
+      expect(file('/test/hunner')).to be_grouped_into 'hunner'
 
-          expect(file('/test/hunner/.bashrc')).to be_file
-          expect(file('/test/hunner/.bashrc').content).to match %r{managed by Puppet}
+      expect(file('/test/hunner/.bashrc')).to be_file
+      expect(file('/test/hunner/.bashrc').content).to match %r{managed by Puppet}
 
-          expect(file('/test/hunner/.bash_profile')).to be_file
-          expect(file('/test/hunner/.bash_profile').content).to match %r{Get the aliases and functions}
+      expect(file('/test/hunner/.bash_profile')).to be_file
+      expect(file('/test/hunner/.bash_profile').content).to match %r{Get the aliases and functions}
 
-          expect(file('/test/hunner/.vim')).not_to exist
-        end
-      end
+      expect(file('/test/hunner/.vim')).not_to exist
     end
   end
 
   describe 'warn for sshkeys without managehome' do
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'creates groups of matching names, assigns non-matching group, '\
-           'manages homedir, manages other properties, gives key, '\
-           'makes dotfiles' do
-          set_hieradata_on(host, hd_without_managehome)
-          apply_manifest_on(host, pp_manifest, catch_failures: true) do |r|
-            expect(r.stderr).to match(%r{Warning:.*ssh keys were passed for user hunner})
-          end
-        end
+    it 'creates groups of matching names, assigns non-matching group, '\
+        'manages homedir, manages other properties, gives key, '\
+        'makes dotfiles' do
+      set_hieradata(hd_without_managehome)
+      apply_manifest(pp_manifest, catch_failures: true) do |r|
+        expect(r.stderr).to match(%r{Warning:.*ssh keys were passed for user hunner})
       end
     end
   end
 
   describe 'managevim set to true' do
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'creates .vim file' do
-          set_hieradata_on(host, hd_with_managevim)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
-          expect(file('/test/hunner/.vim')).to be_directory
-        end
-      end
+    it 'creates .vim file' do
+      set_hieradata(hd_with_managevim)
+      apply_manifest(pp_manifest, catch_failures: true)
+      expect(file('/test/hunner/.vim')).to be_directory
     end
   end
 
@@ -329,169 +313,131 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
       end
     end
 
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'locks a user' do
-          set_hieradata_on(host, hd_locked_user)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
-          expect(user('hunner')).to have_login_shell login_shell
-        end
-      end
+    it 'locks a user' do
+      set_hieradata(hd_locked_user)
+      apply_manifest(pp_manifest, catch_failures: true)
+      expect(user('hunner')).to have_login_shell login_shell
     end
   end
 
   describe 'create user with custom group name' do
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'creates group of matching names, assigns non-matching group, '\
-           'manages homedir' do
-          set_hieradata_on(host, hd_custom_group_name)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
+    it 'creates group of matching names, assigns non-matching group, '\
+        'manages homedir' do
+      set_hieradata(hd_custom_group_name)
+      apply_manifest(pp_manifest, catch_failures: true)
 
-          expect(user('first.last')).to exist
-          expect(user('first.last')).to belong_to_group 'staff'
-          expect(user('first.last')).to have_home_directory '/test/first.last'
+      expect(user('first.last')).to exist
+      expect(user('first.last')).to belong_to_group 'staff'
+      expect(user('first.last')).to have_home_directory '/test/first.last'
 
-          expect(file('/test/first.last')).to be_directory
-          expect(file('/test/first.last')).to be_mode 700
-          expect(file('/test/first.last')).to be_owned_by 'first.last'
-          expect(file('/test/first.last')).to be_grouped_into 'staff'
-        end
-      end
+      expect(file('/test/first.last')).to be_directory
+      expect(file('/test/first.last')).to be_mode 700
+      expect(file('/test/first.last')).to be_owned_by 'first.last'
+      expect(file('/test/first.last')).to be_grouped_into 'staff'
     end
   end
 
   describe 'group set to false does not create group' do
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'does not create group' do
-          set_hieradata_on(host, hd_create_group_false)
-          apply_manifest_on(host, pp_manifest, expect_failures: true) do |r|
-            expect(r.stderr).to match(%r{(.*group '?newgrp_1'? does not exist.*|.*Unknown group `?newgrp_1'?.*)})
-          end
-          expect(user('grp_flse')).not_to exist
-          expect(user('grp_flse')).not_to belong_to_group 'new_group_1'
-        end
+    it 'does not create group' do
+      set_hieradata(hd_create_group_false)
+      apply_manifest(pp_manifest, expect_failures: true) do |r|
+        expect(r.stderr).to match(%r{(.*group '?newgrp_1'? does not exist.*|.*Unknown group `?newgrp_1'?.*)})
       end
+      expect(user('grp_flse')).not_to exist
+      expect(user('grp_flse')).not_to belong_to_group 'new_group_1'
     end
   end
 
   describe 'group set to true creates group' do
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'creates group' do
-          set_hieradata_on(host, hd_create_group_true)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
+    it 'creates group' do
+      set_hieradata(hd_create_group_true)
+      apply_manifest(pp_manifest, catch_failures: true)
 
-          expect(user('grp_true')).to exist
-          expect(user('grp_true')).to belong_to_group 'newgrp_2'
-        end
-      end
+      expect(user('grp_true')).to exist
+      expect(user('grp_true')).to belong_to_group 'newgrp_2'
     end
   end
 
   # Solaris does not offer a means of testing the password
-  describe 'ignore password if ignore set to true',
-           unless: os[:family] == 'solaris' do
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'creates group of matching names, assigns non-matching group,'\
-           'empty password, ignore true, ignores password' do
-          set_hieradata_on(host, hd_ignore_user_first_run)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
-          set_hieradata_on(host, hd_ignore_user_second_run)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
+  describe 'ignore password if ignore set to true', unless: os[:family] == 'solaris' do
+    it 'creates group of matching names, assigns non-matching group,'\
+        'empty password, ignore true, ignores password' do
+      set_hieradata(hd_ignore_user_first_run)
+      apply_manifest(pp_manifest, catch_failures: true)
+      set_hieradata(hd_ignore_user_second_run)
+      apply_manifest(pp_manifest, catch_failures: true)
 
-          expect(user('ignore_user')).to exist
-          expect(user('ignore_user')).to contain_password 'foo'
-        end
-      end
+      expect(user('ignore_user')).to exist
+      expect(user('ignore_user')).to contain_password 'foo'
     end
   end
 
   # Solaris does not offer a means of testing the password
-  describe 'do not ignore password if ignore set to false',
-           unless: os[:family] == 'solaris' do
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'creates group of matching names, assigns non-matching group,'\
-           'empty password, ignore false, should not ignore password' do
-          set_hieradata_on(host, hd_no_ignore_user_first_run)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
-          set_hieradata_on(host, hd_no_ignore_user_second_run)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
+  describe 'do not ignore password if ignore set to false', unless: os[:family] == 'solaris' do
+    it 'creates group of matching names, assigns non-matching group,'\
+        'empty password, ignore false, should not ignore password' do
+      set_hieradata(hd_no_ignore_user_first_run)
+      apply_manifest(pp_manifest, catch_failures: true)
+      set_hieradata(hd_no_ignore_user_second_run)
+      apply_manifest(pp_manifest, catch_failures: true)
 
-          expect(user('no_ignore_user')).to exist
-          expect(user('no_ignore_user')).to contain_password ''
-        end
-      end
+      expect(user('no_ignore_user')).to exist
+      expect(user('no_ignore_user')).to contain_password ''
     end
   end
 
   describe 'do not ignore password if set and ignore set to true', unless: os[:family] == 'solaris' do
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'creates group of matching names, assigns non-matching group, '\
-            'specify password, ignore, should not ignore password' do
-          set_hieradata_on(host, hd_specd_user_first_run)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
-          set_hieradata_on(host, hd_specd_user_second_run)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
+    it 'creates group of matching names, assigns non-matching group, '\
+        'specify password, ignore, should not ignore password' do
+      set_hieradata(hd_specd_user_first_run)
+      apply_manifest(pp_manifest, catch_failures: true)
+      set_hieradata(hd_specd_user_second_run)
+      apply_manifest(pp_manifest, catch_failures: true)
 
-          expect(user('specd_user')).to exist
-          expect(user('specd_user')).to contain_password 'bar'
-        end
-      end
+      expect(user('specd_user')).to exist
+      expect(user('specd_user')).to contain_password 'bar'
     end
   end
 
   describe 'create duplicate users with same uid' do
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'runs with no errors' do
-          set_hieradata_on(host, hd_user_with_duplicate_id)
-          apply_manifest_on(host, pp_manifest, catch_failures: true)
+    it 'runs with no errors' do
+      set_hieradata(hd_user_with_duplicate_id)
+      apply_manifest(pp_manifest, catch_failures: true)
 
-          expect(user('duplicate_user1')).to exist
-          expect(user('duplicate_user1')).to have_uid 1234
+      expect(user('duplicate_user1')).to exist
+      expect(user('duplicate_user1')).to have_uid 1234
 
-          expect(user('duplicate_user2')).to exist
-          expect(user('duplicate_user2')).to have_uid 1234
-        end
-      end
+      expect(user('duplicate_user2')).to exist
+      expect(user('duplicate_user2')).to have_uid 1234
     end
   end
 
   describe 'delete accounts' do
-    hosts.each do |host|
-      context "on #{host}" do
-        it 'removes users and groups' do
-          set_hieradata_on(host, hd_delete_accounts)
-          apply_manifest_on(host, pp_cleanup, catch_failures: true)
+    it 'removes users and groups' do
+      set_hieradata(hd_delete_accounts)
+      apply_manifest(pp_cleanup, catch_failures: true)
 
-          expect(file('/test')).not_to exist
-          expect(file('/home/ignore_user')).not_to exist
-          expect(file('/home/no_ignore_user')).not_to exist
-          expect(file('/home/specd_user')).not_to exist
-          expect(file('/home/duplicate_user1')).not_to exist
-          expect(file('/home/duplicate_user2')).not_to exist
-          expect(user('hunner')).not_to exist
-          expect(user('first.last')).not_to exist
-          expect(user('grp_flse')).not_to exist
-          expect(user('grp_true')).not_to exist
-          expect(user('ignore_user')).not_to exist
-          expect(user('no_ignore_user')).not_to exist
-          expect(user('specd_user')).not_to exist
-          expect(user('duplicate_user1')).not_to exist
-          expect(user('duplicate_user2')).not_to exist
-          expect(group('staff')).not_to exist
-          expect(group('hunner')).not_to exist
-          expect(group('newgrp_1')).not_to exist
-          expect(group('newgrp_2')).not_to exist
-          expect(group('duplicate_user1')).not_to exist
-          expect(group('duplicate_user2')).not_to exist
-        end
-      end
+      expect(file('/test')).not_to exist
+      expect(file('/home/ignore_user')).not_to exist
+      expect(file('/home/no_ignore_user')).not_to exist
+      expect(file('/home/specd_user')).not_to exist
+      expect(file('/home/duplicate_user1')).not_to exist
+      expect(file('/home/duplicate_user2')).not_to exist
+      expect(user('hunner')).not_to exist
+      expect(user('first.last')).not_to exist
+      expect(user('grp_flse')).not_to exist
+      expect(user('grp_true')).not_to exist
+      expect(user('ignore_user')).not_to exist
+      expect(user('no_ignore_user')).not_to exist
+      expect(user('specd_user')).not_to exist
+      expect(user('duplicate_user1')).not_to exist
+      expect(user('duplicate_user2')).not_to exist
+      expect(group('staff')).not_to exist
+      expect(group('hunner')).not_to exist
+      expect(group('newgrp_1')).not_to exist
+      expect(group('newgrp_2')).not_to exist
+      expect(group('duplicate_user1')).not_to exist
+      expect(group('duplicate_user2')).not_to exist
     end
   end
 end
