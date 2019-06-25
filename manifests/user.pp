@@ -245,7 +245,7 @@ define accounts::user (
       }
     }
     # End workaround.
-    User[$name] -> Group <| |>
+    User[$name] -> Group <| ensure == 'absent' |>
     if $create_group {
       # Only remove the group if it is the same as user name as it may be shared.
       if $name == $group {

@@ -163,6 +163,30 @@ pp_specd_user_second_run = <<-PUPPETCODE
   }
 PUPPETCODE
 
+pp_archive_homedir_before_user_deletion = <<-PUPPETCODE
+  file { '/test/archives':
+    ensure => 'directory',
+    group  => 'archiver',
+    mode   => '0700',
+    owner  => 'archiver',
+  }
+  exec { 'backup homedir of specd_user':
+    command => 'tar -czf /test/archives/specd_user.tar.gz specd_user',
+    creates => '/test/specd_user.tar.gz',
+    cwd     => '/home',
+    path    => '/bin',
+    require => File['/test/archives'],
+  }
+  accounts::user { 'specd_user':
+    ensure          => 'absent',
+    purge_user_home => true,
+    require         => Exec['backup homedir of specd_user'],
+  }
+  accounts::user { 'archiver':
+    ensure => 'present',
+  }
+PUPPETCODE
+
 pp_user_with_duplicate_uid = <<-PUPPETCODE
   accounts::user { 'duplicate_user1':
     allowdupe    => true,
@@ -312,6 +336,16 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
 
       expect(user('specd_user')).to exist
       expect(user('specd_user')).to contain_password 'bar'
+    end
+  end
+
+  describe 'allow homedir archival before user deletion' do
+    it 'allows creating one user before deleting another' do
+      apply_manifest(pp_archive_homedir_before_user_deletion, catch_failures: true)
+
+      expect(user('archiver')).to exist
+      expect(user('specd_user')).not_to exist
+      expect(file('/home/specd_user')).not_to exist
     end
   end
 
