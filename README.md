@@ -150,8 +150,8 @@ accounts::group_list:
   users:  {}
 accounts::user_defaults:
   groups: [ 'users' ]
-  manage_home: true
-  system:      false
+  managehome: true
+  system:     false
 accounts::user_list:
   admin:
     groups: ['admins', 'users']
