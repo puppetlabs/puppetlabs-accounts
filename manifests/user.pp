@@ -266,6 +266,9 @@ define accounts::user (
       sshkey_custom_path => $sshkey_custom_path,
       purge_user_home    => $purge_user_home,
     }
+    # When purging users, we must first remove ssh key prior removing user
+    Accounts::Key_management["${name}_key_management"]
+    -> User[$name]
   } else {
     # Check if user wants to create the group
     if $create_group {
