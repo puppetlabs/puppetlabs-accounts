@@ -89,9 +89,10 @@
 #   run.
 #
 # @param ignore_password_if_empty
-#   Specifies whether an empty password field should be ignored. If set to true,
-#   this ignores a password field that is defined but empty. If set to false, it
-#   sets the password to an empty value.
+#   Specifies whether an empty password attribute should be ignored. If set to true,
+#   a password attribute that is defined but set to the empty string is ignored,
+#   allowing the password to be managed outside of this Puppet module. If set to false,
+#   it sets the password to an empty value.
 #
 # @param iterations
 #   This is the number of iterations of a chained computation of the PBKDF2
