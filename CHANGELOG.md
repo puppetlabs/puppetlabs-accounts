@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v4.2.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v4.2.0) (2019-08-02)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v4.1.0...v4.2.0)
+
+### Added
+
+- \(FM-8231\) Convert testing to litmus [\#230](https://github.com/puppetlabs/puppetlabs-accounts/pull/230) ([eimlav](https://github.com/eimlav))
+
+### Fixed
+
+- MODULES-9447 -- Narrow dependency between removed user and group. [\#232](https://github.com/puppetlabs/puppetlabs-accounts/pull/232) ([pillarsdotnet](https://github.com/pillarsdotnet))
+
 ## [v4.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v4.1.0) (2019-05-29)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v4.0.0...v4.1.0)
