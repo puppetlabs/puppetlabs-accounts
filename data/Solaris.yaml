@@ -1,0 +1,5 @@
+---
+
+accounts::user::home_template: '/export/home/%s'
+accounts::user::locked_shell: '/usr/bin/false'
+accounts::user::root_home: '/'
