@@ -25,9 +25,40 @@ hd_group = {
   },
 }
 
+hd_group_change = hd_group.merge(
+  'accounts::group_list' => {
+    'staff' => {
+      'gid' => 1235,
+    },
+  },
+)
+
 hd_accounts_define = hd_defaults.merge(
   'accounts::user_list' => {
     'hunner' => {
+      'groups'              => ['root'],
+      'password'            => 'hi',
+      'password_max_age'    => 60,
+      'shell'               => '/bin/true',
+      'home'                => '/test/hunner',
+      'managevim'           => false,
+      'bashrc_source'       => 'puppet:///modules/accounts/shell/bashrc',
+      'bash_profile_source' => 'puppet:///modules/accounts/shell/bash_profile',
+      'sshkeys'             => [
+        "ssh-rsa #{test_key} vagrant",
+        'command="/bin/echo Hello",from="myhost.exapmle.com,192.168.1.1" '\
+        "ssh-rsa #{test_key} vagrant2",
+      ],
+    },
+  },
+)
+
+hd_accounts_with_custom_key_path_define = hd_defaults.merge(
+  'accounts::user_list' => {
+    'hunner' => {
+      'sshkey_custom_path'  => '/test/sshkeys/hunner',
+      'sshkey_owner'        => 'root',
+      'sshkey_group'        => 'root',
       'groups'              => ['root'],
       'password'            => 'hi',
       'password_max_age'    => 60,
@@ -233,6 +264,18 @@ pp_manifest = <<-PUPPETCODE
   include ::accounts
 PUPPETCODE
 
+pp_manifest_custom_sshkey = <<-PUPPETCODE
+  file { '/test':
+    ensure => 'directory',
+    before => Class['accounts'],
+  }
+  file { '/test/sshkeys':
+    ensure => 'directory',
+    before => Class['accounts'],
+  }
+  include ::accounts
+PUPPETCODE
+
 pp_cleanup = <<-PUPPETCODE
   include ::accounts
   file { '/test':
@@ -249,6 +292,15 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
 
       expect(group('staff')).to exist
       expect(group('staff')).to have_gid 1234
+    end
+    it 'changes existing group id' do
+      set_hieradata(hd_group)
+      apply_manifest(pp_manifest, catch_failures: true)
+      set_hieradata(hd_group_change)
+      apply_manifest(pp_manifest, catch_failures: true)
+
+      expect(group('staff')).to exist
+      expect(group('staff')).to have_gid 1235
     end
   end
 
@@ -279,6 +331,24 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
       expect(file('/test/hunner/.bash_profile').content).to match %r{Get the aliases and functions}
 
       expect(file('/test/hunner/.vim')).not_to exist
+    end
+  end
+
+  describe 'main tests with custom key path' do
+    it 'manages ssh key in a separate directory' do
+      set_hieradata(hd_accounts_with_custom_key_path_define)
+      apply_manifest(pp_manifest_custom_sshkey, catch_failures: true)
+
+      expect(user('hunner')).to exist
+
+      expect(file('/test/hunner')).to be_directory
+      expect(file('/test/hunner')).to be_mode 700
+      expect(file('/test/hunner')).to be_owned_by 'hunner'
+      expect(file('/test/hunner')).to be_grouped_into 'hunner'
+
+      expect(file('/test/hunner/.ssh/authorized_key')).not_to exist
+      expect(file('/test/sshkeys/hunner')).to be_file
+      expect(file('/test/sshkeys/hunner')).to be_owned_by 'root'
     end
   end
 

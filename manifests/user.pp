@@ -149,8 +149,11 @@
 # @param sshkey_custom_path
 #   Custom location for ssh public key file.
 #
+# @param sshkey_group
+#   Specifies the group of the sshkey file
+#
 # @param sshkey_owner
-#   Specifies the owner of the sshkey file .ssh/authorized_keys.
+#   Specifies the owner of the sshkey file
 #
 # @param sshkeys
 #   An array of SSH public keys associated with the user. These should be
@@ -204,6 +207,7 @@ define accounts::user (
   Optional[String]                         $salt                     = undef,
   Optional[Stdlib::Unixpath]               $shell                    = '/bin/bash',
   Optional[Stdlib::Unixpath]               $sshkey_custom_path       = undef,
+  Optional[Accounts::User::Name]           $sshkey_group             = $name,
   Optional[Accounts::User::Name]           $sshkey_owner             = $name,
   Array[String]                            $sshkeys                  = [],
   Boolean                                  $system                   = false,
@@ -265,6 +269,8 @@ define accounts::user (
       user_home          => $_home,
       sshkeys            => $sshkeys,
       sshkey_custom_path => $sshkey_custom_path,
+      sshkey_owner       => $sshkey_owner,
+      sshkey_group       => $sshkey_group,
       purge_user_home    => $purge_user_home,
     }
   } else {
@@ -339,6 +345,8 @@ define accounts::user (
         user_home          => $_home,
         sshkeys            => $sshkeys,
         sshkey_custom_path => $sshkey_custom_path,
+        sshkey_owner       => $sshkey_owner,
+        sshkey_group       => $sshkey_group,
         purge_user_home    => $purge_user_home,
         require            => Accounts::Home_dir[$_home]
       }
@@ -348,10 +356,11 @@ define accounts::user (
       if (($sshkey_custom_path != undef) and ($ensure == 'present')) {
         accounts::key_management { "${name}_key_management":
           ensure             => 'present',
-          user               => $sshkey_owner,
+          user               => $name,
           group              => $group,
           sshkeys            => $sshkeys,
           sshkey_owner       => $sshkey_owner,
+          sshkey_group       => $sshkey_group,
           sshkey_custom_path => $sshkey_custom_path,
         }
       }
