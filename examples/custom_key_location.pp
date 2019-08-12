@@ -22,6 +22,8 @@ file { '/var/lib/ssh/jeff':
 
 accounts::user { 'jeff':
   sshkey_custom_path => '/var/lib/ssh/jeff/authorized_keys',
+  sshkey_group       => 'root',
+  sshkey_owner       => 'root',
   shell              => '/bin/zsh',
   comment            => 'Jeff McCune',
   groups             => [

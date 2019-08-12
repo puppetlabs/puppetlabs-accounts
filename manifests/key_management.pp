@@ -16,6 +16,9 @@
 # @param sshkey_custom_path
 #   Path to custom file for ssh key management.
 #
+# @param sshkey_group
+#   Specifies the group of the ssh key file.
+#
 # @param sshkey_owner
 #   Specifies the owner of the ssh key file.
 #
@@ -33,6 +36,7 @@ define accounts::key_management(
   Optional[Accounts::User::Name] $group              = undef,
   Boolean                        $purge_user_home    = false,
   Optional[Stdlib::Unixpath]     $sshkey_custom_path = undef,
+  Accounts::User::Name           $sshkey_group       = $group,
   Accounts::User::Name           $sshkey_owner       = $user,
   Array[String]                  $sshkeys            = [],
   Optional[Stdlib::Unixpath]     $user_home          = undef,
@@ -53,8 +57,8 @@ define accounts::key_management(
   if $ensure == 'present' {
     file { $key_file:
       ensure => 'file',
-      owner  => $user,
-      group  => $group,
+      owner  => $sshkey_owner,
+      group  => $sshkey_group,
       mode   => '0600',
     }
     if $user_home {

@@ -117,6 +117,8 @@ Example:
 ~~~puppet
 accounts::user { 'gerrard':
   sshkey_custom_path => '/var/lib/ssh/gerrard/authorized_keys',
+  sshkey_group       => 'root',
+  sshkey_owner       => 'root',
   shell              => '/bin/zsh',
   comment            => 'Gerrard Geldenhuis',
   groups             => [

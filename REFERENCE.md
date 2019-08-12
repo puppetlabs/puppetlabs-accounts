@@ -382,11 +382,19 @@ Custom location for ssh public key file.
 
 Default value: `undef`
 
+##### `sshkey_group`
+
+Data type: `Optional[Accounts::User::Name]`
+
+Specifies the group of the sshkey file.
+
+Default value: $name
+
 ##### `sshkey_owner`
 
 Data type: `Optional[Accounts::User::Name]`
 
-Specifies the owner of the sshkey file .ssh/authorized_keys.
+Specifies the owner of the sshkey file.
 
 Default value: $name
 
