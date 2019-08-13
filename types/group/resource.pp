@@ -1,3 +1,7 @@
+# Group attributes hash.
+# @summary A hash of group attributes.
+# Passed as the third parameter of the ensure_resources function.
+#
 type Accounts::Group::Resource = Struct[
   { Optional[ensure]          => Enum['absent', 'present'],
     Optional[allowdupe]       => Boolean,
