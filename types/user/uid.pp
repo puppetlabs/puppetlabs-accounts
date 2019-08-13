@@ -1,5 +1,7 @@
-# On most Unix systems, the highest uid is 2^32 - 1, or 4294967295
-
+# Numeric user ID.
+# @summary Each user on a system should have a unique numeric uid.
+# On most Unix systems, the highest uid is 2^32 - 1, or 4294967295.
+#
 type Accounts::User::Uid = Variant[
   Integer[0,4294967295],
   Pattern[/\A0\z/,

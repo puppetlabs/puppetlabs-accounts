@@ -216,16 +216,12 @@ define accounts::user (
 
   assert_type(Accounts::User::Name, $name)
 
+  include accounts::user::defaults
+
   $_home = $home ? {
     undef => $name ? {
-      'root' => $facts['os']['family'] ? {
-        'Solaris' => '/',
-        default   => '/root',
-      },
-      default => $facts['os']['family'] ? {
-        'Solaris' => "/export/home/${name}",
-        default   => "/home/${name}",
-      },
+      'root'  => $accounts::user::defaults::root_home,
+      default => $accounts::user::defaults::home_template.sprintf($name),
     },
     default => $home,
   }
@@ -296,11 +292,7 @@ define accounts::user (
       default => $purge_sshkeys,
     }
     $_shell = $locked ? {
-      true => $facts['os']['family'] ? {
-        'Debian'  => '/usr/sbin/nologin',
-        'Solaris' => '/usr/bin/false',
-        default   => '/sbin/nologin',
-      },
+      true    => $accounts::user::defaults::locked_shell,
       default => $shell,
     }
     user { $name:
