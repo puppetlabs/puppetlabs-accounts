@@ -6,6 +6,7 @@
 **Classes**
 
 * [`accounts`](#accounts): This class auto-creates user and group resources from hiera data.
+* [`accounts::user::defaults`](#accountsuserdefaults): Load some user defaults from hiera data.
 
 **Defined types**
 
@@ -23,6 +24,19 @@ _Private Defined types_
 **Functions**
 
 * [`accounts_ssh_options_parser`](#accounts_ssh_options_parser): Parse an ssh authorized_keys option string into an array using its expected pattern which matches a crazy regex slightly modified from shell 
+
+**Data types**
+
+* [`Accounts::Group::Hash`](#accountsgrouphash): A hash of group resources, keyed by group name.
+* [`Accounts::Group::Provider`](#accountsgroupprovider): The specific backend to use for this group resource.
+* [`Accounts::Group::Resource`](#accountsgroupresource): A hash of group attributes.
+* [`Accounts::User::Expiry`](#accountsuserexpiry): Account access will be denied after this date.
+* [`Accounts::User::Hash`](#accountsuserhash): A hash of user resources, keyed by user name.
+* [`Accounts::User::Iterations`](#accountsuseriterations): Chained computation iterations for the PBKDF2 password hash.
+* [`Accounts::User::Name`](#accountsusername): Each user or group should have a unique alphanumeric name.
+* [`Accounts::User::PasswordMaxAge`](#accountsuserpasswordmaxage): Maximum days between password changes.
+* [`Accounts::User::Resource`](#accountsuserresource): A hash of user attributes.
+* [`Accounts::User::Uid`](#accountsuseruid): Each user on a system should have a unique numeric uid.
 
 ## Classes
 
@@ -68,6 +82,38 @@ Hash of accounts::user resources for this class to manage. The hash is
 keyed by user name.
 
 Default value: {}
+
+### accounts::user::defaults
+
+Load some user defaults from hiera data.
+
+#### Parameters
+
+The following parameters are available in the `accounts::user::defaults` class.
+
+##### `home_template`
+
+Data type: `Stdlib::AbsolutePath`
+
+The sprintf template used to determine a user's home directory.
+
+Default value: '/home/%s'
+
+##### `locked_shell`
+
+Data type: `Stdlib::AbsolutePath`
+
+The shell assigned to locked user accounts.
+
+Default value: '/sbin/nologin'
+
+##### `root_home`
+
+Data type: `Stdlib::AbsolutePath`
+
+The home directory of the root user.
+
+Default value: '/root'
 
 ## Defined types
 
@@ -260,9 +306,10 @@ Default value: `undef`
 
 Data type: `Boolean`
 
-Specifies whether an empty password field should be ignored. If set to true,
-this ignores a password field that is defined but empty. If set to false, it
-sets the password to an empty value.
+Specifies whether an empty password attribute should be ignored. If set to true,
+a password attribute that is defined but set to the empty string is ignored,
+allowing the password to be managed outside of this Puppet module. If set to false,
+it sets the password to an empty value.
 
 Default value: `false`
 
@@ -386,7 +433,7 @@ Default value: `undef`
 
 Data type: `Optional[Accounts::User::Name]`
 
-Specifies the group of the sshkey file.
+Specifies the group of the sshkey file
 
 Default value: $name
 
@@ -394,7 +441,7 @@ Default value: $name
 
 Data type: `Optional[Accounts::User::Name]`
 
-Specifies the owner of the sshkey file.
+Specifies the owner of the sshkey file
 
 Default value: $name
 
@@ -471,4 +518,143 @@ accounts_ssh_option_parser_string()
 Data type: `String`
 
 ssh authorized_keys option string
+
+## Data types
+
+### Accounts::Group::Hash
+
+Group resoureces hash.
+Passed as the second parameter of the ensure_resources function.
+
+Alias of `Hash[Accounts::User::Name, Accounts::Group::Resource]`
+
+### Accounts::Group::Provider
+
+Group provider.
+You will seldom need to specify this -- Puppet will usually discover the
+appropriate provider for your platform.
+
+Alias of `Enum['aix', 'directoryservice', 'groupadd', 'ldap', 'pw', 'windows_adsi']`
+
+### Accounts::Group::Resource
+
+Group attributes hash.
+Passed as the third parameter of the ensure_resources function.
+
+Alias of `Struct[{ Optional[ensure]          => Enum['absent', 'present'],
+    Optional[allowdupe]       => Boolean,
+    Optional[auth_membership] => Boolean,
+    Optional[forcelocal]      => Boolean,
+    Optional[gid]             => Accounts::User::Uid,
+    Optional[members]         => Array[Accounts::User::Name],
+    Optional[name]            => Accounts::User::Name,
+    Optional[provider]        => Accounts::Group::Provider,
+    Optional[system]          => Boolean,
+  }]`
+
+### Accounts::User::Expiry
+
+Account expiration date.
+Either 'absent' or a YYYY-MM-DD datestring.
+
+Alias of `Variant[Enum['absent'], Pattern[/\A(19|[2-9]\d)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])\z/]]`
+
+### Accounts::User::Hash
+
+User resources hash.
+Passed as the second parameter of the ensure_resources function.
+
+Alias of `Hash[Accounts::User::Name, Accounts::User::Resource]`
+
+### Accounts::User::Iterations
+
+Password hash iterations.
+This parameter is used in OS X, and is required for managing passwords
+on OS X 10.8 and newer.
+
+Alias of `Variant[Integer[1,], Pattern[/\A[1-9]\d*\z/]]`
+
+### Accounts::User::Name
+
+Account (user or group) name.
+From useradd(8): It is usually recommended to only use usernames
+that begin with a lower case letter or an underscore, followed by lower case
+letters, digits, underscores, or dashes. They can end with a dollar sign.
+Usernames may only be up to 32 characters long.
+
+Some installations also allow periods, for example to separate first and
+last names.
+
+Alias of `Pattern[/\A[a-z_]([a-z.0-9_-]{0,30}[a-z0-9_$-])?\z/]`
+
+### Accounts::User::PasswordMaxAge
+
+Max password age.
+On most systems, the default value of 99999 is about 274 years, which
+effectively disables password aging.
+
+Alias of `Integer[1, 99999]`
+
+### Accounts::User::Resource
+
+User attributes hash.
+Passed as the third parameter of the ensure_resources function.
+
+Alias of `Struct[{ Optional[ensure]                   => Enum['absent','present'],
+    Optional[allowdupe]                => Boolean,
+    Optional[bash_profile_content]     => String,
+    Optional[bash_profile_source]      => Stdlib::Filesource,
+    Optional[bashrc_content]           => String,
+    Optional[bashrc_source]            => Stdlib::Filesource,
+    Optional[comment]                  => String,
+    Optional[create_group]             => Boolean,
+    Optional[expiry]                   => Accounts::User::Expiry,
+    Optional[forcelocal]               => Boolean,
+    Optional[forward_content]          => String,
+    Optional[forward_source]           => Stdlib::Filesource,
+    Optional[gid]                      => Accounts::User::Uid,
+    Optional[group]                    => Accounts::User::Name,
+    Optional[groups]                   => Array[Accounts::User::Name],
+    Optional[name]                     => Accounts::User::Name,
+    Optional[home]                     => Stdlib::Unixpath,
+    Optional[home_mode]                => Stdlib::Filemode,
+    Optional[ignore_password_if_empty] => Boolean,
+    Optional[iterations]               => Accounts::User::Iterations,
+    Optional[locked]                   => Boolean,
+    Optional[managehome]               => Boolean,
+    Optional[managevim]                => Boolean,
+    Optional[membership]               => Enum['inclusive','minimum'],
+    Optional[name]                     => Accounts::User::Name,
+    Optional[password]                 => String,
+    Optional[password_max_age]         => Accounts::User::PasswordMaxAge,
+    Optional[purge_sshkeys]            => Boolean,
+    Optional[purge_user_home]          => Boolean,
+    Optional[salt]                     => String,
+    Optional[shell]                    => Stdlib::Unixpath,
+    Optional[sshkey_custom_path]       => Stdlib::Unixpath,
+    Optional[sshkey_owner]             => Accounts::User::Name,
+    Optional[sshkey_group]             => Accounts::User::Name,
+    Optional[sshkeys]                  => Array[String],
+    Optional[system]                   => Boolean,
+    Optional[uid]                      => Accounts::User::Uid,
+  }]`
+
+### Accounts::User::Uid
+
+Numeric user ID.
+On most Unix systems, the highest uid is 2^32 - 1, or 4294967295.
+
+Alias of `Variant[Integer[0,4294967295], Pattern[/\A0\z/,
+          /\A[1-3]\d{0,9}\z/,
+          /\A[4-9]\d{0,8}\z/,
+          /\A4[0-1]\d{8}\z/,
+          /\A42[0-8]\d{7}\z/,
+          /\A429[0-3]\d{6}\z/,
+          /\A4294[0-8]\d{5}\z/,
+          /\A42949[0-5]\d{4}\z/,
+          /\A429496[0-6]\d{3}\z/,
+          /\A4294967[0-1]\d{2}\z/,
+          /\A42949672[0-8]\d\z/,
+          /\A429496729[0-5]\z/,
+  ]]`
 
