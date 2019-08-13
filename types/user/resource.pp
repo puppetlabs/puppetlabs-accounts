@@ -1,3 +1,7 @@
+# User attributes hash.
+# @summary A hash of user attributes.
+# Passed as the third parameter of the ensure_resources function.
+#
 type Accounts::User::Resource = Struct[
   { Optional[ensure]                   => Enum['absent','present'],
     Optional[allowdupe]                => Boolean,
