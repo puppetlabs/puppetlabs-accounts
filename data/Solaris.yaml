@@ -1,5 +1,5 @@
 ---
 
-accounts::user::home_template: '/export/home/%s'
-accounts::user::locked_shell: '/usr/bin/false'
-accounts::user::root_home: '/'
+accounts::user::defaults::home_template: '/export/home/%s'
+accounts::user::defaults::locked_shell: '/usr/bin/false'
+accounts::user::defaults::root_home: '/'

@@ -9,6 +9,3 @@ defaults:
 hierarchy:
   - name: 'os.family'
     path: '%{facts.os.family}.yaml'
-
-  - name: 'common'
-    path: 'common.yaml'

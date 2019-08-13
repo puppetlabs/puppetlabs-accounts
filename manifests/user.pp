@@ -216,10 +216,12 @@ define accounts::user (
 
   assert_type(Accounts::User::Name, $name)
 
+  include accounts::user::defaults
+
   $_home = $home ? {
     undef => $name ? {
-      'root'  => lookup('accounts::user::root_home'),
-      default => lookup('accounts::user::home_template').sprintf($name),
+      'root'  => $accounts::user::defaults::root_home,
+      default => $accounts::user::defaults::home_template.sprintf($name),
     },
     default => $home,
   }
@@ -290,7 +292,7 @@ define accounts::user (
       default => $purge_sshkeys,
     }
     $_shell = $locked ? {
-      true    => lookup('accounts::user::locked_shell'),
+      true    => $accounts::user::defaults::locked_shell,
       default => $shell,
     }
     user { $name:

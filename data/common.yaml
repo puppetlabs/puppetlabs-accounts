@@ -1,5 +1,0 @@
----
-
-accounts::user::home_template: '/home/%s'
-accounts::user::locked_shell: '/sbin/nologin'
-accounts::user::root_home: '/root'
