@@ -26,7 +26,7 @@ define accounts::manage_keys(
   Accounts::User::Name     $key_owner = $user,
 ) {
 
-  $key_def = $keyspec.match(/^((.*)\s+)?((ssh|ecdsa-sha2).*)\s+(.*)\s+(.*)$/)
+  $key_def = $keyspec.match(/^(([^\s]*)\s+)?((ssh|ecdsa-sha2)[^\s]*)\s+([^\s]*)\s+(.*)$/)
   if (! $key_def) {
     err(translate("Could not interpret SSH key definition: '%{keyspec}'", {'keyspec' => $keyspec}))
   }
