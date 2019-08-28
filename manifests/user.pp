@@ -209,7 +209,7 @@ define accounts::user (
   Optional[Stdlib::Unixpath]               $sshkey_custom_path       = undef,
   Optional[Accounts::User::Name]           $sshkey_group             = $name,
   Optional[Accounts::User::Name]           $sshkey_owner             = $name,
-  Array[String]                            $sshkeys                  = [],
+  Array[Hash]                              $sshkeys                  = [],
   Boolean                                  $system                   = false,
   Optional[Accounts::User::Uid]            $uid                      = undef,
 ) {

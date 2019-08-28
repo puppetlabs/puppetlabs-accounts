@@ -1,0 +1,25 @@
+---
+accounts::user_list:
+  alice:
+    groups:
+      - admin
+      - wheel
+    shell: /bin/zsh
+    sshkeys:
+      - keyid: alice_rsa_2048
+        keytype: ssh-rsa
+        keystring: >-
+          TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZW
+          xpdC4gSW50ZWdlciBtYWxlc3VhZGEgbWFnbmEgaWQgbWkgcHVsdmluYXIgZnJpbmdpbGxh
+          LiBVdCB2YXJpdXMgbG9yZW0gdmVuZW5hdGlzLCBtb2xsaXMgdXJuYSBzZWQsIG1hbGVzdW
+          FkYSBlcmF0LiBEb25lYyBhdCBudW5jIG51bmMuIFByYWVzZW50IHBsYWNlcmF0IGVmZmlj
+          aXR1ciB2b2x1dHBhdC4gTnVsbGFtIHZlaGljdWxhIHZlbCBvZGlvIG1ldHVzLgo=
+        options:
+          - agent-forwarding
+          - command: /bin/zsh
+          - environment:
+              - ENV_key_1=ENV_var_1
+              - ENV_key_2=ENV_var_2
+              - ENV_key_3=ENV_var_3
+
+    

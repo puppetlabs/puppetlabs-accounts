@@ -38,7 +38,7 @@ define accounts::key_management(
   Optional[Stdlib::Unixpath]     $sshkey_custom_path = undef,
   Accounts::User::Name           $sshkey_group       = $group,
   Accounts::User::Name           $sshkey_owner       = $user,
-  Array[String]                  $sshkeys            = [],
+  Array[Hash]                    $sshkeys            = [],
   Optional[Stdlib::Unixpath]     $user_home          = undef,
 ) {
 

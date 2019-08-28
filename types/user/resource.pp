@@ -37,7 +37,7 @@ type Accounts::User::Resource = Struct[
     Optional[sshkey_custom_path]       => Stdlib::Unixpath,
     Optional[sshkey_owner]             => Accounts::User::Name,
     Optional[sshkey_group]             => Accounts::User::Name,
-    Optional[sshkeys]                  => Array[String],
+    Optional[sshkeys]                  => Array[Hash],
     Optional[system]                   => Boolean,
     Optional[uid]                      => Accounts::User::Uid,
   }

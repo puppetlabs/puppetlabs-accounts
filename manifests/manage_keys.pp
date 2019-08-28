@@ -20,39 +20,42 @@
 #
 define accounts::manage_keys(
   Stdlib::Unixpath         $key_file,
-  String                   $keyspec,
+  Hash                     $keyspec,
   Accounts::User::Name     $user,
   Enum['absent','present'] $ensure    = 'present',
   Accounts::User::Name     $key_owner = $user,
-) {
+)
+{
+  case $keyspec['keytype'] {
+    /^((?:ecdsa-sha2|ssh)-\w)$/: { $key_def = $1 }
+    default: { err(translate("Could not interpret SSH keytype definition: '%{keyspec}'", {'keyspec' => $keyspec['keytype']})) }
+  }
 
-  $key_def = $keyspec.match(/^((.*)\s+)?((ssh|ecdsa-sha2).*)\s+(.*)\s+(.*)$/)
-  if (! $key_def) {
-    err(translate("Could not interpret SSH key definition: '%{keyspec}'", {'keyspec' => $keyspec}))
+  if 'options' in $keyspec {
+    $key_options = accounts_ssh_options($keyspec['options'])
   }
   else {
-    if ($key_def[2]) {
-      $key_options = accounts_ssh_options_parser($key_def[2])
-    } else {
-      $key_options = undef
-    }
-    $key_type    = $key_def[3]
-    $key_content = $key_def[5]
-    $key_name    = $key_def[6]
+    $key_options = undef
+  }
 
-    $key_title = "${user}_${key_type}_${key_name}"
+  $key_name    = $keyspec['keyid'] ? {
+    undef   => undef,
+    default => $keyspec['keyid']
+  }
+  $key_type    = $keyspec['keytype']
+  $key_content = join(split($keyspec['keystring'], " "), "")
+  $key_title   = "${user}_${key_type}_${key_name}"
 
-    if $ensure == 'absent' {
-      Ssh_authorized_key[$key_title] -> User[$user]
-    }
+  if $ensure == 'absent' {
+    Ssh_authorized_key[$key_title] -> User[$user]
+  }
 
-    ssh_authorized_key { $key_title:
-      ensure  => $ensure,
-      user    => $key_owner,
-      key     => $key_content,
-      type    => $key_type,
-      options => $key_options,
-      target  => $key_file,
-    }
+  ssh_authorized_key { $key_title:
+    ensure  => $ensure,
+    user    => $key_owner,
+    key     => $key_content,
+    type    => $key_type,
+    options => $key_options,
+    target  => $key_file,
   }
 }
