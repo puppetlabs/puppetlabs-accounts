@@ -27,7 +27,7 @@ define accounts::manage_keys(
 )
 {
   case $keyspec['keytype'] {
-    /^((?:ecdsa-sha2|ssh)-\w)$/: { $key_def = $1 }
+    /^((?:ecdsa-sha2|ssh)-\w+)$/: { $key_def = $1 }
     default: { err(translate("Could not interpret SSH keytype definition: '%{keyspec}'", {'keyspec' => $keyspec['keytype']})) }
   }
 
