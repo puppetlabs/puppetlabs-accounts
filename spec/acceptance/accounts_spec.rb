@@ -233,8 +233,11 @@ hd_delete_accounts = {
   },
   'accounts::user_list' => {
     'hunner' => {
-      'home'    => '/test/hunner',
-      'sshkeys' => [
+      'home'                => '/test/hunner',
+      'sshkey_custom_path'  => '/test/sshkeys/hunner',
+      'sshkey_owner'        => 'root',
+      'sshkey_group'        => 'root',
+      'sshkeys'             => [
         "ssh-rsa #{test_key} vagrant",
         "ssh-rsa #{test_key} vagrant2",
       ],
@@ -493,6 +496,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
       expect(file('/home/specd_user')).not_to exist
       expect(file('/home/duplicate_user1')).not_to exist
       expect(file('/home/duplicate_user2')).not_to exist
+      expect(file('/test/sshkeys/hunner')).not_to exist
       expect(user('hunner')).not_to exist
       expect(user('first.last')).not_to exist
       expect(user('grp_flse')).not_to exist

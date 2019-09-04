@@ -68,11 +68,14 @@ define accounts::key_management(
         group  => $group,
         mode   => '0700',
       }
-      $sshkey_require = File[$sshkey_dotdir]
-    } else {
-      $sshkey_require = undef
     }
-    $sshkey_before = File[$key_file]
+    if $sshkey_custom_path != undef {
+      $sshkey_require = File[$key_file]
+    } else {
+      $sshkey_require = File[$sshkey_dotdir]
+    }
+    $sshkey_before = undef
+
   } else {
     if $purge_user_home and $user_home {
       file { $sshkey_dotdir:
