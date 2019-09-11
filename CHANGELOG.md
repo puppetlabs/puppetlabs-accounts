@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v5.0.0) (2019-09-10)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v4.2.0...v5.0.0)
+
+### Changed
+
+- \(MODULES-9712\) Move data into hiera. [\#241](https://github.com/puppetlabs/puppetlabs-accounts/pull/241) ([pillarsdotnet](https://github.com/pillarsdotnet))
+
+### Added
+
+- \(FM-8392\) Add debian 10 to provision.yaml [\#251](https://github.com/puppetlabs/puppetlabs-accounts/pull/251) ([ThoughtCrhyme](https://github.com/ThoughtCrhyme))
+
+### Fixed
+
+- \(MODULES-9849\) wrong order when removing user with custom sshkey file [\#250](https://github.com/puppetlabs/puppetlabs-accounts/pull/250) ([tuxmea](https://github.com/tuxmea))
+- fix problematic parsing of keyspec [\#246](https://github.com/puppetlabs/puppetlabs-accounts/pull/246) ([EECOLOR](https://github.com/EECOLOR))
+- \(MODULES-9697\) fix for correct management of sshkey\_custom\_path [\#242](https://github.com/puppetlabs/puppetlabs-accounts/pull/242) ([tuxmea](https://github.com/tuxmea))
+
 ## [v4.2.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v4.2.0) (2019-08-02)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v4.1.0...v4.2.0)
