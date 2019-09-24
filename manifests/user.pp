@@ -207,7 +207,7 @@ define accounts::user (
   Optional[String]                         $salt                     = undef,
   Optional[Stdlib::Unixpath]               $shell                    = '/bin/bash',
   Optional[Stdlib::Unixpath]               $sshkey_custom_path       = undef,
-  Optional[Accounts::User::Name]           $sshkey_group             = $name,
+  Optional[Accounts::User::Name]           $sshkey_group             = $group,
   Optional[Accounts::User::Name]           $sshkey_owner             = $name,
   Array[String]                            $sshkeys                  = [],
   Boolean                                  $system                   = false,
