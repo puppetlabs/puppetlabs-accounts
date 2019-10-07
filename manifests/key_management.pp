@@ -47,7 +47,7 @@ define accounts::key_management(
   }
 
   if $sshkey_custom_path != undef {
-    $key_file = $sshkey_custom_path
+    $key_file = $sshkey_custom_path.sprintf($user)
   } elsif $user_home {
     $key_file = "${sshkey_dotdir}/authorized_keys"
   } else {
