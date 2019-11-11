@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.0.0) (2019-11-11)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v5.0.0...v6.0.0)
+
+### Changed
+
+- pdksync - FM-8499 - remove ubuntu14 support [\#277](https://github.com/puppetlabs/puppetlabs-accounts/pull/277) ([lionce](https://github.com/lionce))
+
+### Added
+
+- \(FM-8671\) - Support added for CentOS 8 [\#278](https://github.com/puppetlabs/puppetlabs-accounts/pull/278) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- fix small typo on the root\_home key at Debian.yaml [\#260](https://github.com/puppetlabs/puppetlabs-accounts/pull/260) ([wandenberg](https://github.com/wandenberg))
+- Use user group instead of user name for sshkey owner group [\#258](https://github.com/puppetlabs/puppetlabs-accounts/pull/258) ([florindragos](https://github.com/florindragos))
+
 ## [v5.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v5.0.0) (2019-09-10)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v4.2.0...v5.0.0)
@@ -70,7 +87,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
-- \(MODULES-8216\) - Fix fail when custom\_sshkey\_path and managehome=false [\#194](https://github.com/puppetlabs/puppetlabs-accounts/pull/194) ([eimlav](https://github.com/eimlav))
 - Fixing the limitations section of the README [\#191](https://github.com/puppetlabs/puppetlabs-accounts/pull/191) ([HelenCampbell](https://github.com/HelenCampbell))
 
 ## [3.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/3.1.0) (2018-09-27)
@@ -108,6 +124,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
+- \(MODULES-8216\) - Fix fail when custom\_sshkey\_path and managehome=false [\#194](https://github.com/puppetlabs/puppetlabs-accounts/pull/194) ([eimlav](https://github.com/eimlav))
 - pdksync - \(MODULES-7658\) use beaker4 in puppet-module-gems [\#170](https://github.com/puppetlabs/puppetlabs-accounts/pull/170) ([tphoney](https://github.com/tphoney))
 - Fix error when deploying key into directory not owned by user [\#152](https://github.com/puppetlabs/puppetlabs-accounts/pull/152) ([tuxmea](https://github.com/tuxmea))
 
