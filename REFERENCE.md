@@ -435,7 +435,7 @@ Data type: `Optional[Accounts::User::Name]`
 
 Specifies the group of the sshkey file
 
-Default value: $name
+Default value: $group
 
 ##### `sshkey_owner`
 
