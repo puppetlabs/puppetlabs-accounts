@@ -6,8 +6,8 @@ describe 'Accounts::User::Name' do
       'a',
       '_',                                # Technically allowed but probably shouldn't be.
       'bravo',
-      'charlie-99.delta',                 # Can contain dashes, digits, and dots.
-      'echo123',
+      'charlie-99.Delta',                 # Can contain dashes, digits, dots and capitals.
+      'ecHo123',
       'foxtrot$',                         # Can end in a dollar-sign
       '_golf_321_$',
       'supercalifragilisticexpialidocio', # 32 characters
@@ -24,7 +24,6 @@ describe 'Accounts::User::Name' do
       '.hidden',                              # Cannot begin with a period.
       '$money',                               # Cannot begin with a dollar-sign.
       '-kilroy_was_here-',                    # Cannot begin with a dash.
-      'CamelCase',                            # Cannot contain upper-case letters.
       'more-$-and-cents',                     # Cannot have a dollar-sign in the middle.
       'fred.',                                # Cannot end in a period.
       'supercalifragilisticexpialiadocious',  # Too long: must be 1-32 chars.
