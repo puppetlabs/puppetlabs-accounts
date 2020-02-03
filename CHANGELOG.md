@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.1.0) (2020-01-24)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v6.0.0...v6.1.0)
+
+### Added
+
+- Employ more lenient username checks \(allow capitals\) [\#286](https://github.com/puppetlabs/puppetlabs-accounts/pull/286) ([mvandegarde](https://github.com/mvandegarde))
+- \(MODULES-10242\) Re-add Ubuntu 14 to supported OS list [\#281](https://github.com/puppetlabs/puppetlabs-accounts/pull/281) ([sheenaajay](https://github.com/sheenaajay))
+
 ## [v6.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.0.0) (2019-11-11)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v5.0.0...v6.0.0)
@@ -87,6 +96,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
+- \(MODULES-8216\) - Fix fail when custom\_sshkey\_path and managehome=false [\#194](https://github.com/puppetlabs/puppetlabs-accounts/pull/194) ([eimlav](https://github.com/eimlav))
 - Fixing the limitations section of the README [\#191](https://github.com/puppetlabs/puppetlabs-accounts/pull/191) ([HelenCampbell](https://github.com/HelenCampbell))
 
 ## [3.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/3.1.0) (2018-09-27)
@@ -124,7 +134,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
-- \(MODULES-8216\) - Fix fail when custom\_sshkey\_path and managehome=false [\#194](https://github.com/puppetlabs/puppetlabs-accounts/pull/194) ([eimlav](https://github.com/eimlav))
 - pdksync - \(MODULES-7658\) use beaker4 in puppet-module-gems [\#170](https://github.com/puppetlabs/puppetlabs-accounts/pull/170) ([tphoney](https://github.com/tphoney))
 - Fix error when deploying key into directory not owned by user [\#152](https://github.com/puppetlabs/puppetlabs-accounts/pull/152) ([tuxmea](https://github.com/tuxmea))
 
