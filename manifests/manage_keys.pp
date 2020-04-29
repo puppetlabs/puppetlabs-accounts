@@ -26,19 +26,19 @@ define accounts::manage_keys(
   Accounts::User::Name     $key_owner = $user,
 ) {
 
-  $key_def = $keyspec.match(/^(([^\s]*)\s+)?((ssh|ecdsa-sha2)[^\s]*)\s+([^\s]*)\s+(.*)$/)
+  $key_def = accounts_ssh_authorized_keys_line_parser($keyspec)
   if (! $key_def) {
     err(translate("Could not interpret SSH key definition: '%{keyspec}'", {'keyspec' => $keyspec}))
   }
   else {
-    if ($key_def[2]) {
-      $key_options = accounts_ssh_options_parser($key_def[2])
+    if (! empty($key_def[0])) {
+      $key_options = accounts_ssh_options_parser($key_def[0])
     } else {
       $key_options = undef
     }
-    $key_type    = $key_def[3]
-    $key_content = $key_def[5]
-    $key_name    = $key_def[6]
+    $key_type    = $key_def[1]
+    $key_content = $key_def[2]
+    $key_name    = $key_def[3]
 
     $key_title = "${user}_${key_type}_${key_name}"
 
