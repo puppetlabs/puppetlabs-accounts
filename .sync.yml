@@ -1,4 +1,7 @@
 ---
+.gitattributes:
+  include:
+    'files/shell/*': 'eol=lf'
 ".gitlab-ci.yml":
   delete: true
 ".rubocop.yml":
