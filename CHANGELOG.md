@@ -2,7 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v6.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.1.0) (2020-01-24)
+## [v6.1.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.1.1) (2020-04-30)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v6.1.0...v6.1.1)
+
+### Fixed
+
+- MODULES-10550 fix keyspec parsing to allow whitespaces in options and… [\#291](https://github.com/puppetlabs/puppetlabs-accounts/pull/291) ([janit42](https://github.com/janit42))
+
+## [v6.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.1.0) (2020-02-03)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v6.0.0...v6.1.0)
 
