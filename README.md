@@ -176,7 +176,7 @@ include ::accounts
 
 ## Reference
 
-See [REFERENCE.md](https://github.com/puppetlabs/puppetlabs-accounts/blob/master/REFERENCE.md)
+See [REFERENCE.md](https://github.com/puppetlabs/puppetlabs-accounts/blob/main/REFERENCE.md)
 
 <a id="data-types"></a>
 ### Data types
@@ -229,7 +229,7 @@ Allows any integer from `0` to `4294967295` (2<sup>32</sup> - 1), optionally exp
 
 ## Limitations
 
-For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-accounts/blob/master/metadata.json)
+For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-accounts/blob/main/metadata.json)
 
 ### Changes from pe\_accounts
 
