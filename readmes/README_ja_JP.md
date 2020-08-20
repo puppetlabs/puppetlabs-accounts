@@ -131,11 +131,11 @@ accounts::user { 'gerrard':
 
 ## リファレンス
 
-[REFERENCE.md](https://github.com/puppetlabs/puppetlabs-accounts/blob/master/REFERENCE.md)を参照してください。
+[REFERENCE.md](https://github.com/puppetlabs/puppetlabs-accounts/blob/main/REFERENCE.md)を参照してください。
 
 ## 制約事項
 
- サポートされているオペレーティングシステムの一覧については、[metadata.json](https://github.com/puppetlabs/puppetlabs-accounts/blob/master/metadata.json)を参照してください。
+ サポートされているオペレーティングシステムの一覧については、[metadata.json](https://github.com/puppetlabs/puppetlabs-accounts/blob/main/metadata.json)を参照してください。
 
 ### pe\_accountsからの変更
 
