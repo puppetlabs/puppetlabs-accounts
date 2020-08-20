@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.2.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.2.0) (2020-08-20)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v6.1.1...v6.2.0)
+
+### Added
+
+- pdksync - \(IAC-973\) - Update travis/appveyor to run on new default branch main [\#318](https://github.com/puppetlabs/puppetlabs-accounts/pull/318) ([david22swan](https://github.com/david22swan))
+- \(IAC-746\) - Add ubuntu 20.04 support [\#312](https://github.com/puppetlabs/puppetlabs-accounts/pull/312) ([david22swan](https://github.com/david22swan))
+
 ## [v6.1.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.1.1) (2020-04-30)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v6.1.0...v6.1.1)
@@ -53,6 +62,7 @@ All notable changes to this project will be documented in this file. The format 
 - \(MODULES-9849\) wrong order when removing user with custom sshkey file [\#250](https://github.com/puppetlabs/puppetlabs-accounts/pull/250) ([tuxmea](https://github.com/tuxmea))
 - fix problematic parsing of keyspec [\#246](https://github.com/puppetlabs/puppetlabs-accounts/pull/246) ([EECOLOR](https://github.com/EECOLOR))
 - \(MODULES-9697\) fix for correct management of sshkey\_custom\_path [\#242](https://github.com/puppetlabs/puppetlabs-accounts/pull/242) ([tuxmea](https://github.com/tuxmea))
+- \(MODULES-8968\) Test account removal. [\#226](https://github.com/puppetlabs/puppetlabs-accounts/pull/226) ([pillarsdotnet](https://github.com/pillarsdotnet))
 
 ## [v4.2.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v4.2.0) (2019-08-02)
 
@@ -75,10 +85,6 @@ All notable changes to this project will be documented in this file. The format 
 - \(FM-8023\) Add RedHat 8 support [\#227](https://github.com/puppetlabs/puppetlabs-accounts/pull/227) ([eimlav](https://github.com/eimlav))
 - \(MODULES-7469\) Add password\_max\_age parameter [\#221](https://github.com/puppetlabs/puppetlabs-accounts/pull/221) ([eimlav](https://github.com/eimlav))
 
-### Fixed
-
-- \(MODULES-8968\) Test account removal. [\#226](https://github.com/puppetlabs/puppetlabs-accounts/pull/226) ([pillarsdotnet](https://github.com/pillarsdotnet))
-
 ## [v4.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v4.0.0) (2019-05-10)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/3.2.0...v4.0.0)
@@ -86,7 +92,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 
 - pdksync - \(MODULES-8444\) - Raise lower Puppet bound [\#218](https://github.com/puppetlabs/puppetlabs-accounts/pull/218) ([david22swan](https://github.com/david22swan))
-- \(MODULES-8909\) Add type-aliases and auto-loading. [\#214](https://github.com/puppetlabs/puppetlabs-accounts/pull/214) ([pillarsdotnet](https://github.com/pillarsdotnet))
 
 ### Fixed
 
@@ -97,10 +102,15 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/3.1.0...3.2.0)
 
+### Changed
+
+- \(MODULES-8909\) Add type-aliases and auto-loading. [\#214](https://github.com/puppetlabs/puppetlabs-accounts/pull/214) ([pillarsdotnet](https://github.com/pillarsdotnet))
+
 ### Added
 
 - \(MODULES-8302\) - Add allowdupe parameter [\#199](https://github.com/puppetlabs/puppetlabs-accounts/pull/199) ([eimlav](https://github.com/eimlav))
 - \(MODULES-8149\) - Addition of support for SLES 15 [\#197](https://github.com/puppetlabs/puppetlabs-accounts/pull/197) ([david22swan](https://github.com/david22swan))
+- pdksync - \(MODULES-6805\) metadata.json shows support for puppet 6 [\#185](https://github.com/puppetlabs/puppetlabs-accounts/pull/185) ([tphoney](https://github.com/tphoney))
 
 ### Fixed
 
@@ -114,7 +124,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - pdksync - \(FM-7392\) puppet 6 testing changes [\#187](https://github.com/puppetlabs/puppetlabs-accounts/pull/187) ([tphoney](https://github.com/tphoney))
-- pdksync - \(MODULES-6805\) metadata.json shows support for puppet 6 [\#185](https://github.com/puppetlabs/puppetlabs-accounts/pull/185) ([tphoney](https://github.com/tphoney))
 - \(LOC-173\) Delivering translation for readmes/README\_ja\_JP.markdown [\#177](https://github.com/puppetlabs/puppetlabs-accounts/pull/177) ([ehom](https://github.com/ehom))
 
 ### Fixed
@@ -126,10 +135,6 @@ All notable changes to this project will be documented in this file. The format 
 ## [3.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/3.0.0) (2018-09-07)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/2.0.0...3.0.0)
-
-### Changed
-
-- Adding ability to specify custom ssh\_key location [\#149](https://github.com/puppetlabs/puppetlabs-accounts/pull/149) ([ggeldenhuis](https://github.com/ggeldenhuis))
 
 ### Added
 
