@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require 'bolt_spec/run'
-require 'puppet_litmus/inventory_manipulation'
+include PuppetLitmus
 
 UNSUPPORTED_PLATFORMS = ['windows', 'darwin'].freeze
 
@@ -100,7 +99,42 @@ def clear_temp_hieradata
   end
 end
 
+def inventory_hash
+  @inventory_hash ||= inventory_hash_from_inventory_file
+end
+
+def target_roles(roles)
+  inventory_hash['groups'].map { |group|
+    group['targets'].map { |node|
+      { name: node['uri'], role: node['vars']['role'] } if roles.include? node['vars']['role']
+    }.reject { |val| val.nil? }
+  }.flatten
+end
+
+def change_target_host(role)
+  @orig_target_host = ENV['TARGET_HOST']
+  ENV['TARGET_HOST'] = target_roles(role)[0][:name]
+end
+
+def reset_target_host
+  ENV['TARGET_HOST'] = @orig_target_host
+end
+
+def retrieve_rbac
+  issue_token = run_shell('curl -k -X POST -H \'Content-Type: application/json\' -d \'{"login": "admin", "password": "compliance", "lifetime": "4h", "label": "four-hour token"}\' https://localhost:4433/rbac-api/v1/auth/token')
+  token_json = JSON.parse(issue_token['stdout'])
+  run_shell("mkdir -p ~/.puppetlabs && echo #{token_json['token']} > ~/.puppetlabs/token")
+  token = run_shell('cat ~/.puppetlabs/token')
+  token
+end
+
 RSpec.configure do |c|
+  if c.filter.rules.key? :integration
+    warn('>>> A valid inventory.yaml was not found. <<<') if target_roles('master').empty?
+    ENV['TARGET_HOST'] = target_roles('master')[0][:name]
+  else
+    c.filter_run_excluding :integration
+  end
   c.before(:all) do
     @temp_hieradata_dirs = @temp_hieradata_dirs || []
     @hiera_datadir = hiera_datadir

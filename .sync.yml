@@ -58,7 +58,16 @@ Gemfile:
     - gem: puppet-lint-i18n
 Rakefile:
   requires:
-  - puppet_pot_generator/rake_tasks
+    - puppet_pot_generator/rake_tasks
+  extras:
+    - |
+      require 'rspec/core/rake_task'
+      namespace :accounts do
+        RSpec::Core::RakeTask.new(:integration) do |t|
+          t.pattern = 'spec/acceptance/**{,/*/**}/*_spec.rb'
+          t.rspec_opts = "--tag integration"
+        end
+      end
 spec/spec_helper.rb:
   mock_with: ":rspec"
   coverage_report: true

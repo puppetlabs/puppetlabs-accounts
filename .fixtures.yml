@@ -8,6 +8,8 @@ fixtures:
       ref: '5.0.0'
     translate:
       repo: 'https://github.com/puppetlabs/puppetlabs-translate'
+    puppet_conf:
+      repo: 'https://github.com/puppetlabs/puppet_conf.git'
     facts: 'https://github.com/puppetlabs/puppetlabs-facts.git'
     puppet_agent: 'https://github.com/puppetlabs/puppetlabs-puppet_agent.git'
     provision: 'https://github.com/puppetlabs/provision.git'

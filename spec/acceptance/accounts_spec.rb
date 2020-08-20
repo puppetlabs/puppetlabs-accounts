@@ -307,7 +307,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
     end
   end
 
-  describe 'main tests' do
+  describe 'main tests', :integration do
     it 'creates groups of matching names, assigns non-matching group, '\
         'manages homedir, manages other properties, gives key, '\
         'makes dotfiles, managevim false' do
