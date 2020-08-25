@@ -368,7 +368,7 @@ Name of the user.
 
 ##### `password`
 
-Data type: `String`
+Data type: `Variant[String, Sensitive[String]]`
 
 The user's password, in whatever encrypted format the local machine
 requires. Default: '!!', which prevents the user from logging in with a
