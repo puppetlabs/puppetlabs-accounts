@@ -200,7 +200,7 @@ define accounts::user (
   Boolean                                  $managehome               = true,
   Boolean                                  $managevim                = true,
   Enum['inclusive','minimum']              $membership               = 'minimum',
-  String                                   $password                 = '!!',
+  Variant[String, Sensitive[String]]       $password                 = '!!',
   Optional[Accounts::User::PasswordMaxAge] $password_max_age         = undef,
   Boolean                                  $purge_sshkeys            = false,
   Boolean                                  $purge_user_home          = false,
@@ -283,7 +283,7 @@ define accounts::user (
         }
       )
     }
-    $_password = ($password == '' and $ignore_password_if_empty) ? {
+    $_password = (($password =~ String and $password == '') and $ignore_password_if_empty) ? {
       true    => undef,
       default => $password,
     }

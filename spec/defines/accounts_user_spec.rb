@@ -187,6 +187,14 @@ describe 'accounts::user' do
           it { is_expected.to contain_user(title).with('salt'       => params[:salt]) }
         end
 
+        describe 'when using a sensitive password' do
+          let(:params) do
+            { password: RSpec::Puppet::RawString.new("Sensitive('foo')") }
+          end
+
+          it { is_expected.to contain_user(title).with('password' => 'foo') }
+        end
+
         describe 'when supplying resource defaults' do
           let(:params) { {} }
           let(:pre_condition) { "Accounts::User{ shell => '/bin/zsh' }" }
