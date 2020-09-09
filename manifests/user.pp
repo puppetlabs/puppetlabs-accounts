@@ -271,7 +271,7 @@ define accounts::user (
     }
   } else {
     # Check if user wants to create the group
-    if $create_group {
+    if $create_group and ! defined(Group[$group]) {
       Group[$group] -> User[$name]
       ensure_resource(
         'group',
