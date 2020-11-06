@@ -155,6 +155,9 @@
 # @param sshkey_owner
 #   Specifies the owner of the sshkey file
 #
+# @param sshkey_mode
+#   Specifies the mode of the sshkey file .ssh/authorized_keys.
+#
 # @param sshkeys
 #   An array of SSH public keys associated with the user. These should be
 #   complete public key strings that include the type, content and name of the
@@ -209,6 +212,7 @@ define accounts::user (
   Optional[Stdlib::Unixpath]               $sshkey_custom_path       = undef,
   Optional[Accounts::User::Name]           $sshkey_group             = $group,
   Optional[Accounts::User::Name]           $sshkey_owner             = $name,
+  Variant[Integer[0],String]               $sshkey_mode              = '0600',
   Array[String]                            $sshkeys                  = [],
   Boolean                                  $system                   = false,
   Optional[Accounts::User::Uid]            $uid                      = undef,
@@ -339,6 +343,7 @@ define accounts::user (
         sshkey_custom_path => $sshkey_custom_path,
         sshkey_owner       => $sshkey_owner,
         sshkey_group       => $sshkey_group,
+        sshkey_mode        => $sshkey_mode,
         purge_user_home    => $purge_user_home,
         require            => Accounts::Home_dir[$_home]
       }
@@ -353,6 +358,7 @@ define accounts::user (
           sshkeys            => $sshkeys,
           sshkey_owner       => $sshkey_owner,
           sshkey_group       => $sshkey_group,
+          sshkey_mode        => $sshkey_mode,
           sshkey_custom_path => $sshkey_custom_path,
         }
       }
