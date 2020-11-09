@@ -192,7 +192,7 @@ describe 'accounts::user' do
             { password: RSpec::Puppet::RawString.new("Sensitive('foo')") }
           end
 
-          it { is_expected.to contain_user(title).with('password' => 'foo') }
+          it { is_expected.to contain_user(title).with('password' => sensitive('foo')) }
         end
 
         describe 'when supplying resource defaults' do
