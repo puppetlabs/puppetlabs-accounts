@@ -73,7 +73,7 @@ pp_with_sshkey_mode = <<-PUPPETCODE
       'ssh-rsa #{test_key} vagrant',
       'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
     ],
-    sshkey_mode          => '0440',
+    sshkey_mode          => '0640',
   }
 PUPPETCODE
 
@@ -282,11 +282,11 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
     end
   end
 
-  describe 'sshkey_mode set to 0440' do
-    it '.ssh/authorized_keys file have mode set to 0440' do
+  describe 'sshkey_mode set to 0640' do
+    it '.ssh/authorized_keys file have mode set to 0640' do
       apply_manifest(pp_with_sshkey_mode, catch_failures: true)
       expect(file('/test/hunner/.ssh/authorized_keys')).to be_file
-      expect(file('/test/hunner/.ssh/authorized_keys')).to be_mode 440
+      expect(file('/test/hunner/.ssh/authorized_keys')).to be_mode 640
     end
   end
 
