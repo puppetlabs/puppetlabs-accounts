@@ -55,6 +55,28 @@ pp_with_managevim = <<-PUPPETCODE
   }
 PUPPETCODE
 
+pp_with_sshkey_mode = <<-PUPPETCODE
+  file { '/test':
+    ensure => directory,
+    before => Accounts::User['hunner'],
+  }
+  accounts::user { 'hunner':
+    groups               => ['root'],
+    password             => 'hi',
+    shell                => '/bin/true',
+    home                 => '/test/hunner',
+    home_mode            => '0700',
+    managevim            => false,
+    bashrc_content       => file('accounts/shell/bashrc'),
+    bash_profile_content => file('accounts/shell/bash_profile'),
+    sshkeys              => [
+      'ssh-rsa #{test_key} vagrant',
+      'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
+    ],
+    sshkey_mode          => '0440',
+  }
+PUPPETCODE
+
 pp_locked_user = <<-PUPPETCODE
   accounts::user { 'hunner':
     locked => true,
@@ -257,6 +279,14 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
     it '.vim file will be created' do
       apply_manifest(pp_with_managevim, catch_failures: true)
       expect(file('/test/hunner/.vim')).to be_directory
+    end
+  end
+
+  describe 'sshkey_mode set to 0440' do
+    it '.ssh/authorized_keys file have mode set to 0440' do
+      apply_manifest(pp_with_sshkey_mode, catch_failures: true)
+      expect(file('/test/hunner/.ssh/authorized_keys')).to be_file
+      expect(file('/test/hunner/.ssh/authorized_keys')).to be_mode 440
     end
   end
 
