@@ -97,6 +97,15 @@ describe 'accounts::user' do
           it { is_expected.to contain_file(params[:sshkey_custom_path]) }
         end
 
+        describe 'when setting sshkey mode on custom sshkey location' do
+          let(:params) do
+            { sshkey_mode:        '0440',
+              sshkey_custom_path: '/var/lib/ssh/dan/custom_key_file' }
+          end
+
+          it { is_expected.to contain_file(params[:sshkey_custom_path]).with(mode: '0440') }
+        end
+
         describe 'with create_group set to false' do
           let(:params) do
             { group:        'foo',
