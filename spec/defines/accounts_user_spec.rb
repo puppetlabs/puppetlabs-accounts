@@ -82,6 +82,9 @@ describe 'accounts::user' do
                                                                           'mode' => params[:home_mode])
           end
           it { is_expected.to contain_accounts__key_management("#{title}_key_management").with('sshkeys' => params[:sshkeys]) }
+          it { is_expected.to contain_ssh_authorized_key("#{params[:sshkey_owner]}_ssh-rsa_dan@example1.net_1e44b207704970cf4acb3470331b0e5c")}
+          it { is_expected.to contain_ssh_authorized_key("#{params[:sshkey_owner]}_ssh-dss_dan key2_6e9b8958712502a8b31e1c283b6e6fce")}
+          it { is_expected.to contain_ssh_authorized_key("#{params[:sshkey_owner]}_ecdsa-sha2-nistp521_vagrant2_8c32d1183251df9828f929b935ae0419")}
           it { is_expected.to contain_file("#{params[:home]}/.ssh") }
         end
 
