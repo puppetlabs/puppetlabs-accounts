@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'accounts_ssh_authorized_keys_line_parser' do

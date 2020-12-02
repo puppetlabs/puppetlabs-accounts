@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Parse an ssh authorized_keys line string into an array using its expected
 # pattern by using a combination of regex matching and extracting the substring
 # before the match as ssh-options. This allows whitespaces inside the options
