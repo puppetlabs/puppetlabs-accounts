@@ -91,7 +91,6 @@ release_checks_7:
   - centos-7-x86_64
   - centos-8-x86_64
   - oracle-7-x86_64
-  - scientific-7-x86_64
   - debian-9-x86_64
   - debian-10-x86_64
   - sles-15-x86_64
