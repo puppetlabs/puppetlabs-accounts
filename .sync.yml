@@ -24,7 +24,6 @@
   litmus:
     provision_list:
     - travis_deb
-    - travis_el6
     - travis_el7
     - travis_el8
     - ---travis_el
