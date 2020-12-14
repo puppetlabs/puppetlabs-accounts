@@ -447,6 +447,14 @@ Specifies the owner of the sshkey file
 
 Default value: `$name`
 
+##### `sshkey_mode`
+
+Data type: `Variant[Integer[0],String]`
+
+Specifies the mode of the sshkey file .ssh/authorized_keys.
+
+Default value: `'0600'`
+
 ##### `sshkeys`
 
 Data type: `Array[String]`
