@@ -85,7 +85,7 @@
       "version_requirement": ">= 5.5.10 < 8.0.0"
     }
   ],
-  "template-url": "https://github.com/puppetlabs/pdk-templates#main",
-  "template-ref": "heads/main-0-g62126e1",
+  "template-url": "https://github.com/DavidS/pdk-templates#rubocop-refresh",
+  "template-ref": "remotes/origin/rubocop-refresh-0-gc38d99a",
   "pdk-version": "1.18.1"
 }
