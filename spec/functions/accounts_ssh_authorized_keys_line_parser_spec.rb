@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'accounts_ssh_authorized_keys_line_parser' do
@@ -26,10 +28,10 @@ describe 'accounts_ssh_authorized_keys_line_parser' do
     )
   }
   it {
-    # rubocop:disable Metrics/LineLength
+    # rubocop:disable Layout/LineLength
     is_expected.to run.with_params('command="rsync --server --sender -vlHogtpr --numeric-ids . /",from="192.168.1.1",no-port-forwarding,no-X11-forwarding,no-agent-forwarding ecdsa-sha2-nistp384 AAAA...= rsync backup').and_return( \
       ['command="rsync --server --sender -vlHogtpr --numeric-ids . /",from="192.168.1.1",no-port-forwarding,no-X11-forwarding,no-agent-forwarding', 'ecdsa-sha2-nistp384', 'AAAA...=', 'rsync backup'],
     )
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
   }
 end

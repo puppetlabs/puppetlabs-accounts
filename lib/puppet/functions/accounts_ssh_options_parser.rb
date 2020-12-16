@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Parse an ssh authorized_keys option string into an array using its expected pattern which matches a crazy regex slightly modified
 # from shell words. The pattern should be a string.
 Puppet::Functions.create_function(:accounts_ssh_options_parser) do
