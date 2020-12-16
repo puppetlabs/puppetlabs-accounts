@@ -89,6 +89,8 @@ Performance/CaseWhenSplat:
 Performance/Casecmp:
   Enabled: true
 Performance/CollectionLiteralInLoop:
+  Exclude:
+  - spec/**/*
   Enabled: true
 Performance/CompareWithBlock:
   Enabled: true
