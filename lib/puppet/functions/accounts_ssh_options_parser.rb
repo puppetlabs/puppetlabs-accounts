@@ -17,7 +17,7 @@ Puppet::Functions.create_function(:accounts_ssh_options_parser) do
     str.scan(%r{\G\,*(?>([^\,\\\'\"]+)|'([^\']*)'|("(?:[^\"\\]|\\.)*")|(\\.?)|(\S))(\,|\z)?}m) do |word, sq, dq, esc, garbage, sep|
       raise ArgumentError, _('Unmatched double quote: %{str_inspect}') % { str_inspect: str.inspect } if garbage
 
-      field << (word || sq || dq || esc.gsub(%r{\\(.)}, '\\1'))
+      field += (word || sq || dq || esc.gsub(%r{\\(.)}, '\\1'))
       field.gsub(%r{\\=}, '\\=\"')
       if sep
         words << field
