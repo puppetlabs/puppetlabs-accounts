@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.4.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.4.0) (2020-12-14)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v6.3.0...v6.4.0)
+
+### Added
+
+- pdksync - \(maint\) - Add support for Puppet 7 [\#350](https://github.com/puppetlabs/puppetlabs-accounts/pull/350) ([pmcmaw](https://github.com/pmcmaw))
+- MODULES-10862 add support for authorized\_keys file mode [\#338](https://github.com/puppetlabs/puppetlabs-accounts/pull/338) ([simondeziel](https://github.com/simondeziel))
+
 ## [v6.3.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.3.0) (2020-09-22)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v6.1.1...v6.3.0)
