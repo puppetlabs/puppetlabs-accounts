@@ -38,7 +38,8 @@ define accounts::manage_keys(
     }
     $key_type    = $key_def[1]
     $key_content = $key_def[2]
-    $key_name    = $key_def[3]
+    $key_md5     = md5($key_def[2])
+    $key_name    = "${key_def[3]}_${key_md5}"
 
     $key_title = "${user}_${key_type}_${key_name}"
 
