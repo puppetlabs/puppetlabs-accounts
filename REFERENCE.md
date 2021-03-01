@@ -42,15 +42,20 @@ homedir, .ssh/authorized_keys files, and directories.
 
 ## Classes
 
-### `accounts`
+### <a name="accounts"></a>`accounts`
 
 This class auto-creates user and group resources from hiera data.
 
 #### Parameters
 
-The following parameters are available in the `accounts` class.
+The following parameters are available in the `accounts` class:
 
-##### `group_defaults`
+* [`group_defaults`](#group_defaults)
+* [`group_list`](#group_list)
+* [`user_defaults`](#user_defaults)
+* [`user_list`](#user_list)
+
+##### <a name="group_defaults"></a>`group_defaults`
 
 Data type: `Accounts::Group::Resource`
 
@@ -58,7 +63,7 @@ Hash of default attributes for group resources managed by this class.
 
 Default value: `{}`
 
-##### `group_list`
+##### <a name="group_list"></a>`group_list`
 
 Data type: `Accounts::Group::Hash`
 
@@ -67,7 +72,7 @@ group name.
 
 Default value: `{}`
 
-##### `user_defaults`
+##### <a name="user_defaults"></a>`user_defaults`
 
 Data type: `Accounts::User::Resource`
 
@@ -76,7 +81,7 @@ class.
 
 Default value: `{}`
 
-##### `user_list`
+##### <a name="user_list"></a>`user_list`
 
 Data type: `Accounts::User::Hash`
 
@@ -85,15 +90,19 @@ keyed by user name.
 
 Default value: `{}`
 
-### `accounts::user::defaults`
+### <a name="accountsuserdefaults"></a>`accounts::user::defaults`
 
 Load some user defaults from hiera data.
 
 #### Parameters
 
-The following parameters are available in the `accounts::user::defaults` class.
+The following parameters are available in the `accounts::user::defaults` class:
 
-##### `home_template`
+* [`home_template`](#home_template)
+* [`locked_shell`](#locked_shell)
+* [`root_home`](#root_home)
+
+##### <a name="home_template"></a>`home_template`
 
 Data type: `Stdlib::AbsolutePath`
 
@@ -101,7 +110,7 @@ The sprintf template used to determine a user's home directory.
 
 Default value: `'/home/%s'`
 
-##### `locked_shell`
+##### <a name="locked_shell"></a>`locked_shell`
 
 Data type: `Stdlib::AbsolutePath`
 
@@ -109,7 +118,7 @@ The shell assigned to locked user accounts.
 
 Default value: `'/sbin/nologin'`
 
-##### `root_home`
+##### <a name="root_home"></a>`root_home`
 
 Data type: `Stdlib::AbsolutePath`
 
@@ -119,7 +128,7 @@ Default value: `'/root'`
 
 ## Defined types
 
-### `accounts::user`
+### <a name="accountsuser"></a>`accounts::user`
 
 This resource manages the user, group, vim/, .ssh/, .bash_profile, .bashrc,
 homedir, .ssh/authorized_keys files, and directories.
@@ -141,9 +150,47 @@ accounts::user { 'bob':
 
 #### Parameters
 
-The following parameters are available in the `accounts::user` defined type.
+The following parameters are available in the `accounts::user` defined type:
 
-##### `ensure`
+* [`ensure`](#ensure)
+* [`allowdupe`](#allowdupe)
+* [`bash_profile_content`](#bash_profile_content)
+* [`bash_profile_source`](#bash_profile_source)
+* [`bashrc_content`](#bashrc_content)
+* [`bashrc_source`](#bashrc_source)
+* [`comment`](#comment)
+* [`create_group`](#create_group)
+* [`expiry`](#expiry)
+* [`forcelocal`](#forcelocal)
+* [`forward_content`](#forward_content)
+* [`forward_source`](#forward_source)
+* [`gid`](#gid)
+* [`group`](#group)
+* [`groups`](#groups)
+* [`home`](#home)
+* [`home_mode`](#home_mode)
+* [`ignore_password_if_empty`](#ignore_password_if_empty)
+* [`iterations`](#iterations)
+* [`locked`](#locked)
+* [`managehome`](#managehome)
+* [`managevim`](#managevim)
+* [`membership`](#membership)
+* [`name`](#name)
+* [`password`](#password)
+* [`password_max_age`](#password_max_age)
+* [`purge_sshkeys`](#purge_sshkeys)
+* [`purge_user_home`](#purge_user_home)
+* [`salt`](#salt)
+* [`shell`](#shell)
+* [`sshkey_custom_path`](#sshkey_custom_path)
+* [`sshkey_group`](#sshkey_group)
+* [`sshkey_owner`](#sshkey_owner)
+* [`sshkey_mode`](#sshkey_mode)
+* [`sshkeys`](#sshkeys)
+* [`system`](#system)
+* [`uid`](#uid)
+
+##### <a name="ensure"></a>`ensure`
 
 Data type: `Enum['absent','present']`
 
@@ -153,7 +200,7 @@ created, a group with the same name as the user is also created.
 
 Default value: `'present'`
 
-##### `allowdupe`
+##### <a name="allowdupe"></a>`allowdupe`
 
 Data type: `Boolean`
 
@@ -161,7 +208,7 @@ Whether to allow duplicate UIDs. By default false
 
 Default value: ``false``
 
-##### `bash_profile_content`
+##### <a name="bash_profile_content"></a>`bash_profile_content`
 
 Data type: `Optional[String]`
 
@@ -170,7 +217,7 @@ to bash_profile_source.
 
 Default value: ``undef``
 
-##### `bash_profile_source`
+##### <a name="bash_profile_source"></a>`bash_profile_source`
 
 Data type: `Optional[Stdlib::Filesource]`
 
@@ -179,7 +226,7 @@ file. Mutually exclusive to bash_profile_content.
 
 Default value: ``undef``
 
-##### `bashrc_content`
+##### <a name="bashrc_content"></a>`bashrc_content`
 
 Data type: `Optional[String]`
 
@@ -188,7 +235,7 @@ bashrc_source.
 
 Default value: ``undef``
 
-##### `bashrc_source`
+##### <a name="bashrc_source"></a>`bashrc_source`
 
 Data type: `Optional[Stdlib::Filesource]`
 
@@ -197,7 +244,7 @@ Mutually exclusive to bashrc_content.
 
 Default value: ``undef``
 
-##### `comment`
+##### <a name="comment"></a>`comment`
 
 Data type: `String`
 
@@ -205,7 +252,7 @@ A comment describing or regarding the user.
 
 Default value: `$name`
 
-##### `create_group`
+##### <a name="create_group"></a>`create_group`
 
 Data type: `Boolean`
 
@@ -213,7 +260,7 @@ Specifies if you want to create a group with the user's name.
 
 Default value: ``true``
 
-##### `expiry`
+##### <a name="expiry"></a>`expiry`
 
 Data type: `Optional[Accounts::User::Expiry]`
 
@@ -222,7 +269,7 @@ date format, or 'absent' to remove expiry date.
 
 Default value: ``undef``
 
-##### `forcelocal`
+##### <a name="forcelocal"></a>`forcelocal`
 
 Data type: `Optional[Boolean]`
 
@@ -231,7 +278,7 @@ by a network name service.
 
 Default value: ``undef``
 
-##### `forward_content`
+##### <a name="forward_content"></a>`forward_content`
 
 Data type: `Optional[String]`
 
@@ -240,7 +287,7 @@ forward_source.
 
 Default value: ``undef``
 
-##### `forward_source`
+##### <a name="forward_source"></a>`forward_source`
 
 Data type: `Optional[Stdlib::Filesource]`
 
@@ -249,7 +296,7 @@ Mutually exclusive to forward_content.
 
 Default value: ``undef``
 
-##### `gid`
+##### <a name="gid"></a>`gid`
 
 Data type: `Optional[Accounts::User::Uid]`
 
@@ -258,7 +305,7 @@ numerically.
 
 Default value: ``undef``
 
-##### `group`
+##### <a name="group"></a>`group`
 
 Data type: `Accounts::User::Name`
 
@@ -267,7 +314,7 @@ group named the same as user name
 
 Default value: `$name`
 
-##### `groups`
+##### <a name="groups"></a>`groups`
 
 Data type: `Array[Accounts::User::Name]`
 
@@ -275,7 +322,7 @@ Specifies the user's group memberships.
 
 Default value: `[]`
 
-##### `home`
+##### <a name="home"></a>`home`
 
 Data type: `Optional[Stdlib::Unixpath]`
 
@@ -291,7 +338,7 @@ Specifies the path to the user's home directory.
 
 Default value: ``undef``
 
-##### `home_mode`
+##### <a name="home_mode"></a>`home_mode`
 
 Data type: `Optional[Stdlib::Filemode]`
 
@@ -304,7 +351,7 @@ run.
 
 Default value: ``undef``
 
-##### `ignore_password_if_empty`
+##### <a name="ignore_password_if_empty"></a>`ignore_password_if_empty`
 
 Data type: `Boolean`
 
@@ -315,7 +362,7 @@ it sets the password to an empty value.
 
 Default value: ``false``
 
-##### `iterations`
+##### <a name="iterations"></a>`iterations`
 
 Data type: `Optional[Accounts::User::Iterations]`
 
@@ -325,7 +372,7 @@ password hash. This field is required for managing passwords on OS X >=
 
 Default value: ``undef``
 
-##### `locked`
+##### <a name="locked"></a>`locked`
 
 Data type: `Boolean`
 
@@ -334,7 +381,7 @@ logging in. Set to true for users whose login privileges have been revoked.
 
 Default value: ``false``
 
-##### `managehome`
+##### <a name="managehome"></a>`managehome`
 
 Data type: `Boolean`
 
@@ -343,7 +390,7 @@ user.
 
 Default value: ``true``
 
-##### `managevim`
+##### <a name="managevim"></a>`managevim`
 
 Data type: `Boolean`
 
@@ -352,7 +399,7 @@ managed accounts home directory.
 
 Default value: ``true``
 
-##### `membership`
+##### <a name="membership"></a>`membership`
 
 Data type: `Enum['inclusive','minimum']`
 
@@ -362,11 +409,11 @@ belongs. Valid values: 'inclusive', 'minimum'.
 
 Default value: `'minimum'`
 
-##### `name`
+##### <a name="name"></a>`name`
 
 Name of the user.
 
-##### `password`
+##### <a name="password"></a>`password`
 
 Data type: `Variant[String, Sensitive[String]]`
 
@@ -376,7 +423,7 @@ password.
 
 Default value: `'!!'`
 
-##### `password_max_age`
+##### <a name="password_max_age"></a>`password_max_age`
 
 Data type: `Optional[Accounts::User::PasswordMaxAge]`
 
@@ -387,7 +434,7 @@ resource.
 
 Default value: ``undef``
 
-##### `purge_sshkeys`
+##### <a name="purge_sshkeys"></a>`purge_sshkeys`
 
 Data type: `Boolean`
 
@@ -397,7 +444,7 @@ removed from the user.
 
 Default value: ``false``
 
-##### `purge_user_home`
+##### <a name="purge_user_home"></a>`purge_user_home`
 
 Data type: `Boolean`
 
@@ -406,7 +453,7 @@ Defaults to false.
 
 Default value: ``false``
 
-##### `salt`
+##### <a name="salt"></a>`salt`
 
 Data type: `Optional[String]`
 
@@ -415,7 +462,7 @@ This field is required for managing passwords on OS X >= 10.8.
 
 Default value: ``undef``
 
-##### `shell`
+##### <a name="shell"></a>`shell`
 
 Data type: `Optional[Stdlib::Unixpath]`
 
@@ -423,7 +470,7 @@ Manages the user shell.
 
 Default value: `'/bin/bash'`
 
-##### `sshkey_custom_path`
+##### <a name="sshkey_custom_path"></a>`sshkey_custom_path`
 
 Data type: `Optional[Stdlib::Unixpath]`
 
@@ -431,7 +478,7 @@ Custom location for ssh public key file.
 
 Default value: ``undef``
 
-##### `sshkey_group`
+##### <a name="sshkey_group"></a>`sshkey_group`
 
 Data type: `Optional[Accounts::User::Name]`
 
@@ -439,7 +486,7 @@ Specifies the group of the sshkey file
 
 Default value: `$group`
 
-##### `sshkey_owner`
+##### <a name="sshkey_owner"></a>`sshkey_owner`
 
 Data type: `Optional[Accounts::User::Name]`
 
@@ -447,7 +494,7 @@ Specifies the owner of the sshkey file
 
 Default value: `$name`
 
-##### `sshkey_mode`
+##### <a name="sshkey_mode"></a>`sshkey_mode`
 
 Data type: `Variant[Integer[0],String]`
 
@@ -455,7 +502,7 @@ Specifies the mode of the sshkey file .ssh/authorized_keys.
 
 Default value: `'0600'`
 
-##### `sshkeys`
+##### <a name="sshkeys"></a>`sshkeys`
 
 Data type: `Array[String]`
 
@@ -475,7 +522,7 @@ Note that for multiple keys, the name component (the last) must be unique.
 
 Default value: `[]`
 
-##### `system`
+##### <a name="system"></a>`system`
 
 Data type: `Boolean`
 
@@ -483,7 +530,7 @@ Specifies if you want to create a system account.
 
 Default value: ``false``
 
-##### `uid`
+##### <a name="uid"></a>`uid`
 
 Data type: `Optional[Accounts::User::Uid]`
 
@@ -493,7 +540,7 @@ Default value: ``undef``
 
 ## Functions
 
-### `accounts_ssh_authorized_keys_line_parser`
+### <a name="accounts_ssh_authorized_keys_line_parser"></a>`accounts_ssh_authorized_keys_line_parser`
 
 Type: Ruby 4.x API
 
@@ -536,7 +583,7 @@ Data type: `String`
 
 ssh authorized_keys line string
 
-### `accounts_ssh_options_parser`
+### <a name="accounts_ssh_options_parser"></a>`accounts_ssh_options_parser`
 
 Type: Ruby 4.x API
 
@@ -574,27 +621,38 @@ ssh authorized_keys option string
 
 ## Data types
 
-### `Accounts::Group::Hash`
+### <a name="accountsgrouphash"></a>`Accounts::Group::Hash`
 
 Group resoureces hash.
 Passed as the second parameter of the ensure_resources function.
 
-Alias of `Hash[Accounts::User::Name, Accounts::Group::Resource]`
+Alias of
 
-### `Accounts::Group::Provider`
+```puppet
+Hash[Accounts::User::Name, Accounts::Group::Resource]
+```
+
+### <a name="accountsgroupprovider"></a>`Accounts::Group::Provider`
 
 Group provider.
 You will seldom need to specify this -- Puppet will usually discover the
 appropriate provider for your platform.
 
-Alias of `Enum['aix', 'directoryservice', 'groupadd', 'ldap', 'pw', 'windows_adsi']`
+Alias of
 
-### `Accounts::Group::Resource`
+```puppet
+Enum['aix', 'directoryservice', 'groupadd', 'ldap', 'pw', 'windows_adsi']
+```
+
+### <a name="accountsgroupresource"></a>`Accounts::Group::Resource`
 
 Group attributes hash.
 Passed as the third parameter of the ensure_resources function.
 
-Alias of `Struct[{ Optional[ensure]          => Enum['absent', 'present'],
+Alias of
+
+```puppet
+Struct[{ Optional[ensure]          => Enum['absent', 'present'],
     Optional[allowdupe]       => Boolean,
     Optional[auth_membership] => Boolean,
     Optional[forcelocal]      => Boolean,
@@ -603,31 +661,44 @@ Alias of `Struct[{ Optional[ensure]          => Enum['absent', 'present'],
     Optional[name]            => Accounts::User::Name,
     Optional[provider]        => Accounts::Group::Provider,
     Optional[system]          => Boolean,
-  }]`
+  }]
+```
 
-### `Accounts::User::Expiry`
+### <a name="accountsuserexpiry"></a>`Accounts::User::Expiry`
 
 Account expiration date.
 Either 'absent' or a YYYY-MM-DD datestring.
 
-Alias of `Variant[Enum['absent'], Pattern[/\A(19|[2-9]\d)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])\z/]]`
+Alias of
 
-### `Accounts::User::Hash`
+```puppet
+Variant[Enum['absent'], Pattern[/\A(19|[2-9]\d)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])\z/]]
+```
+
+### <a name="accountsuserhash"></a>`Accounts::User::Hash`
 
 User resources hash.
 Passed as the second parameter of the ensure_resources function.
 
-Alias of `Hash[Accounts::User::Name, Accounts::User::Resource]`
+Alias of
 
-### `Accounts::User::Iterations`
+```puppet
+Hash[Accounts::User::Name, Accounts::User::Resource]
+```
+
+### <a name="accountsuseriterations"></a>`Accounts::User::Iterations`
 
 Password hash iterations.
 This parameter is used in OS X, and is required for managing passwords
 on OS X 10.8 and newer.
 
-Alias of `Variant[Integer[1,], Pattern[/\A[1-9]\d*\z/]]`
+Alias of
 
-### `Accounts::User::Name`
+```puppet
+Variant[Integer[1,], Pattern[/\A[1-9]\d*\z/]]
+```
+
+### <a name="accountsusername"></a>`Accounts::User::Name`
 
 Account (user or group) name.
 From useradd(8): It is usually recommended to only use usernames
@@ -638,22 +709,33 @@ Usernames may only be up to 32 characters long.
 Many installations also allow capitals or periods, for example to separate first and
 last names.
 
-Alias of `Pattern[/\A[a-zA-Z_]([a-zA-Z.0-9_-]{0,30}[a-zA-Z0-9_$-])?\z/]`
+Alias of
 
-### `Accounts::User::PasswordMaxAge`
+```puppet
+Pattern[/\A[a-zA-Z_]([a-zA-Z.0-9_-]{0,30}[a-zA-Z0-9_$-])?\z/]
+```
+
+### <a name="accountsuserpasswordmaxage"></a>`Accounts::User::PasswordMaxAge`
 
 Max password age.
 On most systems, the default value of 99999 is about 274 years, which
 effectively disables password aging.
 
-Alias of `Integer[1, 99999]`
+Alias of
 
-### `Accounts::User::Resource`
+```puppet
+Integer[1, 99999]
+```
+
+### <a name="accountsuserresource"></a>`Accounts::User::Resource`
 
 User attributes hash.
 Passed as the third parameter of the ensure_resources function.
 
-Alias of `Struct[{ Optional[ensure]                   => Enum['absent','present'],
+Alias of
+
+```puppet
+Struct[{ Optional[ensure]                   => Enum['absent','present'],
     Optional[allowdupe]                => Boolean,
     Optional[bash_profile_content]     => String,
     Optional[bash_profile_source]      => Stdlib::Filesource,
@@ -690,14 +772,18 @@ Alias of `Struct[{ Optional[ensure]                   => Enum['absent','present'
     Optional[sshkeys]                  => Array[String],
     Optional[system]                   => Boolean,
     Optional[uid]                      => Accounts::User::Uid,
-  }]`
+  }]
+```
 
-### `Accounts::User::Uid`
+### <a name="accountsuseruid"></a>`Accounts::User::Uid`
 
 Numeric user ID.
 On most Unix systems, the highest uid is 2^32 - 1, or 4294967295.
 
-Alias of `Variant[Integer[0,4294967295], Pattern[/\A0\z/,
+Alias of
+
+```puppet
+Variant[Integer[0,4294967295], Pattern[/\A0\z/,
           /\A[1-3]\d{0,9}\z/,
           /\A[4-9]\d{0,8}\z/,
           /\A4[0-1]\d{8}\z/,
@@ -709,5 +795,6 @@ Alias of `Variant[Integer[0,4294967295], Pattern[/\A0\z/,
           /\A4294967[0-1]\d{2}\z/,
           /\A42949672[0-8]\d\z/,
           /\A429496729[0-5]\z/,
-  ]]`
+  ]]
+```
 
