@@ -291,7 +291,7 @@ define accounts::user (
       true    => undef,
       default => $password,
     }
-    $_purge_sshkeys = $purge_sshkeys and $sshkey_custom_path != undef ? {
+    $_purge_sshkeys = ($purge_sshkeys and $sshkey_custom_path != undef) ? {
       true => [String($sshkey_custom_path)],
       default => $purge_sshkeys,
     }
