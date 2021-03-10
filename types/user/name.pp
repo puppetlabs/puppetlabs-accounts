@@ -8,4 +8,4 @@
 # Many installations also allow capitals or periods, for example to separate first and
 # last names. 
 #
-type Accounts::User::Name = Pattern[/\A[a-zA-Z0-9_.]([a-zA-Z.0-9_-]{0,30}[a-zA-Z0-9_$-])?\z/]
+type Accounts::User::Name = Pattern[/\A[a-zA-Z0-9_]([a-zA-Z.0-9_-]{0,30}[a-zA-Z0-9_$-])?\z/]
