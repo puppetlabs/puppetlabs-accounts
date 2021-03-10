@@ -20,7 +20,6 @@ describe 'Accounts::User::Name' do
 
   describe 'Invalid user name values' do
     [
-      '1-bad-dude',                           # Cannot begin with a digit.
       '.hidden',                              # Cannot begin with a period.
       '$money',                               # Cannot begin with a dollar-sign.
       '-kilroy_was_here-',                    # Cannot begin with a dash.
