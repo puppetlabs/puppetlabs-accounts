@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.0.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/v7.0.1) (2021-03-15)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v7.0.0...v7.0.1)
+
+### Fixed
+
+- \(MODULES-10960\) Selector needs multiple checks in brackets. [\#369](https://github.com/puppetlabs/puppetlabs-accounts/pull/369) ([tuxmea](https://github.com/tuxmea))
+
 ## [v7.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v7.0.0) (2021-03-01)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v6.4.0...v7.0.0)
@@ -22,7 +30,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - pdksync - \(maint\) - Add support for Puppet 7 [\#350](https://github.com/puppetlabs/puppetlabs-accounts/pull/350) ([pmcmaw](https://github.com/pmcmaw))
-- MODULES-10862 add support for authorized\_keys file mode [\#338](https://github.com/puppetlabs/puppetlabs-accounts/pull/338) ([simondeziel](https://github.com/simondeziel))
 
 ## [v6.3.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.3.0) (2020-09-22)
 
@@ -30,6 +37,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- MODULES-10862 add support for authorized\_keys file mode [\#338](https://github.com/puppetlabs/puppetlabs-accounts/pull/338) ([simondeziel](https://github.com/simondeziel))
 - Allow for Sensitive type passwords in accounts::user [\#333](https://github.com/puppetlabs/puppetlabs-accounts/pull/333) ([jarretlavallee](https://github.com/jarretlavallee))
 
 ### Fixed
@@ -56,6 +64,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Fixed
 
 - MODULES-10550 fix keyspec parsing to allow whitespaces in options and… [\#291](https://github.com/puppetlabs/puppetlabs-accounts/pull/291) ([janit42](https://github.com/janit42))
+- fix small typo on the root\_home key at Debian.yaml [\#260](https://github.com/puppetlabs/puppetlabs-accounts/pull/260) ([wandenberg](https://github.com/wandenberg))
 
 ## [v6.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.1.0) (2020-02-03)
 
@@ -80,16 +89,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
-- fix small typo on the root\_home key at Debian.yaml [\#260](https://github.com/puppetlabs/puppetlabs-accounts/pull/260) ([wandenberg](https://github.com/wandenberg))
 - Use user group instead of user name for sshkey owner group [\#258](https://github.com/puppetlabs/puppetlabs-accounts/pull/258) ([florindragos](https://github.com/florindragos))
 
 ## [v5.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v5.0.0) (2019-09-10)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v4.2.0...v5.0.0)
-
-### Changed
-
-- \(MODULES-9712\) Move data into hiera. [\#241](https://github.com/puppetlabs/puppetlabs-accounts/pull/241) ([pillarsdotnet](https://github.com/pillarsdotnet))
 
 ### Added
 
@@ -116,6 +120,10 @@ All notable changes to this project will be documented in this file. The format 
 ## [v4.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v4.1.0) (2019-05-29)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v4.0.0...v4.1.0)
+
+### Changed
+
+- \(MODULES-9712\) Move data into hiera. [\#241](https://github.com/puppetlabs/puppetlabs-accounts/pull/241) ([pillarsdotnet](https://github.com/pillarsdotnet))
 
 ### Added
 
