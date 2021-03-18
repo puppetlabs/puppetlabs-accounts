@@ -64,7 +64,7 @@ define accounts::home_dir(
 ) {
   assert_type(Stdlib::Unixpath, $name)
   if $ensure == 'absent' {
-    fail(translate('To remove home directories, use the `file` resource.'))
+    fail('To remove home directories, use the `file` resource.')
   } else {
     assert_type(Accounts::User::Name, $group)
     assert_type(Accounts::User::Name, $user)

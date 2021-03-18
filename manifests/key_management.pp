@@ -55,7 +55,7 @@ define accounts::key_management(
   } elsif $user_home {
     $key_file = "${sshkey_dotdir}/authorized_keys"
   } else {
-    err(translate('Either user_home or sshkey_custom_path must be specified'))
+    err('Either user_home or sshkey_custom_path must be specified')
   }
 
   if $ensure == 'present' {
