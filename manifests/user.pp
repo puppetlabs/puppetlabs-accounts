@@ -363,8 +363,7 @@ define accounts::user (
         }
       }
       else {
-        warning(translate('ssh keys were passed for user %{name} but $managehome is set to false; not managing user ssh keys',
-        {'name' => $name}))
+        warning("ssh keys were passed for user ${name} but $managehome is set to false; not managing user ssh keys")
       }
     }
   }

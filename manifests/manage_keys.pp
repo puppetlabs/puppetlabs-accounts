@@ -28,7 +28,7 @@ define accounts::manage_keys(
 
   $key_def = accounts_ssh_authorized_keys_line_parser($keyspec)
   if (! $key_def) {
-    err(translate("Could not interpret SSH key definition: '%{keyspec}'", {'keyspec' => $keyspec}))
+    err("Could not interpret SSH key definition: '${keyspec}'")
   }
   else {
     if (! empty($key_def[0])) {
