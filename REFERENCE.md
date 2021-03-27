@@ -712,7 +712,7 @@ last names.
 Alias of
 
 ```puppet
-Pattern[/\A[a-zA-Z_]([a-zA-Z.0-9_-]{0,30}[a-zA-Z0-9_$-])?\z/]
+Pattern[/\A[a-zA-Z0-9_]([a-zA-Z.0-9_-]{0,30}[a-zA-Z0-9_$-])?\z/]
 ```
 
 ### <a name="accountsuserpasswordmaxage"></a>`Accounts::User::PasswordMaxAge`
