@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-accounts",
-  "version": "7.0.2",
+  "version": "7.0.3",
   "author": "puppetlabs",
   "summary": "Account management module.",
   "license": "Apache-2.0",
