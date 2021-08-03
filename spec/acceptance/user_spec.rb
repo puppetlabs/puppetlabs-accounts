@@ -13,6 +13,21 @@ pp_accounts_define = <<-PUPPETCODE
     ensure => directory,
     before => Accounts::User['hunner'],
   }
+  if $facts['puppetversion'][0] == '6' {
+    $key_test = [
+      'ssh-rsa #{test_key} vagrant',
+      'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
+    ]
+  }
+  else {
+    $key_test = [      
+      'ssh-rsa #{test_key} vagrant',
+      'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2',
+      'ecdsa-sha2-nistp256 #{ecdsa_test_key} vagrant3',
+      'sk-ecdsa-sha2-nistp256@openssh.com #{ecdsa_sk_test_key} vagrant4'
+    ]
+  }
+
   accounts::user { 'hunner':
     groups               => ['root'],
     password             => 'hi',
@@ -22,12 +37,7 @@ pp_accounts_define = <<-PUPPETCODE
     managevim            => false,
     bashrc_content       => file('accounts/shell/bashrc'),
     bash_profile_content => file('accounts/shell/bash_profile'),
-    sshkeys              => [
-      'ssh-rsa #{test_key} vagrant',
-      'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2',
-      'ecdsa-sha2-nistp256 #{ecdsa_test_key} vagrant3',
-      'sk-ecdsa-sha2-nistp256@openssh.com #{ecdsa_sk_test_key} vagrant4'
-    ],
+    sshkeys              => $key_test,
   }
 PUPPETCODE
 
@@ -45,6 +55,21 @@ pp_with_managevim = <<-PUPPETCODE
     ensure => directory,
     before => Accounts::User['hunner'],
   }
+  if $facts['puppetversion'][0] == '6' {
+    $key_test = [
+      'ssh-rsa #{test_key} vagrant',
+      'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
+    ]
+  }
+  else {
+    $key_test = [      
+      'ssh-rsa #{test_key} vagrant',
+      'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2',
+      'ecdsa-sha2-nistp256 #{ecdsa_test_key} vagrant3',
+      'sk-ecdsa-sha2-nistp256@openssh.com #{ecdsa_sk_test_key} vagrant4'
+    ]
+  }
+
   accounts::user { 'hunner':
     groups               => ['root'],
     password             => 'hi',
@@ -54,12 +79,7 @@ pp_with_managevim = <<-PUPPETCODE
     managevim            => true,
     bashrc_content       => file('accounts/shell/bashrc'),
     bash_profile_content => file('accounts/shell/bash_profile'),
-    sshkeys              => [
-      'ssh-rsa #{test_key} vagrant',
-      'from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2',
-      'ecdsa-sha2-nistp256 #{ecdsa_test_key} vagrant3',
-      'sk-ecdsa-sha2-nistp256@openssh.com #{ecdsa_sk_test_key} vagrant4'
-    ],
+    sshkeys              => $key_test,
   }
 PUPPETCODE
 
