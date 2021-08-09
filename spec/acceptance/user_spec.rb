@@ -20,7 +20,7 @@ pp_accounts_define = <<-PUPPETCODE
     ]
   }
   else {
-    $key_test = [      
+    $key_test = [#{'      '}
       'ssh-rsa #{test_key} vagrant',
       'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2',
       'ecdsa-sha2-nistp256 #{ecdsa_test_key} vagrant3',
@@ -62,7 +62,7 @@ pp_with_managevim = <<-PUPPETCODE
     ]
   }
   else {
-    $key_test = [      
+    $key_test = [#{'      '}
       'ssh-rsa #{test_key} vagrant',
       'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2',
       'ecdsa-sha2-nistp256 #{ecdsa_test_key} vagrant3',
