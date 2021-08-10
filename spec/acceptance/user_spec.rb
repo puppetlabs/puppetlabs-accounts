@@ -5,12 +5,29 @@ require 'spec_helper_acceptance'
 test_key = 'AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8Hfd'\
            'OV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9W'\
            'hQ=='
+ecdsa_test_key = 'AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNlpEm6+RwCiQXgQAb0P1asEAxCJDVtm/YYyUbdSifCbri98fjs1C/03pm9yLRQ0W/S70S8AhDCMjVFA07WzjOQ='
+ecdsa_sk_test_key = 'AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBAjkGvdKC05udQc82xGWWSKHbmJyBoa/oCq+2FiU6udqQyx0uOEC3YZAjvygBSdIo5vCpDELqJxaNQGQEkeUyYYAAAAEc3NoOg=='
 
 pp_accounts_define = <<-PUPPETCODE
   file { '/test':
     ensure => directory,
     before => Accounts::User['hunner'],
   }
+  if $facts['puppetversion'][0] == '6' {
+    $key_test = [
+      'ssh-rsa #{test_key} vagrant',
+      'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
+    ]
+  }
+  else {
+    $key_test = [#{'      '}
+      'ssh-rsa #{test_key} vagrant',
+      'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2',
+      'ecdsa-sha2-nistp256 #{ecdsa_test_key} vagrant3',
+      'sk-ecdsa-sha2-nistp256@openssh.com #{ecdsa_sk_test_key} vagrant4'
+    ]
+  }
+
   accounts::user { 'hunner':
     groups               => ['root'],
     password             => 'hi',
@@ -20,10 +37,7 @@ pp_accounts_define = <<-PUPPETCODE
     managevim            => false,
     bashrc_content       => file('accounts/shell/bashrc'),
     bash_profile_content => file('accounts/shell/bash_profile'),
-    sshkeys              => [
-      'ssh-rsa #{test_key} vagrant',
-      'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
-    ],
+    sshkeys              => $key_test,
   }
 PUPPETCODE
 
@@ -41,6 +55,21 @@ pp_with_managevim = <<-PUPPETCODE
     ensure => directory,
     before => Accounts::User['hunner'],
   }
+  if $facts['puppetversion'][0] == '6' {
+    $key_test = [
+      'ssh-rsa #{test_key} vagrant',
+      'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
+    ]
+  }
+  else {
+    $key_test = [#{'      '}
+      'ssh-rsa #{test_key} vagrant',
+      'command="/bin/echo Hello",from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2',
+      'ecdsa-sha2-nistp256 #{ecdsa_test_key} vagrant3',
+      'sk-ecdsa-sha2-nistp256@openssh.com #{ecdsa_sk_test_key} vagrant4'
+    ]
+  }
+
   accounts::user { 'hunner':
     groups               => ['root'],
     password             => 'hi',
@@ -50,10 +79,7 @@ pp_with_managevim = <<-PUPPETCODE
     managevim            => true,
     bashrc_content       => file('accounts/shell/bashrc'),
     bash_profile_content => file('accounts/shell/bash_profile'),
-    sshkeys              => [
-      'ssh-rsa #{test_key} vagrant',
-      'from="myhost.example.com,192.168.1.1" ssh-rsa #{test_key} vagrant2'
-    ],
+    sshkeys              => $key_test,
   }
 PUPPETCODE
 
