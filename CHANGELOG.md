@@ -2,7 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v7.0.2](https://github.com/puppetlabs/puppetlabs-accounts/tree/v7.0.2) (2021-03-27)
+## [v7.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v7.1.0) (2021-08-16)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v7.0.2...v7.1.0)
+
+### Added
+
+- pdksync - \(IAC-1709\) - Add Support for Debian 11 [\#391](https://github.com/puppetlabs/puppetlabs-accounts/pull/391) ([david22swan](https://github.com/david22swan))
+- MODULES-11100 - Add sk-ecdsa public key support, and implement tests for sk-ecdsa and ecdsa keys [\#388](https://github.com/puppetlabs/puppetlabs-accounts/pull/388) ([vollmerk](https://github.com/vollmerk))
+
+## [v7.0.2](https://github.com/puppetlabs/puppetlabs-accounts/tree/v7.0.2) (2021-03-29)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v7.0.1...v7.0.2)
 
