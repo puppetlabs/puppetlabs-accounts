@@ -71,6 +71,18 @@
       "operatingsystemrelease": [
         "11"
       ]
+    },
+    {
+      "operatingsystem": "Rocky",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "AlmaLinux",
+      "operatingsystemrelease": [
+        "8"
+      ]
     }
   ],
   "requirements": [
