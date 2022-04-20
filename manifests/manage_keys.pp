@@ -18,14 +18,13 @@
 #
 # @api private
 #
-define accounts::manage_keys(
+define accounts::manage_keys (
   Stdlib::Unixpath         $key_file,
   String                   $keyspec,
   Accounts::User::Name     $user,
   Enum['absent','present'] $ensure    = 'present',
   Accounts::User::Name     $key_owner = $user,
 ) {
-
   $key_def = accounts_ssh_authorized_keys_line_parser($keyspec)
   if (! $key_def) {
     err("Could not interpret SSH key definition: '${keyspec}'")
