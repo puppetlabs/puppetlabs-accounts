@@ -208,7 +208,7 @@ define accounts::user (
   Boolean                                  $purge_sshkeys            = false,
   Boolean                                  $purge_user_home          = false,
   Optional[String]                         $salt                     = undef,
-  Optional[Stdlib::Unixpath]               $shell                    = '/bin/bash',
+  Stdlib::Unixpath                         $shell                    = '/bin/bash',
   Optional[Stdlib::Unixpath]               $sshkey_custom_path       = undef,
   Optional[Accounts::User::Name]           $sshkey_group             = $group,
   Optional[Accounts::User::Name]           $sshkey_owner             = $name,
@@ -217,7 +217,6 @@ define accounts::user (
   Boolean                                  $system                   = false,
   Optional[Accounts::User::Uid]            $uid                      = undef,
 ) {
-
   assert_type(Accounts::User::Name, $name)
 
   include accounts::user::defaults
@@ -332,7 +331,7 @@ define accounts::user (
         forward_source       => $forward_source,
         user                 => $name,
         group                => $group,
-        require              => [ User[$name] ],
+        require              => [User[$name]],
       }
       accounts::key_management { "${name}_key_management":
         ensure             => 'present',
@@ -345,7 +344,7 @@ define accounts::user (
         sshkey_group       => $sshkey_group,
         sshkey_mode        => $sshkey_mode,
         purge_user_home    => $purge_user_home,
-        require            => Accounts::Home_dir[$_home]
+        require            => Accounts::Home_dir[$_home],
       }
     } elsif $sshkeys != [] {
       # We are not managing the user's home directory but we have specified a
@@ -361,9 +360,8 @@ define accounts::user (
           sshkey_mode        => $sshkey_mode,
           sshkey_custom_path => $sshkey_custom_path,
         }
-      }
-      else {
-        warning("ssh keys were passed for user ${name} but $managehome is set to false; not managing user ssh keys")
+      } else {
+        warning("ssh keys were passed for user ${name} but managehome is set to false; not managing user ssh keys")
       }
     }
   }

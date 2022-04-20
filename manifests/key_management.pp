@@ -33,7 +33,7 @@
 #
 # @api private
 #
-define accounts::key_management(
+define accounts::key_management (
   Accounts::User::Name           $user,
   Enum['absent','present']       $ensure             = 'present',
   Optional[Accounts::User::Name] $group              = undef,
@@ -45,7 +45,6 @@ define accounts::key_management(
   Array[String]                  $sshkeys            = [],
   Optional[Stdlib::Unixpath]     $user_home          = undef,
 ) {
-
   if $user_home {
     $sshkey_dotdir = "${user_home}/.ssh"
   }
@@ -79,7 +78,6 @@ define accounts::key_management(
       $sshkey_require = File[$sshkey_dotdir]
     }
     $sshkey_before = undef
-
   } else {
     if $purge_user_home and $user_home {
       file { $sshkey_dotdir:

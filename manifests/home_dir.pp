@@ -49,7 +49,7 @@
 #
 # @api private
 #
-define accounts::home_dir(
+define accounts::home_dir (
   Enum['absent','present']       $ensure               = 'present',
   Optional[String]               $bash_profile_content = undef,
   Optional[Stdlib::Filesource]   $bash_profile_source  = undef,

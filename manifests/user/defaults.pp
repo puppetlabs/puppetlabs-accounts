@@ -14,8 +14,6 @@ class accounts::user::defaults (
   Stdlib::AbsolutePath      $home_template = '/home/%s',
   Stdlib::AbsolutePath      $locked_shell = '/sbin/nologin',
   Stdlib::AbsolutePath      $root_home = '/root',
-)
-{
+) {
   # Nothing to see here; move along.
 }
-

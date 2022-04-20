@@ -4,7 +4,7 @@
 $users_hash = {
   'jblow' => {
     'comment'  => 'Joe Blow',
-    'groups'   => [ wheel ],
+    'groups'   => [wheel],
     'uid'      => '1115',
     'gid'      => '1115',
     'group'    => 'mrblow',
