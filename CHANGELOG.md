@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.2.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v7.2.0) - 2022-05-16
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v7.1.1...v7.2.0)
+
+### Added
+
+- Added new SSH key type. [#410](https://github.com/puppetlabs/puppetlabs-accounts/pull/410) ([PorkCharsui79](https://github.com/PorkCharsui79))
+
+- pdksync - (IAC-1753) - Add Support for AlmaLinux 8 [#397](https://github.com/puppetlabs/puppetlabs-accounts/pull/397) ([david22swan](https://github.com/david22swan))
+
+- pdksync - (IAC-1751) - Add Support for Rocky 8 [#395](https://github.com/puppetlabs/puppetlabs-accounts/pull/395) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- pdksync - (GH-iac-334) Remove Support for Ubuntu 16.04 [#401](https://github.com/puppetlabs/puppetlabs-accounts/pull/401) ([david22swan](https://github.com/david22swan))
+
+- pdksync - (IAC-1787) Remove Support for CentOS 6 [#398](https://github.com/puppetlabs/puppetlabs-accounts/pull/398) ([david22swan](https://github.com/david22swan))
+
+- pdksync - (IAC-1598) - Remove Support for Debian 8 [#394](https://github.com/puppetlabs/puppetlabs-accounts/pull/394) ([david22swan](https://github.com/david22swan))
+
+
 ## [v7.1.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/v7.1.1) (2021-08-25)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v7.1.0...v7.1.1)
