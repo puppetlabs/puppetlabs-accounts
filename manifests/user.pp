@@ -270,6 +270,7 @@ define accounts::user (
       sshkey_custom_path => $sshkey_custom_path,
       sshkey_owner       => $sshkey_owner,
       sshkey_group       => $sshkey_group,
+      sshkey_mode        => $sshkey_mode,
       purge_user_home    => $purge_user_home,
     }
   } else {
