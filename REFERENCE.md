@@ -464,7 +464,7 @@ Default value: ``undef``
 
 ##### <a name="shell"></a>`shell`
 
-Data type: `Optional[Stdlib::Unixpath]`
+Data type: `Stdlib::Unixpath`
 
 Manages the user shell.
 
