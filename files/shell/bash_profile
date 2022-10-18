@@ -1,4 +1,6 @@
 # .bash_profile
+# This file is managed by Puppet.  Changes will be overwritten.
+# Please edit ~/.bashrc.custom instead of this file!
 
 # Get the aliases and functions
 if [ -f ~/.bashrc ]; then
