@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.3.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/v7.3.1) (2023-01-27)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v7.3.0...v7.3.1)
+
+### Fixed
+
+- Update bash\_profile so that it identifies itself as "Puppet Managed" [\#426](https://github.com/puppetlabs/puppetlabs-accounts/pull/426) ([bschonec](https://github.com/bschonec))
+- pdksync - \(CONT-189\) Remove support for RedHat6 / OracleLinux6 / Scientific6 [\#424](https://github.com/puppetlabs/puppetlabs-accounts/pull/424) ([david22swan](https://github.com/david22swan))
+- pdksync - \(CONT-130\) Dropping Support for Debian 9 [\#421](https://github.com/puppetlabs/puppetlabs-accounts/pull/421) ([jordanbreen28](https://github.com/jordanbreen28))
+
 ## [v7.3.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v7.3.0) (2022-10-03)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v7.2.0...v7.3.0)
@@ -116,6 +126,10 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v6.1.0...v6.1.1)
 
+### Added
+
+- Employ more lenient username checks \(allow capitals\) [\#286](https://github.com/puppetlabs/puppetlabs-accounts/pull/286) ([mvandegarde](https://github.com/mvandegarde))
+
 ### Fixed
 
 - MODULES-10550 fix keyspec parsing to allow whitespaces in options and… [\#291](https://github.com/puppetlabs/puppetlabs-accounts/pull/291) ([janit42](https://github.com/janit42))
@@ -126,7 +140,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Employ more lenient username checks \(allow capitals\) [\#286](https://github.com/puppetlabs/puppetlabs-accounts/pull/286) ([mvandegarde](https://github.com/mvandegarde))
 - \(MODULES-10242\) Re-add Ubuntu 14 to supported OS list [\#281](https://github.com/puppetlabs/puppetlabs-accounts/pull/281) ([sheenaajay](https://github.com/sheenaajay))
 
 ## [v6.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v6.0.0) (2019-11-11)
@@ -145,6 +158,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - fix small typo on the root\_home key at Debian.yaml [\#260](https://github.com/puppetlabs/puppetlabs-accounts/pull/260) ([wandenberg](https://github.com/wandenberg))
 - Use user group instead of user name for sshkey owner group [\#258](https://github.com/puppetlabs/puppetlabs-accounts/pull/258) ([florindragos](https://github.com/florindragos))
+- \(MODULES-9849\) wrong order when removing user with custom sshkey file [\#250](https://github.com/puppetlabs/puppetlabs-accounts/pull/250) ([tuxmea](https://github.com/tuxmea))
 
 ## [v5.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v5.0.0) (2019-09-10)
 
@@ -160,7 +174,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
-- \(MODULES-9849\) wrong order when removing user with custom sshkey file [\#250](https://github.com/puppetlabs/puppetlabs-accounts/pull/250) ([tuxmea](https://github.com/tuxmea))
 - fix problematic parsing of keyspec [\#246](https://github.com/puppetlabs/puppetlabs-accounts/pull/246) ([EECOLOR](https://github.com/EECOLOR))
 - \(MODULES-9697\) fix for correct management of sshkey\_custom\_path [\#242](https://github.com/puppetlabs/puppetlabs-accounts/pull/242) ([tuxmea](https://github.com/tuxmea))
 
@@ -171,6 +184,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - \(FM-8231\) Convert testing to litmus [\#230](https://github.com/puppetlabs/puppetlabs-accounts/pull/230) ([eimlav](https://github.com/eimlav))
+- \(MODULES-7469\) Add password\_max\_age parameter [\#221](https://github.com/puppetlabs/puppetlabs-accounts/pull/221) ([eimlav](https://github.com/eimlav))
 
 ### Fixed
 
@@ -183,7 +197,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - \(FM-8023\) Add RedHat 8 support [\#227](https://github.com/puppetlabs/puppetlabs-accounts/pull/227) ([eimlav](https://github.com/eimlav))
-- \(MODULES-7469\) Add password\_max\_age parameter [\#221](https://github.com/puppetlabs/puppetlabs-accounts/pull/221) ([eimlav](https://github.com/eimlav))
 
 ### Fixed
 
@@ -216,6 +229,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - \(MODULES-8216\) - Fix fail when custom\_sshkey\_path and managehome=false [\#194](https://github.com/puppetlabs/puppetlabs-accounts/pull/194) ([eimlav](https://github.com/eimlav))
 - Fixing the limitations section of the README [\#191](https://github.com/puppetlabs/puppetlabs-accounts/pull/191) ([HelenCampbell](https://github.com/HelenCampbell))
+- Rename README.markdown to README.MD [\#173](https://github.com/puppetlabs/puppetlabs-accounts/pull/173) ([clairecadman](https://github.com/clairecadman))
 
 ## [3.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/3.1.0) (2018-09-27)
 
@@ -231,7 +245,6 @@ All notable changes to this project will be documented in this file. The format 
 
 - \(maint\) corrected filename extension for both en and ja [\#182](https://github.com/puppetlabs/puppetlabs-accounts/pull/182) ([ehom](https://github.com/ehom))
 - Only take care of ssh-keys if ensure is set to 'present' [\#174](https://github.com/puppetlabs/puppetlabs-accounts/pull/174) ([opteamax](https://github.com/opteamax))
-- Rename README.markdown to README.MD [\#173](https://github.com/puppetlabs/puppetlabs-accounts/pull/173) ([clairecadman](https://github.com/clairecadman))
 
 ## [3.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/3.0.0) (2018-09-07)
 
