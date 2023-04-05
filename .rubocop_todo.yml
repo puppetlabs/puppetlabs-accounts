@@ -51,13 +51,6 @@ RSpec/DescribeClass:
     - 'spec/functions/accounts_ssh_authorized_keys_line_parser_spec.rb'
     - 'spec/functions/accounts_ssh_options_parser_spec.rb'
 
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/EmptyLineAfterExampleGroup:
-  Exclude:
-    - 'spec/acceptance/user_spec.rb'
-    - 'spec/defines/accounts_user_spec.rb'
-
 # Offense count: 13
 # Configuration parameters: CountAsOne.
 RSpec/ExampleLength:

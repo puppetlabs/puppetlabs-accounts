@@ -394,6 +394,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       expect(user('duplicate_user2')).to have_uid 1234
     end
   end
+
   describe 'allow password to be a Sentitive type' do
     it 'runs with no errors' do
       apply_manifest(pp_user_with_sensitive_password, catch_failures: true)

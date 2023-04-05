@@ -294,6 +294,7 @@ describe 'accounts::user' do
 
           it { is_expected.to raise_error Puppet::Error }
         end
+
         [:home, :shell].each do |param|
           describe "should fail if #{param} does not start with '/'" do
             let(:params) { { param => 'no_leading_slash' } }
@@ -306,6 +307,7 @@ describe 'accounts::user' do
 
           it { is_expected.to raise_error Puppet::Error }
         end
+
         [:gid, :uid].each do |param|
           describe "fails if #{param} is not composed of digits" do
             let(:params) { { param => 'name' } }
