@@ -38,15 +38,15 @@ hd_group_change = hd_group.merge(
 hd_accounts_define = hd_defaults.merge(
   'accounts::user_list' => {
     'hunner' => {
-      'groups'              => ['root'],
-      'password'            => 'hi',
-      'password_max_age'    => 60,
-      'shell'               => '/bin/true',
-      'home'                => '/test/hunner',
-      'managevim'           => false,
-      'bashrc_source'       => 'puppet:///modules/accounts/shell/bashrc',
+      'groups' => ['root'],
+      'password' => 'hi',
+      'password_max_age' => 60,
+      'shell' => '/bin/true',
+      'home' => '/test/hunner',
+      'managevim' => false,
+      'bashrc_source' => 'puppet:///modules/accounts/shell/bashrc',
       'bash_profile_source' => 'puppet:///modules/accounts/shell/bash_profile',
-      'sshkeys'             => [
+      'sshkeys' => [
         "ssh-rsa #{test_key} vagrant",
         'command="/bin/echo Hello",from="myhost.exapmle.com,192.168.1.1" '\
         "ssh-rsa #{test_key} vagrant2",
@@ -58,18 +58,18 @@ hd_accounts_define = hd_defaults.merge(
 hd_accounts_with_custom_key_path_define = hd_defaults.merge(
   'accounts::user_list' => {
     'hunner' => {
-      'sshkey_custom_path'  => '/test/sshkeys/hunner',
-      'sshkey_owner'        => 'root',
-      'sshkey_group'        => 'root',
-      'groups'              => ['root'],
-      'password'            => 'hi',
-      'password_max_age'    => 60,
-      'shell'               => '/bin/true',
-      'home'                => '/test/hunner',
-      'managevim'           => false,
-      'bashrc_source'       => 'puppet:///modules/accounts/shell/bashrc',
+      'sshkey_custom_path' => '/test/sshkeys/hunner',
+      'sshkey_owner' => 'root',
+      'sshkey_group' => 'root',
+      'groups' => ['root'],
+      'password' => 'hi',
+      'password_max_age' => 60,
+      'shell' => '/bin/true',
+      'home' => '/test/hunner',
+      'managevim' => false,
+      'bashrc_source' => 'puppet:///modules/accounts/shell/bashrc',
       'bash_profile_source' => 'puppet:///modules/accounts/shell/bash_profile',
-      'sshkeys'             => [
+      'sshkeys' => [
         "ssh-rsa #{test_key} vagrant",
         'command="/bin/echo Hello",from="myhost.exapmle.com,192.168.1.1" '\
         "ssh-rsa #{test_key} vagrant2",
@@ -82,7 +82,7 @@ hd_without_managehome = hd_defaults.merge(
   'accounts::user_list' => {
     'hunner' => {
       'managehome' => false,
-      'sshkeys'    => [
+      'sshkeys' => [
         "ssh-rsa #{test_key} vagrant",
       ],
     },
@@ -92,15 +92,15 @@ hd_without_managehome = hd_defaults.merge(
 hd_with_managevim = hd_defaults.merge(
   'accounts::user_list' => {
     'hunner' => {
-      'groups'              => ['root'],
-      'password'            => 'hi',
-      'shell'               => '/bin/true',
-      'home'                => '/test/hunner',
-      'home_mode'           => '0700',
-      'managevim'           => true,
-      'bashrc_source'       => 'puppet:///modules/accounts/shell/bashrc',
+      'groups' => ['root'],
+      'password' => 'hi',
+      'shell' => '/bin/true',
+      'home' => '/test/hunner',
+      'home_mode' => '0700',
+      'managevim' => true,
+      'bashrc_source' => 'puppet:///modules/accounts/shell/bashrc',
       'bash_profile_source' => 'puppet:///modules/accounts/shell/bash_profile',
-      'sshkeys'             => [
+      'sshkeys' => [
         "ssh-rsa #{test_key} vagrant",
         'from="myhost.example.com,192.168.1.1" '\
         "ssh-rsa #{test_key} vagrant2",
@@ -120,9 +120,9 @@ hd_locked_user = hd_defaults.merge(
 hd_custom_group_name = hd_defaults.merge(
   'accounts::user_list' => {
     'first.last' => {
-      'group'    => 'staff',
+      'group' => 'staff',
       'password' => '!!',
-      'home'     => '/test/first.last',
+      'home' => '/test/first.last',
     },
   },
 )
@@ -130,9 +130,9 @@ hd_custom_group_name = hd_defaults.merge(
 hd_create_group_false = hd_defaults.merge(
   'accounts::user_list' => {
     'grp_flse' => {
-      'group'        => 'newgrp_1',
+      'group' => 'newgrp_1',
       'create_group' => false,
-      'home'         => '/test/grp_flse',
+      'home' => '/test/grp_flse',
     },
   },
 )
@@ -140,9 +140,9 @@ hd_create_group_false = hd_defaults.merge(
 hd_create_group_true = hd_defaults.merge(
   'accounts::user_list' => {
     'grp_true' => {
-      'group'        => 'newgrp_2',
+      'group' => 'newgrp_2',
       'create_group' => true,
-      'home'         => '/test/grp_true',
+      'home' => '/test/grp_true',
     },
   },
 )
@@ -150,7 +150,7 @@ hd_create_group_true = hd_defaults.merge(
 hd_ignore_user_first_run = hd_defaults.merge(
   'accounts::user_list' => {
     'ignore_user' => {
-      'group'    => 'staff',
+      'group' => 'staff',
       'password' => 'foo',
     },
   },
@@ -159,8 +159,8 @@ hd_ignore_user_first_run = hd_defaults.merge(
 hd_ignore_user_second_run = hd_defaults.merge(
   'accounts::user_list' => {
     'ignore_user' => {
-      'group'                    => 'staff',
-      'password'                 => '',
+      'group' => 'staff',
+      'password' => '',
       'ignore_password_if_empty' => true,
     },
   },
@@ -169,7 +169,7 @@ hd_ignore_user_second_run = hd_defaults.merge(
 hd_no_ignore_user_first_run = hd_defaults.merge(
   'accounts::user_list' => {
     'no_ignore_user' => {
-      'group'    => 'staff',
+      'group' => 'staff',
       'password' => 'foo',
     },
   },
@@ -178,8 +178,8 @@ hd_no_ignore_user_first_run = hd_defaults.merge(
 hd_no_ignore_user_second_run = hd_defaults.merge(
   'accounts::user_list' => {
     'no_ignore_user' => {
-      'group'                    => 'staff',
-      'password'                 => '',
+      'group' => 'staff',
+      'password' => '',
       'ignore_password_if_empty' => false,
     },
   },
@@ -188,7 +188,7 @@ hd_no_ignore_user_second_run = hd_defaults.merge(
 hd_specd_user_first_run = hd_defaults.merge(
   'accounts::user_list' => {
     'specd_user' => {
-      'group'    => 'staff',
+      'group' => 'staff',
       'password' => 'foo',
     },
   },
@@ -197,8 +197,8 @@ hd_specd_user_first_run = hd_defaults.merge(
 hd_specd_user_second_run = hd_defaults.merge(
   'accounts::user_list' => {
     'specd_user' => {
-      'group'                    => 'staff',
-      'password'                 => 'bar',
+      'group' => 'staff',
+      'password' => 'bar',
       'ignore_password_if_empty' => true,
     },
   },
@@ -207,13 +207,13 @@ hd_specd_user_second_run = hd_defaults.merge(
 hd_user_with_duplicate_id = hd_defaults.merge(
   'accounts::user_list' => {
     'duplicate_user1' => {
-      'allowdupe'    => true,
-      'uid'          => '1234',
+      'allowdupe' => true,
+      'uid' => '1234',
       'sshkey_owner' => 'duplicate_user1',
     },
     'duplicate_user2' => {
-      'allowdupe'    => true,
-      'uid'          => 1234,
+      'allowdupe' => true,
+      'uid' => 1234,
       'sshkey_owner' => 'duplicate_user1',
     },
   },
@@ -226,32 +226,32 @@ hd_delete_accounts = {
   'accounts::group_list' => {
     'newgrp_1' => {},
     'newgrp_2' => {},
-    'staff'    => {},
+    'staff' => {},
   },
   'accounts::user_defaults' => {
-    'ensure'          => 'absent',
-    'create_group'    => true,
+    'ensure' => 'absent',
+    'create_group' => true,
     'purge_user_home' => true,
   },
   'accounts::user_list' => {
     'hunner' => {
-      'home'                => '/test/hunner',
-      'sshkey_custom_path'  => '/test/sshkeys/hunner',
-      'sshkey_owner'        => 'root',
-      'sshkey_group'        => 'root',
-      'sshkeys'             => [
+      'home' => '/test/hunner',
+      'sshkey_custom_path' => '/test/sshkeys/hunner',
+      'sshkey_owner' => 'root',
+      'sshkey_group' => 'root',
+      'sshkeys' => [
         "ssh-rsa #{test_key} vagrant",
         "ssh-rsa #{test_key} vagrant2",
       ],
     },
     'first.last' => {
-      'home'  => '/test/first.last',
+      'home' => '/test/first.last',
     },
     'grp_flse' => {
-      'home'  => '/test/grp_flse',
+      'home' => '/test/grp_flse',
     },
     'grp_true' => {
-      'home'  => '/test/grp_true',
+      'home' => '/test/grp_true',
     },
     'ignore_user' => {},
     'no_ignore_user' => {},
