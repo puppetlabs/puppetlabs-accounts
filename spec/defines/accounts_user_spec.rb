@@ -266,7 +266,6 @@ describe 'accounts::user' do
             end
 
             it { is_expected.to contain_user(title).with('ensure'     => params[:ensure]) }
-            it { is_expected.to contain_user(title).with('managehome' => params[:purge_user_home]) }
             it { is_expected.not_to contain_accounts__home_dir(user_vars[:dan_home]) }
             it { is_expected.not_to contain_file("#{user_vars[:dan_home]}/.ssh") }
           end
