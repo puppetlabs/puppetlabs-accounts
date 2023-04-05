@@ -2,11 +2,11 @@
 
 require 'spec_helper_acceptance'
 
-test_key = 'AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz'\
-           '4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKL'\
-           'v6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7P'\
-           'tixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJ'\
-           'nAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96h'\
+test_key = 'AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz' \
+           '4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKL' \
+           'v6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7P' \
+           'tixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJ' \
+           'nAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96h' \
            'rucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ=='
 
 hd_defaults = {
@@ -48,7 +48,7 @@ hd_accounts_define = hd_defaults.merge(
       'bash_profile_source' => 'puppet:///modules/accounts/shell/bash_profile',
       'sshkeys' => [
         "ssh-rsa #{test_key} vagrant",
-        'command="/bin/echo Hello",from="myhost.exapmle.com,192.168.1.1" '\
+        'command="/bin/echo Hello",from="myhost.exapmle.com,192.168.1.1" ' \
         "ssh-rsa #{test_key} vagrant2",
       ],
     },
@@ -71,7 +71,7 @@ hd_accounts_with_custom_key_path_define = hd_defaults.merge(
       'bash_profile_source' => 'puppet:///modules/accounts/shell/bash_profile',
       'sshkeys' => [
         "ssh-rsa #{test_key} vagrant",
-        'command="/bin/echo Hello",from="myhost.exapmle.com,192.168.1.1" '\
+        'command="/bin/echo Hello",from="myhost.exapmle.com,192.168.1.1" ' \
         "ssh-rsa #{test_key} vagrant2",
       ],
     },
@@ -102,7 +102,7 @@ hd_with_managevim = hd_defaults.merge(
       'bash_profile_source' => 'puppet:///modules/accounts/shell/bash_profile',
       'sshkeys' => [
         "ssh-rsa #{test_key} vagrant",
-        'from="myhost.example.com,192.168.1.1" '\
+        'from="myhost.example.com,192.168.1.1" ' \
         "ssh-rsa #{test_key} vagrant2",
       ],
     },
@@ -310,8 +310,8 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
   end
 
   describe 'main tests' do
-    it 'creates groups of matching names, assigns non-matching group, '\
-        'manages homedir, manages other properties, gives key, '\
+    it 'creates groups of matching names, assigns non-matching group, ' \
+        'manages homedir, manages other properties, gives key, ' \
         'makes dotfiles, managevim false' do
       set_hieradata(hd_accounts_define)
       apply_manifest(pp_manifest, catch_failures: true)
@@ -358,8 +358,8 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
   end
 
   describe 'warn for sshkeys without managehome' do
-    it 'creates groups of matching names, assigns non-matching group, '\
-        'manages homedir, manages other properties, gives key, '\
+    it 'creates groups of matching names, assigns non-matching group, ' \
+        'manages homedir, manages other properties, gives key, ' \
         'makes dotfiles' do
       set_hieradata(hd_without_managehome)
       apply_manifest(pp_manifest, catch_failures: true) do |r|
@@ -396,7 +396,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
   end
 
   describe 'create user with custom group name' do
-    it 'creates group of matching names, assigns non-matching group, '\
+    it 'creates group of matching names, assigns non-matching group, ' \
         'manages homedir' do
       set_hieradata(hd_custom_group_name)
       apply_manifest(pp_manifest, catch_failures: true)
@@ -435,7 +435,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
 
   # Solaris does not offer a means of testing the password
   describe 'ignore password if ignore set to true', unless: os[:family] == 'solaris' do
-    it 'creates group of matching names, assigns non-matching group,'\
+    it 'creates group of matching names, assigns non-matching group,' \
         'empty password, ignore true, ignores password' do
       set_hieradata(hd_ignore_user_first_run)
       apply_manifest(pp_manifest, catch_failures: true)
@@ -449,7 +449,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
 
   # Solaris does not offer a means of testing the password
   describe 'do not ignore password if ignore set to false', unless: os[:family] == 'solaris' do
-    it 'creates group of matching names, assigns non-matching group,'\
+    it 'creates group of matching names, assigns non-matching group,' \
         'empty password, ignore false, should not ignore password' do
       set_hieradata(hd_no_ignore_user_first_run)
       apply_manifest(pp_manifest, catch_failures: true)
@@ -462,7 +462,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
   end
 
   describe 'do not ignore password if set and ignore set to true', unless: os[:family] == 'solaris' do
-    it 'creates group of matching names, assigns non-matching group, '\
+    it 'creates group of matching names, assigns non-matching group, ' \
         'specify password, ignore, should not ignore password' do
       set_hieradata(hd_specd_user_first_run)
       apply_manifest(pp_manifest, catch_failures: true)
