@@ -74,12 +74,6 @@ RSpec/NestedGroups:
   Max: 5
 
 # Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/IfUnlessModifier:
-  Exclude:
-    - 'spec/spec_helper_acceptance_local.rb'
-
-# Offense count: 1
 Style/MixinUsage:
   Exclude:
     - 'spec/spec_helper.rb'
