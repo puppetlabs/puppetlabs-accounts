@@ -298,6 +298,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
       expect(group('staff')).to exist
       expect(group('staff')).to have_gid 1234
     end
+
     it 'changes existing group id' do
       set_hieradata(hd_group)
       apply_manifest(pp_manifest, catch_failures: true)

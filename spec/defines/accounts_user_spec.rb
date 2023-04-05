@@ -39,6 +39,7 @@ describe 'accounts::user' do
             is_expected.to contain_user(title).with('allowdupe'    => false)
             is_expected.to contain_user(title).with('managehome'   => true)
           end
+
           it do
             is_expected.to contain_group(title).with('ensure'      => 'present')
             is_expected.to contain_group(title).with('gid'         => nil)
@@ -78,11 +79,14 @@ describe 'accounts::user' do
             is_expected.to contain_group(params[:group]).with('ensure' => params[:ensure],
                                                               'gid' => params[:gid])
           end
+
           it { is_expected.to contain_group(params[:group]).that_comes_before("User[#{title}]") }
+
           it do
             is_expected.to contain_accounts__home_dir(params[:home]).with('user' => title,
                                                                           'mode' => params[:home_mode])
           end
+
           it { is_expected.to contain_accounts__key_management("#{title}_key_management").with('sshkeys' => params[:sshkeys]) }
           it { is_expected.to contain_ssh_authorized_key("#{params[:sshkey_owner]}_ssh-rsa_dan@example1.net_1e44b207704970cf4acb3470331b0e5c") }
           it { is_expected.to contain_ssh_authorized_key("#{params[:sshkey_owner]}_ssh-dss_dan key2_6e9b8958712502a8b31e1c283b6e6fce") }
