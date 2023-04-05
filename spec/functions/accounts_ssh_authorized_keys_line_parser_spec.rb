@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'accounts_ssh_authorized_keys_line_parser' do
   it {
-    expect(subject).not_to eq(nil)
+    expect(subject).not_to be_nil
   }
 
   it {
