@@ -236,7 +236,7 @@ define accounts::user (
       home       => $_home,
       managehome => $managehome,
     }
-    if $purge_user_home {
+    if $purge_user_home && !$managehome {
       file { $_home:
         ensure  => 'absent',
         recurse => true,
