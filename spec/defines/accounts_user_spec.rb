@@ -30,19 +30,19 @@ describe 'accounts::user' do
           let(:params) { {} }
 
           it do
-            is_expected.to contain_user(title).with('shell'        => '/bin/bash')
-            is_expected.to contain_user(title).with('home'         => user_vars[:dan_home])
-            is_expected.to contain_user(title).with('ensure'       => 'present')
-            is_expected.to contain_user(title).with('comment'      => title)
-            is_expected.to contain_user(title).with('gid'          => title)
-            is_expected.to contain_user(title).with('groups'       => [])
-            is_expected.to contain_user(title).with('allowdupe'    => false)
-            is_expected.to contain_user(title).with('managehome'   => true)
+            expect(subject).to contain_user(title).with('shell'        => '/bin/bash')
+            expect(subject).to contain_user(title).with('home'         => user_vars[:dan_home])
+            expect(subject).to contain_user(title).with('ensure'       => 'present')
+            expect(subject).to contain_user(title).with('comment'      => title)
+            expect(subject).to contain_user(title).with('gid'          => title)
+            expect(subject).to contain_user(title).with('groups'       => [])
+            expect(subject).to contain_user(title).with('allowdupe'    => false)
+            expect(subject).to contain_user(title).with('managehome'   => true)
           end
 
           it do
-            is_expected.to contain_group(title).with('ensure'      => 'present')
-            is_expected.to contain_group(title).with('gid'         => nil)
+            expect(subject).to contain_group(title).with('ensure'      => 'present')
+            expect(subject).to contain_group(title).with('gid'         => nil)
           end
         end
 
@@ -75,16 +75,16 @@ describe 'accounts::user' do
             it { is_expected.to contain_user(title).with(param.to_s => params[param]) }
           end
           it do
-            is_expected.to contain_user(title).with('gid' => params[:group])
-            is_expected.to contain_group(params[:group]).with('ensure' => params[:ensure],
-                                                              'gid' => params[:gid])
+            expect(subject).to contain_user(title).with('gid' => params[:group])
+            expect(subject).to contain_group(params[:group]).with('ensure' => params[:ensure],
+                                                                  'gid' => params[:gid])
           end
 
           it { is_expected.to contain_group(params[:group]).that_comes_before("User[#{title}]") }
 
           it do
-            is_expected.to contain_accounts__home_dir(params[:home]).with('user' => title,
-                                                                          'mode' => params[:home_mode])
+            expect(subject).to contain_accounts__home_dir(params[:home]).with('user' => title,
+                                                                              'mode' => params[:home_mode])
           end
 
           it { is_expected.to contain_accounts__key_management("#{title}_key_management").with('sshkeys' => params[:sshkeys]) }
