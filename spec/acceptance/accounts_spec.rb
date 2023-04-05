@@ -311,8 +311,8 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
 
   describe 'main tests' do
     it 'creates groups of matching names, assigns non-matching group, ' \
-        'manages homedir, manages other properties, gives key, ' \
-        'makes dotfiles, managevim false' do
+       'manages homedir, manages other properties, gives key, ' \
+       'makes dotfiles, managevim false' do
       set_hieradata(hd_accounts_define)
       apply_manifest(pp_manifest, catch_failures: true)
 
@@ -359,8 +359,8 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
 
   describe 'warn for sshkeys without managehome' do
     it 'creates groups of matching names, assigns non-matching group, ' \
-        'manages homedir, manages other properties, gives key, ' \
-        'makes dotfiles' do
+       'manages homedir, manages other properties, gives key, ' \
+       'makes dotfiles' do
       set_hieradata(hd_without_managehome)
       apply_manifest(pp_manifest, catch_failures: true) do |r|
         expect(r.stderr).to match(%r{Warning:.*ssh keys were passed for user hunner})
@@ -397,7 +397,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
 
   describe 'create user with custom group name' do
     it 'creates group of matching names, assigns non-matching group, ' \
-        'manages homedir' do
+       'manages homedir' do
       set_hieradata(hd_custom_group_name)
       apply_manifest(pp_manifest, catch_failures: true)
 
@@ -436,7 +436,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
   # Solaris does not offer a means of testing the password
   describe 'ignore password if ignore set to true', unless: os[:family] == 'solaris' do
     it 'creates group of matching names, assigns non-matching group,' \
-        'empty password, ignore true, ignores password' do
+       'empty password, ignore true, ignores password' do
       set_hieradata(hd_ignore_user_first_run)
       apply_manifest(pp_manifest, catch_failures: true)
       set_hieradata(hd_ignore_user_second_run)
@@ -450,7 +450,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
   # Solaris does not offer a means of testing the password
   describe 'do not ignore password if ignore set to false', unless: os[:family] == 'solaris' do
     it 'creates group of matching names, assigns non-matching group,' \
-        'empty password, ignore false, should not ignore password' do
+       'empty password, ignore false, should not ignore password' do
       set_hieradata(hd_no_ignore_user_first_run)
       apply_manifest(pp_manifest, catch_failures: true)
       set_hieradata(hd_no_ignore_user_second_run)
@@ -463,7 +463,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
 
   describe 'do not ignore password if set and ignore set to true', unless: os[:family] == 'solaris' do
     it 'creates group of matching names, assigns non-matching group, ' \
-        'specify password, ignore, should not ignore password' do
+       'specify password, ignore, should not ignore password' do
       set_hieradata(hd_specd_user_first_run)
       apply_manifest(pp_manifest, catch_failures: true)
       set_hieradata(hd_specd_user_second_run)
