@@ -11,27 +11,27 @@ test_key = 'AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz' \
 
 hd_defaults = {
   'accounts::user_defaults' => {
-    'home_mode' => '0700',
-  },
+    'home_mode' => '0700'
+  }
 }
 
 hd_group = {
   'accounts::group_defaults' => {
     'ensure' => 'present',
-    'system' => true,
+    'system' => true
   },
   'accounts::group_list' => {
     'staff' => {
-      'gid' => 1234,
-    },
-  },
+      'gid' => 1234
+    }
+  }
 }
 
 hd_group_change = hd_group.merge(
   'accounts::group_list' => {
     'staff' => {
-      'gid' => 1235,
-    },
+      'gid' => 1235
+    }
   },
 )
 
@@ -50,8 +50,8 @@ hd_accounts_define = hd_defaults.merge(
         "ssh-rsa #{test_key} vagrant",
         'command="/bin/echo Hello",from="myhost.exapmle.com,192.168.1.1" ' \
         "ssh-rsa #{test_key} vagrant2",
-      ],
-    },
+      ]
+    }
   },
 )
 
@@ -73,8 +73,8 @@ hd_accounts_with_custom_key_path_define = hd_defaults.merge(
         "ssh-rsa #{test_key} vagrant",
         'command="/bin/echo Hello",from="myhost.exapmle.com,192.168.1.1" ' \
         "ssh-rsa #{test_key} vagrant2",
-      ],
-    },
+      ]
+    }
   },
 )
 
@@ -84,8 +84,8 @@ hd_without_managehome = hd_defaults.merge(
       'managehome' => false,
       'sshkeys' => [
         "ssh-rsa #{test_key} vagrant",
-      ],
-    },
+      ]
+    }
   },
 )
 
@@ -104,16 +104,16 @@ hd_with_managevim = hd_defaults.merge(
         "ssh-rsa #{test_key} vagrant",
         'from="myhost.example.com,192.168.1.1" ' \
         "ssh-rsa #{test_key} vagrant2",
-      ],
-    },
+      ]
+    }
   },
 )
 
 hd_locked_user = hd_defaults.merge(
   'accounts::user_list' => {
     'hunner' => {
-      'locked' => true,
-    },
+      'locked' => true
+    }
   },
 )
 
@@ -122,8 +122,8 @@ hd_custom_group_name = hd_defaults.merge(
     'first.last' => {
       'group' => 'staff',
       'password' => '!!',
-      'home' => '/test/first.last',
-    },
+      'home' => '/test/first.last'
+    }
   },
 )
 
@@ -132,8 +132,8 @@ hd_create_group_false = hd_defaults.merge(
     'grp_flse' => {
       'group' => 'newgrp_1',
       'create_group' => false,
-      'home' => '/test/grp_flse',
-    },
+      'home' => '/test/grp_flse'
+    }
   },
 )
 
@@ -142,8 +142,8 @@ hd_create_group_true = hd_defaults.merge(
     'grp_true' => {
       'group' => 'newgrp_2',
       'create_group' => true,
-      'home' => '/test/grp_true',
-    },
+      'home' => '/test/grp_true'
+    }
   },
 )
 
@@ -151,8 +151,8 @@ hd_ignore_user_first_run = hd_defaults.merge(
   'accounts::user_list' => {
     'ignore_user' => {
       'group' => 'staff',
-      'password' => 'foo',
-    },
+      'password' => 'foo'
+    }
   },
 )
 
@@ -161,8 +161,8 @@ hd_ignore_user_second_run = hd_defaults.merge(
     'ignore_user' => {
       'group' => 'staff',
       'password' => '',
-      'ignore_password_if_empty' => true,
-    },
+      'ignore_password_if_empty' => true
+    }
   },
 )
 
@@ -170,8 +170,8 @@ hd_no_ignore_user_first_run = hd_defaults.merge(
   'accounts::user_list' => {
     'no_ignore_user' => {
       'group' => 'staff',
-      'password' => 'foo',
-    },
+      'password' => 'foo'
+    }
   },
 )
 
@@ -180,8 +180,8 @@ hd_no_ignore_user_second_run = hd_defaults.merge(
     'no_ignore_user' => {
       'group' => 'staff',
       'password' => '',
-      'ignore_password_if_empty' => false,
-    },
+      'ignore_password_if_empty' => false
+    }
   },
 )
 
@@ -189,8 +189,8 @@ hd_specd_user_first_run = hd_defaults.merge(
   'accounts::user_list' => {
     'specd_user' => {
       'group' => 'staff',
-      'password' => 'foo',
-    },
+      'password' => 'foo'
+    }
   },
 )
 
@@ -199,8 +199,8 @@ hd_specd_user_second_run = hd_defaults.merge(
     'specd_user' => {
       'group' => 'staff',
       'password' => 'bar',
-      'ignore_password_if_empty' => true,
-    },
+      'ignore_password_if_empty' => true
+    }
   },
 )
 
@@ -209,29 +209,29 @@ hd_user_with_duplicate_id = hd_defaults.merge(
     'duplicate_user1' => {
       'allowdupe' => true,
       'uid' => '1234',
-      'sshkey_owner' => 'duplicate_user1',
+      'sshkey_owner' => 'duplicate_user1'
     },
     'duplicate_user2' => {
       'allowdupe' => true,
       'uid' => 1234,
-      'sshkey_owner' => 'duplicate_user1',
-    },
+      'sshkey_owner' => 'duplicate_user1'
+    }
   },
 )
 
 hd_delete_accounts = {
   'accounts::group_defaults' => {
-    'ensure' => 'absent',
+    'ensure' => 'absent'
   },
   'accounts::group_list' => {
     'newgrp_1' => {},
     'newgrp_2' => {},
-    'staff' => {},
+    'staff' => {}
   },
   'accounts::user_defaults' => {
     'ensure' => 'absent',
     'create_group' => true,
-    'purge_user_home' => true,
+    'purge_user_home' => true
   },
   'accounts::user_list' => {
     'hunner' => {
@@ -242,23 +242,23 @@ hd_delete_accounts = {
       'sshkeys' => [
         "ssh-rsa #{test_key} vagrant",
         "ssh-rsa #{test_key} vagrant2",
-      ],
+      ]
     },
     'first.last' => {
-      'home' => '/test/first.last',
+      'home' => '/test/first.last'
     },
     'grp_flse' => {
-      'home' => '/test/grp_flse',
+      'home' => '/test/grp_flse'
     },
     'grp_true' => {
-      'home' => '/test/grp_true',
+      'home' => '/test/grp_true'
     },
     'ignore_user' => {},
     'no_ignore_user' => {},
     'specd_user' => {},
     'duplicate_user1' => {},
-    'duplicate_user2' => {},
-  },
+    'duplicate_user2' => {}
+  }
 }
 
 pp_manifest = <<-PUPPETCODE

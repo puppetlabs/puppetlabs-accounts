@@ -66,7 +66,7 @@ describe 'accounts::user' do
               sshkeys: ['ssh-rsa AAAAB3Nza...LiPk== dan@example1.net',
                         'permitopen="192.0.2.1:80",permitopen="192.0.2.2:25" ssh-dss AAAAB5...21S== dan key2',
                         'command="/bin/echo Hello World",from="myhost.exapmle.com,192.168.1.1" ecdsa-sha2-nistp521 test_key vagrant2'],
-              uid: 123,
+              uid: 123
             }
           end
 
