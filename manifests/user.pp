@@ -236,14 +236,13 @@ define accounts::user (
       home       => $_home,
       managehome => $managehome,
     }
-    if $purge_user_home && !$managehome {
+    if $purge_user_home and !$managehome {
       file { $_home:
         ensure  => 'absent',
         recurse => true,
         force   => true,
       }
     }
-    # End workaround.
     User[$name] -> Group <| ensure == 'absent' |>
     if $create_group {
       # Only remove the group if it is the same as user name as it may be shared.
