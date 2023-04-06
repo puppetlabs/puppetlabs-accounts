@@ -120,9 +120,7 @@ end
 
 RSpec::Matchers.define :contain_password do |password|
   match do |user|
-    if password == user.encrypted_password
-      return true
-    end
+    return true if password == user.encrypted_password
   end
   false
 end

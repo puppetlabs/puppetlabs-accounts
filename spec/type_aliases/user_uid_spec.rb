@@ -23,7 +23,7 @@ describe 'Accounts::User::Uid' do
       '4294967199',
       '4294967289',
       '4294967295',
-      2**32 - 1,
+      (2**32) - 1,
     ].each do |value|
       describe value.inspect do
         it { is_expected.to allow_value(value) }
