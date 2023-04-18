@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 
-- \(CONT-850\) Puppet 8 compatibility [\#441](https://github.com/puppetlabs/puppetlabs-accounts/pull/441) ([LukasAud](https://github.com/LukasAud))
+- \(CONT-850\) Puppet 8 support / Drop Puppet 6 [\#441](https://github.com/puppetlabs/puppetlabs-accounts/pull/441) ([LukasAud](https://github.com/LukasAud))
 
 ## [v7.3.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/v7.3.1) (2023-01-27)
 
