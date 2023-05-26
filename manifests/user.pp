@@ -234,21 +234,15 @@ define accounts::user (
       ensure     => 'absent',
       forcelocal => $forcelocal,
       home       => $_home,
-      managehome => false,  # Workaround for PUP-9706; see below.
+      managehome => $managehome,
     }
-    # The core `user` resource will fail when removing users on Solaris if
-    # `ensure => 'absent', managhome => true` and the homedir does not exist.
-    # We therefore force `managehome => false` when `ensure => 'absent'`, and
-    # remove the homedir as a separate operation.
-    # See https://tickets.puppetlabs.com/browse/PUP-9706
-    if $purge_user_home {
+    if $purge_user_home and !$managehome {
       file { $_home:
         ensure  => 'absent',
         recurse => true,
         force   => true,
       }
     }
-    # End workaround.
     User[$name] -> Group <| ensure == 'absent' |>
     if $create_group {
       # Only remove the group if it is the same as user name as it may be shared.
