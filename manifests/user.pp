@@ -281,10 +281,6 @@ define accounts::user (
         }
       )
     }
-    $_password = (($password =~ String and $password == '') and $ignore_password_if_empty) ? {
-      true    => undef,
-      default => $password,
-    }
     $_purge_sshkeys = ($purge_sshkeys and $sshkey_custom_path != undef) ? {
       true => [String($sshkey_custom_path)],
       default => $purge_sshkeys,
@@ -305,7 +301,10 @@ define accounts::user (
       iterations       => $iterations,
       managehome       => $managehome,
       membership       => $membership,
-      password         => $_password,
+      password         => (($password =~ String and $password == '') and $ignore_password_if_empty) ? {
+        true    => undef,
+        default => Deferred('user_password', [$password]),
+      },
       password_max_age => $password_max_age,
       purge_ssh_keys   => $_purge_sshkeys,
       salt             => $salt,
