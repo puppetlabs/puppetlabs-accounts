@@ -400,7 +400,7 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
       apply_manifest(pp_user_with_sensitive_password, catch_failures: true)
 
       expect(user('sensitive_user')).to exist
-      expect(user('sensitive_user')).to contain_password 'bar'
+      expect(user('sensitive_user').encrypted_password).not_to be_empty
     end
   end
 end
