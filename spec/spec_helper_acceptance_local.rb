@@ -93,7 +93,7 @@ end
 def clear_temp_hieradata
   if @temp_hieradata_dirs && !@temp_hieradata_dirs.empty?
     @temp_hieradata_dirs.each do |data_dir|
-      if File.exists?(data_dir)
+      if File.exist?(data_dir)
         FileUtils.rm_r(data_dir)
       end
     end
@@ -102,6 +102,9 @@ end
 
 RSpec.configure do |c|
   c.before(:all) do
+    # Set sticky bit for docker provisioner
+    run_shell('chmod +t /tmp/') if ENV['TARGET_HOST'].match(/^localhost:/)
+
     @temp_hieradata_dirs = @temp_hieradata_dirs || []
     @hiera_datadir = hiera_datadir
   end
