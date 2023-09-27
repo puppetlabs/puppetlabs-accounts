@@ -146,6 +146,6 @@ accounts::user { 'gerrard':
 
 ## 開発
 
-本モジュールで問題が発生した場合、またはリクエストしたい機能がある場合、[チケットを送信](https://tickets.puppetlabs.com/browse/MODULES/)してください。
+本モジュールで問題が発生した場合、またはリクエストしたい機能がある場合、[チケットを送信](https://github.com/puppetlabs/puppetlabs-accounts/issues)してください。
 
 本モジュールの導入時に問題がある場合は、[サポートにお問い合わせ](http://puppetlabs.com/services/customer-support)ください。
