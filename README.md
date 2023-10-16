@@ -217,7 +217,7 @@ Allows strings up to 32 characters long that begin with a lower case letter or u
 
 #### `Accounts::User::PasswordMaxAge`
 
-Maximum number of days a password may be used before it must be changed. Allows any integer from `0` to `99999`. See [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_max_age) resource.
+Maximum number of days a password may be used before it must be changed. Allows any integer from `-1` to `99999`. See [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_max_age) resource.
 
 #### `Accounts::User::Resource`
 
