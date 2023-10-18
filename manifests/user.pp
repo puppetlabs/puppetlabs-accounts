@@ -126,7 +126,7 @@
 #
 # @param password_max_age
 #   Maximum number of days a password may be used before it must be changed.
-#   Allows any integer from `0` to `99999`. See the
+#   Allows any integer from `-1` to `99999`. See the
 #   [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_max_age)
 #   resource.
 #
