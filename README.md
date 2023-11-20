@@ -12,7 +12,8 @@
 4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
         * [Data Types](#data-types)
 5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
+6. [License](#license)
+7. [Development - Guide for contributing to the module](#development)
 
 
 ## Description
@@ -236,6 +237,10 @@ For an extensive list of supported operating systems, see [metadata.json](https:
 The accounts module is designed to take the place of the pe\_accounts module that shipped with PE versions 2015.2 and earlier. Some of the changes include the removal of the base class, improving the validation, and allowing more flexibility regarding which files should or should not be managed in a user's home directory.
 
 For example, the .bashrc and .bash\_profile files are not managed by default but allow custom content to be passed in using the `bashrc_content` and `bash_profile_content` parameters. The content for these two files as managed by pe\_accounts can continue to be used by passing `bashrc_content => file('accounts/shell/bashrc')` and `bash_profile_content => file('accounts/shell/bash_profile')` to the `accounts::user` defined type.
+
+## License
+
+This codebase is licensed under the Apache2.0 licensing, however due to the nature of the codebase the open source dependencies may also use a combination of [AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html), [BSD-2](https://opensource.org/license/bsd-2-claus), [BSD-3](https://opensource.org/license/bsd-3-claus), [GPL2.0](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html), [LGPL](https://opensource.org/license/lgpl-3-0/), [MIT](https://opensource.org/license/mit/) and [MPL](https://opensource.org/license/mpl-2-0/) Licensing.
 
 ## Development
 
