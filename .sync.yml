@@ -6,6 +6,8 @@
   delete: true
 appveyor.yml:
   delete: true
+.rubocop.yml:
+  include_todos: true
 
 Gemfile:
   optional:
