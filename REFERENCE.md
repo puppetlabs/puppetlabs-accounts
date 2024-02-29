@@ -26,6 +26,7 @@ homedir, .ssh/authorized_keys files, and directories.
 
 * [`accounts_ssh_authorized_keys_line_parser`](#accounts_ssh_authorized_keys_line_parser): Parse an ssh authorized_keys line string into an array using its expected pattern by using a combination of regex matching and extracting the
 * [`accounts_ssh_options_parser`](#accounts_ssh_options_parser): Parse an ssh authorized_keys option string into an array using its expected pattern which matches a crazy regex slightly modified from shell 
+* [`user_password`](#user_password)
 
 ### Data types
 
@@ -619,6 +620,24 @@ Data type: `String`
 
 ssh authorized_keys option string
 
+### <a name="user_password"></a>`user_password`
+
+Type: Ruby 4.x API
+
+The user_password function.
+
+#### `user_password(Variant[Sensitive[String], String] $password)`
+
+The user_password function.
+
+Returns: `Variant[Sensitive[String], String]`
+
+##### `password`
+
+Data type: `Variant[Sensitive[String], String]`
+
+
+
 ## Data types
 
 ### <a name="Accounts--Group--Hash"></a>`Accounts::Group::Hash`
@@ -697,7 +716,7 @@ Max password age.
 On most systems, the default value of 99999 is about 274 years, which
 effectively disables password aging.
 
-Alias of `Integer[1, 99999]`
+Alias of `Integer[-1, 99999]`
 
 ### <a name="Accounts--User--Resource"></a>`Accounts::User::Resource`
 
@@ -722,7 +741,6 @@ Struct[{ Optional[ensure]                   => Enum['absent','present'],
     Optional[gid]                      => Accounts::User::Uid,
     Optional[group]                    => Accounts::User::Name,
     Optional[groups]                   => Array[Accounts::User::Name],
-    Optional[name]                     => Accounts::User::Name,
     Optional[home]                     => Stdlib::Unixpath,
     Optional[home_mode]                => Stdlib::Filemode,
     Optional[ignore_password_if_empty] => Boolean,
@@ -756,17 +774,17 @@ Alias of
 
 ```puppet
 Variant[Integer[0,4294967295], Pattern[/\A0\z/,
-          /\A[1-3]\d{0,9}\z/,
-          /\A[4-9]\d{0,8}\z/,
-          /\A4[0-1]\d{8}\z/,
-          /\A42[0-8]\d{7}\z/,
-          /\A429[0-3]\d{6}\z/,
-          /\A4294[0-8]\d{5}\z/,
-          /\A42949[0-5]\d{4}\z/,
-          /\A429496[0-6]\d{3}\z/,
-          /\A4294967[0-1]\d{2}\z/,
-          /\A42949672[0-8]\d\z/,
-          /\A429496729[0-5]\z/,
+    /\A[1-3]\d{0,9}\z/,
+    /\A[4-9]\d{0,8}\z/,
+    /\A4[0-1]\d{8}\z/,
+    /\A42[0-8]\d{7}\z/,
+    /\A429[0-3]\d{6}\z/,
+    /\A4294[0-8]\d{5}\z/,
+    /\A42949[0-5]\d{4}\z/,
+    /\A429496[0-6]\d{3}\z/,
+    /\A4294967[0-1]\d{2}\z/,
+    /\A42949672[0-8]\d\z/,
+    /\A429496729[0-5]\z/,
   ]]
 ```
 
