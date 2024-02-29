@@ -18,7 +18,6 @@ type Accounts::User::Resource = Struct[
     Optional[gid]                      => Accounts::User::Uid,
     Optional[group]                    => Accounts::User::Name,
     Optional[groups]                   => Array[Accounts::User::Name],
-    Optional[name]                     => Accounts::User::Name,
     Optional[home]                     => Stdlib::Unixpath,
     Optional[home_mode]                => Stdlib::Filemode,
     Optional[ignore_password_if_empty] => Boolean,
