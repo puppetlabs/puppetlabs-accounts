@@ -27,7 +27,6 @@ type Accounts::User::Resource = Struct[
     Optional[managehome]               => Boolean,
     Optional[managevim]                => Boolean,
     Optional[membership]               => Enum['inclusive','minimum'],
-    Optional[name]                     => Accounts::User::Name,
     Optional[password]                 => String,
     Optional[password_max_age]         => Accounts::User::PasswordMaxAge,
     Optional[purge_sshkeys]            => Boolean,
