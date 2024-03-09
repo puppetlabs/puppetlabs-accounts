@@ -26,7 +26,7 @@ This module works on many UNIX/Linux operating systems. It does not support conf
 
 ### Beginning with accounts
 
-Declare the `accounts` class in a Puppet-managed node's manifest:
+Declare the `accounts::user` defined type for each local user you want to manage:
 
 ~~~puppet
 node default {
@@ -35,7 +35,7 @@ node default {
 }
 ~~~
 
-The above example creates accounts, home directories, and groups for Dan and Morgan.
+The above example creates accounts, home directories, and groups for `dan` and `morgan` in the default node group.
 
 ## Usage
 
