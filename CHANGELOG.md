@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v8.1.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/v8.1.1) - 2024-03-26
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.1.0...v8.1.1)
+
+### Fixed
+
+- Accounts::User::Resource: Fix duplicate key `name` [#477](https://github.com/puppetlabs/puppetlabs-accounts/pull/477) ([Ramesh7](https://github.com/Ramesh7))
+
 ## [v8.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v8.1.0) - 2023-06-19
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.0.0...v8.1.0)
@@ -159,12 +167,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v5.0.0...v6.0.0)
 
+### Changed
+- pdksync - FM-8499 - remove ubuntu14 support [#277](https://github.com/puppetlabs/puppetlabs-accounts/pull/277) ([lionce](https://github.com/lionce))
+
 ### Added
 
 - (FM-8671) - Support added for CentOS 8 [#278](https://github.com/puppetlabs/puppetlabs-accounts/pull/278) ([david22swan](https://github.com/david22swan))
-
-### Changed
-- pdksync - FM-8499 - remove ubuntu14 support [#277](https://github.com/puppetlabs/puppetlabs-accounts/pull/277) ([lionce](https://github.com/lionce))
 
 ### Fixed
 
@@ -175,12 +183,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v4.2.0...v5.0.0)
 
+### Changed
+- (MODULES-9712) Move data into hiera. [#241](https://github.com/puppetlabs/puppetlabs-accounts/pull/241) ([pillarsdotnet](https://github.com/pillarsdotnet))
+
 ### Added
 
 - (FM-8392) Add debian 10 to provision.yaml [#251](https://github.com/puppetlabs/puppetlabs-accounts/pull/251) ([ThoughtCrhyme](https://github.com/ThoughtCrhyme))
-
-### Changed
-- (MODULES-9712) Move data into hiera. [#241](https://github.com/puppetlabs/puppetlabs-accounts/pull/241) ([pillarsdotnet](https://github.com/pillarsdotnet))
 
 ### Fixed
 
@@ -260,6 +268,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/2.0.0...3.0.0)
 
+### Changed
+- Adding ability to specify custom ssh_key location [#149](https://github.com/puppetlabs/puppetlabs-accounts/pull/149) ([ggeldenhuis](https://github.com/ggeldenhuis))
+
 ### Added
 
 - (MODULES-7687) - Added Darwin compatibility [#167](https://github.com/puppetlabs/puppetlabs-accounts/pull/167) ([eimlav](https://github.com/eimlav))
@@ -268,9 +279,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - (FM-7289) - Added Puppet 4 data types to parameters [#155](https://github.com/puppetlabs/puppetlabs-accounts/pull/155) ([eimlav](https://github.com/eimlav))
 - (MODULES-7671) - Support spaces in ssh key options [#153](https://github.com/puppetlabs/puppetlabs-accounts/pull/153) ([dleske](https://github.com/dleske))
 - (FM-7254) - Addition of support for Ubuntu 18.04 [#150](https://github.com/puppetlabs/puppetlabs-accounts/pull/150) ([david22swan](https://github.com/david22swan))
-
-### Changed
-- Adding ability to specify custom ssh_key location [#149](https://github.com/puppetlabs/puppetlabs-accounts/pull/149) ([ggeldenhuis](https://github.com/ggeldenhuis))
 
 ### Fixed
 
@@ -281,51 +289,27 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/1.3.0...2.0.0)
 
+### Changed
+- [FM-6969] Removal of unsupported OS from accounts [#143](https://github.com/puppetlabs/puppetlabs-accounts/pull/143) ([david22swan](https://github.com/david22swan))
+
 ### Added
 
 - Add expiry property to user resource. [#145](https://github.com/puppetlabs/puppetlabs-accounts/pull/145) ([jonnytdevops](https://github.com/jonnytdevops))
 - (FM-7052) - Addition of Debian 9 support to accounts [#144](https://github.com/puppetlabs/puppetlabs-accounts/pull/144) ([david22swan](https://github.com/david22swan))
-
-### Changed
-- [FM-6969] Removal of unsupported OS from accounts [#143](https://github.com/puppetlabs/puppetlabs-accounts/pull/143) ([david22swan](https://github.com/david22swan))
-
-### Other
-
-- pdksync - Update using 1.5.0 [#142](https://github.com/puppetlabs/puppetlabs-accounts/pull/142) ([HelenCampbell](https://github.com/HelenCampbell))
-- pdksync - Update using 1.5.0 [#136](https://github.com/puppetlabs/puppetlabs-accounts/pull/136) ([HelenCampbell](https://github.com/HelenCampbell))
-- (MODULES-7153) - Unmanage gitlab-ci.yml [#135](https://github.com/puppetlabs/puppetlabs-accounts/pull/135) ([pmcmaw](https://github.com/pmcmaw))
-- (MODULES-7023) - Removing duplication in .sync.yml [#134](https://github.com/puppetlabs/puppetlabs-accounts/pull/134) ([pmcmaw](https://github.com/pmcmaw))
-- (maint) - PDK Update Accounts [#131](https://github.com/puppetlabs/puppetlabs-accounts/pull/131) ([pmcmaw](https://github.com/pmcmaw))
 - Allow sshkeys to be reused for multiple accounts [#130](https://github.com/puppetlabs/puppetlabs-accounts/pull/130) ([jcharaoui](https://github.com/jcharaoui))
-- (MODULES-6607) - Update docs to reflect correct default value for ignore_password_if_empty. [#129](https://github.com/puppetlabs/puppetlabs-accounts/pull/129) ([pmcmaw](https://github.com/pmcmaw))
-- Release merge back 1.3.0  [#127](https://github.com/puppetlabs/puppetlabs-accounts/pull/127) ([pmcmaw](https://github.com/pmcmaw))
 - Allow mode for homedir to be undef [#126](https://github.com/puppetlabs/puppetlabs-accounts/pull/126) ([arjenz](https://github.com/arjenz))
 
 ## [1.3.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/1.3.0) - 2018-01-22
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/1.2.1...1.3.0)
 
-### Other
+### Fixed
 
-- Release Prep 1.3.0 [#125](https://github.com/puppetlabs/puppetlabs-accounts/pull/125) ([pmcmaw](https://github.com/pmcmaw))
-- (MODULES-6328) - PDK Convert accounts [#124](https://github.com/puppetlabs/puppetlabs-accounts/pull/124) ([pmcmaw](https://github.com/pmcmaw))
 - Don't create accounts::home_dir resources [#123](https://github.com/puppetlabs/puppetlabs-accounts/pull/123) ([arjenz](https://github.com/arjenz))
-- (maint) modulesync 65530a4 Update Travis [#122](https://github.com/puppetlabs/puppetlabs-accounts/pull/122) ([michaeltlombardi](https://github.com/michaeltlombardi))
-- (maint) - modulesync 384f4c1 [#121](https://github.com/puppetlabs/puppetlabs-accounts/pull/121) ([tphoney](https://github.com/tphoney))
-- (FM-6634) - Addressing Rubocop errors [#120](https://github.com/puppetlabs/puppetlabs-accounts/pull/120) ([pmcmaw](https://github.com/pmcmaw))
-- Release merge back 1.2.1 [#118](https://github.com/puppetlabs/puppetlabs-accounts/pull/118) ([pmcmaw](https://github.com/pmcmaw))
 
 ## [1.2.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/1.2.1) - 2017-11-20
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/1.2.0...1.2.1)
-
-### Other
-
-- (maint) - modulesync 1d81b6a [#117](https://github.com/puppetlabs/puppetlabs-accounts/pull/117) ([pmcmaw](https://github.com/pmcmaw))
-- (maint) fix up the .sync.yml [#116](https://github.com/puppetlabs/puppetlabs-accounts/pull/116) ([tphoney](https://github.com/tphoney))
-- Release prep for 1.2.1 [#115](https://github.com/puppetlabs/puppetlabs-accounts/pull/115) ([willmeek](https://github.com/willmeek))
-- Cleanup ruby code via rubocop [#114](https://github.com/puppetlabs/puppetlabs-accounts/pull/114) ([willmeek](https://github.com/willmeek))
-- Release mergeback 1.2.0 [#113](https://github.com/puppetlabs/puppetlabs-accounts/pull/113) ([pmcmaw](https://github.com/pmcmaw))
 
 ## [1.2.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/1.2.0) - 2017-11-14
 
@@ -334,63 +318,26 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Added
 
 - Support ssh authorized key options [#110](https://github.com/puppetlabs/puppetlabs-accounts/pull/110) ([rgevaert](https://github.com/rgevaert))
-
-### Other
-
-- minor fixups in README [#112](https://github.com/puppetlabs/puppetlabs-accounts/pull/112) ([jbondpdx](https://github.com/jbondpdx))
-- Further 1.2.0 Release Prep [#111](https://github.com/puppetlabs/puppetlabs-accounts/pull/111) ([willmeek](https://github.com/willmeek))
-- MODULES-5600 Add support for .forward [#109](https://github.com/puppetlabs/puppetlabs-accounts/pull/109) ([rgevaert](https://github.com/rgevaert))
-- 1.2.0 Release Prep [#108](https://github.com/puppetlabs/puppetlabs-accounts/pull/108) ([willmeek](https://github.com/willmeek))
-- Update group acceptance tests for SLES and Solaris [#106](https://github.com/puppetlabs/puppetlabs-accounts/pull/106) ([willmeek](https://github.com/willmeek))
-- Skips password check test on Solaris [#105](https://github.com/puppetlabs/puppetlabs-accounts/pull/105) ([willmeek](https://github.com/willmeek))
-- (MODULES-5778) Set operatingsystem fact in specs [#104](https://github.com/puppetlabs/puppetlabs-accounts/pull/104) ([rodjek](https://github.com/rodjek))
-- Group dependency tests [#103](https://github.com/puppetlabs/puppetlabs-accounts/pull/103) ([willmeek](https://github.com/willmeek))
-- Empty password test [#102](https://github.com/puppetlabs/puppetlabs-accounts/pull/102) ([willmeek](https://github.com/willmeek))
-- remove whitespace from EOL [#100](https://github.com/puppetlabs/puppetlabs-accounts/pull/100) ([tphoney](https://github.com/tphoney))
-- (maint) modulesync 892c4cf [#98](https://github.com/puppetlabs/puppetlabs-accounts/pull/98) ([HAIL9000](https://github.com/HAIL9000))
-- (maint) - Removing Ubuntu 12.04 [#96](https://github.com/puppetlabs/puppetlabs-accounts/pull/96) ([pmcmaw](https://github.com/pmcmaw))
-- (maint) modulesync 915cde70e20 [#94](https://github.com/puppetlabs/puppetlabs-accounts/pull/94) ([glennsarti](https://github.com/glennsarti))
-- (MODULES-5187) mysnc puppet 5 and ruby 2.4 [#92](https://github.com/puppetlabs/puppetlabs-accounts/pull/92) ([eputnam](https://github.com/eputnam))
-- (MODULES-5199) Prep for puppet 5 [#90](https://github.com/puppetlabs/puppetlabs-accounts/pull/90) ([hunner](https://github.com/hunner))
-- Update Puppet version compatibility [#87](https://github.com/puppetlabs/puppetlabs-accounts/pull/87) ([HelenCampbell](https://github.com/HelenCampbell))
 - Group name [#85](https://github.com/puppetlabs/puppetlabs-accounts/pull/85) ([wpowell-ossg](https://github.com/wpowell-ossg))
-- [msync] 786266 Implement puppet-module-gems, a45803 Remove metadata.json from locales config [#84](https://github.com/puppetlabs/puppetlabs-accounts/pull/84) ([wilson208](https://github.com/wilson208))
-- [MODULES-4528] Replace Puppet.version.to_f version comparison from spec_helper.rb [#83](https://github.com/puppetlabs/puppetlabs-accounts/pull/83) ([wilson208](https://github.com/wilson208))
 - added option to set system user or group [#82](https://github.com/puppetlabs/puppetlabs-accounts/pull/82) ([netman2k](https://github.com/netman2k))
 - Added the option to create or not a group with the user name [#81](https://github.com/puppetlabs/puppetlabs-accounts/pull/81) ([jsanvall](https://github.com/jsanvall))
-- [MODULES-4224] Implement beaker-module_install_helper [#79](https://github.com/puppetlabs/puppetlabs-accounts/pull/79) ([wilson208](https://github.com/wilson208))
-- (MODULES-4098) Sync the rest of the files [#78](https://github.com/puppetlabs/puppetlabs-accounts/pull/78) ([hunner](https://github.com/hunner))
-- (FM-5972) gettext and spec.opts [#77](https://github.com/puppetlabs/puppetlabs-accounts/pull/77) ([eputnam](https://github.com/eputnam))
-- (MODULES-3631) msync Gemfile for 1.9 frozen strings [#76](https://github.com/puppetlabs/puppetlabs-accounts/pull/76) ([hunner](https://github.com/hunner))
-- Revert "Allow duplicate keys to be associated with multiple accounts." [#75](https://github.com/puppetlabs/puppetlabs-accounts/pull/75) ([eputnam](https://github.com/eputnam))
 - Allow the use of the `source` param for bash files. [#74](https://github.com/puppetlabs/puppetlabs-accounts/pull/74) ([MG2R](https://github.com/MG2R))
-- (MODULES-3983) Update parallel_tests for ruby 2.0.0 [#72](https://github.com/puppetlabs/puppetlabs-accounts/pull/72) ([pmcmaw](https://github.com/pmcmaw))
-- (MODULES-3704) Update gemfile template like windows [#71](https://github.com/puppetlabs/puppetlabs-accounts/pull/71) ([hunner](https://github.com/hunner))
-- Update modulesync_config [51f469d] [#70](https://github.com/puppetlabs/puppetlabs-accounts/pull/70) ([DavidS](https://github.com/DavidS))
-- Release mergeback [#69](https://github.com/puppetlabs/puppetlabs-accounts/pull/69) ([HelenCampbell](https://github.com/HelenCampbell))
-- the simple usage example has some erros [#63](https://github.com/puppetlabs/puppetlabs-accounts/pull/63) ([roock](https://github.com/roock))
 - Allow duplicate keys to be associated with multiple accounts. [#54](https://github.com/puppetlabs/puppetlabs-accounts/pull/54) ([ian-d](https://github.com/ian-d))
+
+### Fixed
+
+- Skips password check test on Solaris [#105](https://github.com/puppetlabs/puppetlabs-accounts/pull/105) ([willmeek](https://github.com/willmeek))
+- (MODULES-5778) Set operatingsystem fact in specs [#104](https://github.com/puppetlabs/puppetlabs-accounts/pull/104) ([rodjek](https://github.com/rodjek))
+- Update Puppet version compatibility [#87](https://github.com/puppetlabs/puppetlabs-accounts/pull/87) ([HelenCampbell](https://github.com/HelenCampbell))
+- Revert "Allow duplicate keys to be associated with multiple accounts." [#75](https://github.com/puppetlabs/puppetlabs-accounts/pull/75) ([eputnam](https://github.com/eputnam))
 
 ## [1.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/1.1.0) - 2016-09-20
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/1.0.0...1.1.0)
 
-### Other
+### Added
 
-- 1.1.0 Release Prep [#68](https://github.com/puppetlabs/puppetlabs-accounts/pull/68) ([HelenCampbell](https://github.com/HelenCampbell))
-- Update modulesync_config [a3fe424] [#65](https://github.com/puppetlabs/puppetlabs-accounts/pull/65) ([DavidS](https://github.com/DavidS))
-- Update modulesync_config [0d59329] [#64](https://github.com/puppetlabs/puppetlabs-accounts/pull/64) ([DavidS](https://github.com/DavidS))
-- (MAINT) Update for modulesync_config 72d19f184 [#62](https://github.com/puppetlabs/puppetlabs-accounts/pull/62) ([DavidS](https://github.com/DavidS))
-- (maint) modulesync f6e2070 [#60](https://github.com/puppetlabs/puppetlabs-accounts/pull/60) ([tphoney](https://github.com/tphoney))
-- (MODULES-3560) fixing tests [#59](https://github.com/puppetlabs/puppetlabs-accounts/pull/59) ([tphoney](https://github.com/tphoney))
-- Adding osfamily fact to tests. [#55](https://github.com/puppetlabs/puppetlabs-accounts/pull/55) ([ian-d](https://github.com/ian-d))
-- Addition of Debian 8 compatibility in metadata [#49](https://github.com/puppetlabs/puppetlabs-accounts/pull/49) ([HelenCampbell](https://github.com/HelenCampbell))
-- This isn't needed with BPIH 0.4.2 [#48](https://github.com/puppetlabs/puppetlabs-accounts/pull/48) ([hunner](https://github.com/hunner))
-- Unpin rspec-puppet [#47](https://github.com/puppetlabs/puppetlabs-accounts/pull/47) ([hunner](https://github.com/hunner))
-- 1.0.x [#45](https://github.com/puppetlabs/puppetlabs-accounts/pull/45) ([hunner](https://github.com/hunner))
-- Edited readme file. [#44](https://github.com/puppetlabs/puppetlabs-accounts/pull/44) ([mindymo](https://github.com/mindymo))
 - Allow non-managed SSH keys to be purged from user. [#42](https://github.com/puppetlabs/puppetlabs-accounts/pull/42) ([ian-d](https://github.com/ian-d))
-- 1.0.x mergeback [#40](https://github.com/puppetlabs/puppetlabs-accounts/pull/40) ([bmjen](https://github.com/bmjen))
 
 ## [1.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/1.0.0) - 2015-12-08
 
