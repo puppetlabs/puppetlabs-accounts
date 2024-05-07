@@ -42,7 +42,7 @@ define accounts::key_management (
   Accounts::User::Name           $sshkey_group       = $group,
   Accounts::User::Name           $sshkey_owner       = $user,
   Variant[Integer[0],String]     $sshkey_mode        = '0600',
-  Array[String]                  $sshkeys            = [],
+  Array[String[1]]               $sshkeys            = [],
   Optional[Stdlib::Unixpath]     $user_home          = undef,
 ) {
   if $user_home {
@@ -98,7 +98,7 @@ define accounts::key_management (
   }
 
   if $sshkeys != [] {
-    $sshkeys.each |$sshkey| {
+    $sshkeys.each |String[1] $sshkey| {
       accounts::manage_keys { "${sshkey} for ${user}":
         ensure    => $ensure,
         keyspec   => $sshkey,

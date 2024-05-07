@@ -12,7 +12,7 @@ Puppet::Functions.create_function(:accounts_ssh_authorized_keys_line_parser) do
   # @example Calling the function
   #   accounts_ssh_authorized_keys_line_parser_string('options ssh-rsa AAAA... comment)
   dispatch :accounts_ssh_authorized_keys_line_parser_string do
-    param 'String', :str
+    param 'String[1]', :str
   end
 
   def accounts_ssh_authorized_keys_line_parser_string(str)
