@@ -505,7 +505,7 @@ Default value: `'0600'`
 
 ##### <a name="-accounts--user--sshkeys"></a>`sshkeys`
 
-Data type: `Array[String]`
+Data type: `Array[String[1]]`
 
 An array of SSH public keys associated with the user. These should be
 complete public key strings that include the type, content and name of the
@@ -559,7 +559,7 @@ The returned options element can by an empty string.
 accounts_ssh_authorized_keys_line_parser_string('options ssh-rsa AAAA... comment)
 ```
 
-#### `accounts_ssh_authorized_keys_line_parser(String $str)`
+#### `accounts_ssh_authorized_keys_line_parser(String[1] $str)`
 
 Parse an ssh authorized_keys line string into an array using its expected
 pattern by using a combination of regex matching and extracting the substring
@@ -580,7 +580,7 @@ accounts_ssh_authorized_keys_line_parser_string('options ssh-rsa AAAA... comment
 
 ##### `str`
 
-Data type: `String`
+Data type: `String[1]`
 
 ssh authorized_keys line string
 

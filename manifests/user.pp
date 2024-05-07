@@ -213,7 +213,7 @@ define accounts::user (
   Optional[Accounts::User::Name]           $sshkey_group             = $group,
   Optional[Accounts::User::Name]           $sshkey_owner             = $name,
   Variant[Integer[0],String]               $sshkey_mode              = '0600',
-  Array[String]                            $sshkeys                  = [],
+  Array[String[1]]                         $sshkeys                  = [],
   Boolean                                  $system                   = false,
   Optional[Accounts::User::Uid]            $uid                      = undef,
 ) {

@@ -20,7 +20,7 @@
 #
 define accounts::manage_keys (
   Stdlib::Unixpath         $key_file,
-  String                   $keyspec,
+  String[1]                $keyspec,
   Accounts::User::Name     $user,
   Enum['absent','present'] $ensure    = 'present',
   Accounts::User::Name     $key_owner = $user,
