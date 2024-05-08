@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v8.2.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v8.2.0) - 2024-05-07
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.1.1...v8.2.0)
+
+### Added
+
+- accounts_ssh_authorized_keys_line_parser: Output regex matches when sshkey format isnt correct [#484](https://github.com/puppetlabs/puppetlabs-accounts/pull/484) ([bastelfreak](https://github.com/bastelfreak))
+
+### Fixed
+
+- usermanagement: prohibit empty ssh keys [#483](https://github.com/puppetlabs/puppetlabs-accounts/pull/483) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v8.1.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/v8.1.1) - 2024-03-26
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.1.0...v8.1.1)
@@ -31,6 +43,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v7.3.1...v8.0.0)
 
 ### Changed
+
 - (CONT-850) Puppet 8 support / Drop Puppet 6 [#441](https://github.com/puppetlabs/puppetlabs-accounts/pull/441) ([LukasAud](https://github.com/LukasAud))
 
 ## [v7.3.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/v7.3.1) - 2023-01-27
@@ -111,6 +124,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v6.4.0...v7.0.0)
 
 ### Changed
+
 - Update metadata.json - remove ubuntu 14.04 [#368](https://github.com/puppetlabs/puppetlabs-accounts/pull/368) ([daianamezdrea](https://github.com/daianamezdrea))
 - pdksync - Remove Puppet 5 from testing and bump minimal version to 6.0.0 [#359](https://github.com/puppetlabs/puppetlabs-accounts/pull/359) ([carabasdaniel](https://github.com/carabasdaniel))
 
@@ -168,6 +182,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v5.0.0...v6.0.0)
 
 ### Changed
+
 - pdksync - FM-8499 - remove ubuntu14 support [#277](https://github.com/puppetlabs/puppetlabs-accounts/pull/277) ([lionce](https://github.com/lionce))
 
 ### Added
@@ -184,6 +199,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v4.2.0...v5.0.0)
 
 ### Changed
+
 - (MODULES-9712) Move data into hiera. [#241](https://github.com/puppetlabs/puppetlabs-accounts/pull/241) ([pillarsdotnet](https://github.com/pillarsdotnet))
 
 ### Added
@@ -226,6 +242,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/3.2.0...v4.0.0)
 
 ### Changed
+
 - pdksync - (MODULES-8444) - Raise lower Puppet bound [#218](https://github.com/puppetlabs/puppetlabs-accounts/pull/218) ([david22swan](https://github.com/david22swan))
 - (MODULES-8909) Add type-aliases and auto-loading. [#214](https://github.com/puppetlabs/puppetlabs-accounts/pull/214) ([pillarsdotnet](https://github.com/pillarsdotnet))
 
@@ -269,6 +286,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/2.0.0...3.0.0)
 
 ### Changed
+
 - Adding ability to specify custom ssh_key location [#149](https://github.com/puppetlabs/puppetlabs-accounts/pull/149) ([ggeldenhuis](https://github.com/ggeldenhuis))
 
 ### Added
@@ -290,6 +308,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/1.3.0...2.0.0)
 
 ### Changed
+
 - [FM-6969] Removal of unsupported OS from accounts [#143](https://github.com/puppetlabs/puppetlabs-accounts/pull/143) ([david22swan](https://github.com/david22swan))
 
 ### Added
