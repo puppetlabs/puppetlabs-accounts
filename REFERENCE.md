@@ -26,6 +26,7 @@ homedir, .ssh/authorized_keys files, and directories.
 
 * [`accounts_ssh_authorized_keys_line_parser`](#accounts_ssh_authorized_keys_line_parser): Parse an ssh authorized_keys line string into an array using its expected pattern by using a combination of regex matching and extracting the
 * [`accounts_ssh_options_parser`](#accounts_ssh_options_parser): Parse an ssh authorized_keys option string into an array using its expected pattern which matches a crazy regex slightly modified from shell 
+* [`user_password`](#user_password)
 
 ### Data types
 
@@ -428,7 +429,7 @@ Default value: `'!!'`
 Data type: `Optional[Accounts::User::PasswordMaxAge]`
 
 Maximum number of days a password may be used before it must be changed.
-Allows any integer from `0` to `99999`. See the
+Allows any integer from `-1` to `99999`. See the
 [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_max_age)
 resource.
 
@@ -504,7 +505,7 @@ Default value: `'0600'`
 
 ##### <a name="-accounts--user--sshkeys"></a>`sshkeys`
 
-Data type: `Array[String]`
+Data type: `Array[String[1]]`
 
 An array of SSH public keys associated with the user. These should be
 complete public key strings that include the type, content and name of the
@@ -558,7 +559,7 @@ The returned options element can by an empty string.
 accounts_ssh_authorized_keys_line_parser_string('options ssh-rsa AAAA... comment)
 ```
 
-#### `accounts_ssh_authorized_keys_line_parser(String $str)`
+#### `accounts_ssh_authorized_keys_line_parser(String[1] $str)`
 
 Parse an ssh authorized_keys line string into an array using its expected
 pattern by using a combination of regex matching and extracting the substring
@@ -579,7 +580,7 @@ accounts_ssh_authorized_keys_line_parser_string('options ssh-rsa AAAA... comment
 
 ##### `str`
 
-Data type: `String`
+Data type: `String[1]`
 
 ssh authorized_keys line string
 
@@ -618,6 +619,24 @@ accounts_ssh_option_parser_string()
 Data type: `String`
 
 ssh authorized_keys option string
+
+### <a name="user_password"></a>`user_password`
+
+Type: Ruby 4.x API
+
+The user_password function.
+
+#### `user_password(Variant[Sensitive[String], String] $password)`
+
+The user_password function.
+
+Returns: `Variant[Sensitive[String], String]`
+
+##### `password`
+
+Data type: `Variant[Sensitive[String], String]`
+
+
 
 ## Data types
 
@@ -697,7 +716,7 @@ Max password age.
 On most systems, the default value of 99999 is about 274 years, which
 effectively disables password aging.
 
-Alias of `Integer[1, 99999]`
+Alias of `Integer[-1, 99999]`
 
 ### <a name="Accounts--User--Resource"></a>`Accounts::User::Resource`
 
@@ -731,7 +750,6 @@ Struct[{ Optional[ensure]                   => Enum['absent','present'],
     Optional[managehome]               => Boolean,
     Optional[managevim]                => Boolean,
     Optional[membership]               => Enum['inclusive','minimum'],
-    Optional[name]                     => Accounts::User::Name,
     Optional[password]                 => String,
     Optional[password_max_age]         => Accounts::User::PasswordMaxAge,
     Optional[purge_sshkeys]            => Boolean,
@@ -756,17 +774,17 @@ Alias of
 
 ```puppet
 Variant[Integer[0,4294967295], Pattern[/\A0\z/,
-          /\A[1-3]\d{0,9}\z/,
-          /\A[4-9]\d{0,8}\z/,
-          /\A4[0-1]\d{8}\z/,
-          /\A42[0-8]\d{7}\z/,
-          /\A429[0-3]\d{6}\z/,
-          /\A4294[0-8]\d{5}\z/,
-          /\A42949[0-5]\d{4}\z/,
-          /\A429496[0-6]\d{3}\z/,
-          /\A4294967[0-1]\d{2}\z/,
-          /\A42949672[0-8]\d\z/,
-          /\A429496729[0-5]\z/,
+    /\A[1-3]\d{0,9}\z/,
+    /\A[4-9]\d{0,8}\z/,
+    /\A4[0-1]\d{8}\z/,
+    /\A42[0-8]\d{7}\z/,
+    /\A429[0-3]\d{6}\z/,
+    /\A4294[0-8]\d{5}\z/,
+    /\A42949[0-5]\d{4}\z/,
+    /\A429496[0-6]\d{3}\z/,
+    /\A4294967[0-1]\d{2}\z/,
+    /\A42949672[0-8]\d\z/,
+    /\A429496729[0-5]\z/,
   ]]
 ```
 

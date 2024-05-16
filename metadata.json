@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-accounts",
-  "version": "8.1.0",
+  "version": "8.2.0",
   "author": "puppetlabs",
   "summary": "Account management module.",
   "license": "Apache-2.0",
@@ -88,6 +88,6 @@
     }
   ],
   "template-url": "https://github.com/puppetlabs/pdk-templates.git#main",
-  "template-ref": "heads/main-0-g604a3ec",
-  "pdk-version": "2.7.1"
+  "template-ref": "heads/main-0-g79a2f93",
+  "pdk-version": "3.0.0"
 }

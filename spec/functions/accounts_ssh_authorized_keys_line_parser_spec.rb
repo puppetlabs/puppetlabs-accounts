@@ -8,7 +8,7 @@ describe 'accounts_ssh_authorized_keys_line_parser' do
   }
 
   it {
-    expect(subject).to run.with_params('').and_raise_error(ArgumentError, %r{Wrong Keyline format!})
+    expect(subject).to run.with_params('').and_raise_error(ArgumentError, %r{'accounts_ssh_authorized_keys_line_parser' parameter 'str' expects a String\[1\] value, got String})
   }
 
   it {
