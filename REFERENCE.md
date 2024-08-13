@@ -26,7 +26,6 @@ homedir, .ssh/authorized_keys files, and directories.
 
 * [`accounts_ssh_authorized_keys_line_parser`](#accounts_ssh_authorized_keys_line_parser): Parse an ssh authorized_keys line string into an array using its expected pattern by using a combination of regex matching and extracting the
 * [`accounts_ssh_options_parser`](#accounts_ssh_options_parser): Parse an ssh authorized_keys option string into an array using its expected pattern which matches a crazy regex slightly modified from shell 
-* [`user_password`](#user_password)
 
 ### Data types
 
@@ -619,24 +618,6 @@ accounts_ssh_option_parser_string()
 Data type: `String`
 
 ssh authorized_keys option string
-
-### <a name="user_password"></a>`user_password`
-
-Type: Ruby 4.x API
-
-The user_password function.
-
-#### `user_password(Variant[Sensitive[String], String] $password)`
-
-The user_password function.
-
-Returns: `Variant[Sensitive[String], String]`
-
-##### `password`
-
-Data type: `Variant[Sensitive[String], String]`
-
-
 
 ## Data types
 
