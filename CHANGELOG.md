@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v8.2.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v8.2.0) - 2024-05-07
+## [v8.2.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/v8.2.1) - 2024-08-13
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.2.0...v8.2.1)
+
+### Fixed
+
+- (MODULES-11458) Revert deferred function [#490](https://github.com/puppetlabs/puppetlabs-accounts/pull/490) ([Ramesh7](https://github.com/Ramesh7))
+
+## [v8.2.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v8.2.0) - 2024-05-08
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.1.1...v8.2.0)
 
