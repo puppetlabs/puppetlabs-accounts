@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v8.3.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v8.3.0) - 2025-04-17
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.2.2...v8.3.0)
+
+### Added
+
+- (CAT-2124) Add support for Ubuntu 24 [#497](https://github.com/puppetlabs/puppetlabs-accounts/pull/497) ([skyamgarp](https://github.com/skyamgarp))
+
 ## [v8.2.2](https://github.com/puppetlabs/puppetlabs-accounts/tree/v8.2.2) - 2024-12-17
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.2.1...v8.2.2)
