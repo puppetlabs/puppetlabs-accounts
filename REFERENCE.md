@@ -194,9 +194,11 @@ The following parameters are available in the `accounts::user` defined type:
 
 Data type: `Enum['absent','present']`
 
-Specifies whether the user, its primary group, homedir, and ssh keys should
-exist. Valid values are 'present' and 'absent'. Note that when a user is
-created, a group with the same name as the user is also created.
+Specifies whether the user, their primary group, home directory, and SSH keys
+should exist. Valid values are 'present' and 'absent'. When set to 'present',
+a group with the same name as the user is also created. When set to 'absent',
+the user, their home directory, and any managed SSH keys are fully removed,
+regardless of the ``purge_home_user`` and ``purge_sshkeys`` settings.
 
 Default value: `'present'`
 
