@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v8.3.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/v8.3.1) - 2025-07-28
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.3.0...v8.3.1)
+
+### Fixed
+
+- Synchronize user defined resource with the corresponding type [#507](https://github.com/puppetlabs/puppetlabs-accounts/pull/507) ([jay7x](https://github.com/jay7x))
+
 ## [v8.3.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v8.3.0) - 2025-04-17
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.2.2...v8.3.0)
