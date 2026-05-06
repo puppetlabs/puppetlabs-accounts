@@ -20,10 +20,9 @@ Puppet::Functions.create_function(:accounts_ssh_authorized_keys_line_parser) do
 
     raise ArgumentError, "Wrong Keyline format! Got nil after applying regex to'#{str}'" unless matched
     unless matched.length == 5
-      output = []
       # first element is str, aftwerwards are all matching groups. We ignore the first element
-      (1..matched.length).each do |counter|
-        output << "element #{counter}: #{matched[counter]}"
+      output = (1..matched.length).map do |counter|
+        output "element #{counter}: #{matched[counter]}"
       end
       raise ArgumentError, "Wrong Keyline format! Input: #{str}. Expected 4 elements after applying regex, got: #{output}"
     end
