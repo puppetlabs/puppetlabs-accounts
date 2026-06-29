@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v9.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v9.0.0) - 2026-06-29
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.3.1...v9.0.0)
+
+### Changed
+
+- (CAT-2352) Drop Puppet 7 support (BREAKING) — Puppetcore alignment [#509](https://github.com/puppetlabs/puppetlabs-accounts/pull/509) ([LukasAud](https://github.com/LukasAud))
+
+### Other
+
+- (MODULES-11840) Allow puppetlabs/stdlib 10.x [#513](https://github.com/puppetlabs/puppetlabs-accounts/pull/513) ([imaqsood](https://github.com/imaqsood))
+
 ## [v8.3.1](https://github.com/puppetlabs/puppetlabs-accounts/tree/v8.3.1) - 2025-07-28
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.3.0...v8.3.1)
