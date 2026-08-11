@@ -12,6 +12,4 @@ jobs:
 
   mend:
     uses: "puppetlabs/cat-github-actions/.github/workflows/mend_ruby.yml@main"
-    with:
-      ruby_version: '3.2'
     secrets: "inherit"
