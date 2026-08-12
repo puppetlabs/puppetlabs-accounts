@@ -24,9 +24,11 @@ jobs:
       # Puppet 9 ships no agent for these EOL platforms: the EL7 family (RedHat/CentOS/
       # OracleLinux 7) and CentOS 8, plus Debian 10 and Ubuntu 18.04. metadata.json still
       # lists all of these for Puppet 8 compatibility, so exclude them from the Puppet 9
-      # lane only. scientific-7 is excluded from every lane: Scientific Linux's own
-      # upstream package mirrors are gone (the distro was discontinued), so provisioning
-      # it fails regardless of Puppet version.
+      # lane only. Ubuntu 20.04 (Focal) is excluded from Puppet 9 too: confirmed in CI, the
+      # puppet9-nightly-release-focal.deb package 404s (no Puppet 9 agent for Focal), even
+      # though it's still Puppet-8-supported. scientific-7 is excluded from every lane:
+      # Scientific Linux's own upstream package mirrors are gone (the distro was
+      # discontinued), so provisioning it fails regardless of Puppet version.
       flags: >-
         --nightly
         --platform-exclude scientific-7
@@ -36,5 +38,6 @@ jobs:
         --collection-platform-exclude 9:oraclelinux-7
         --collection-platform-exclude 9:debian-10
         --collection-platform-exclude 9:ubuntu-18.04
+        --collection-platform-exclude 9:ubuntu-20.04
       ruby_version: "3.2"
     secrets: "inherit"
