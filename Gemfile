@@ -18,7 +18,7 @@ group :development do
   gem "json", '= 2.6.3',                         require: false if Gem::Requirement.create(['>= 3.2.0', '< 4.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   gem "racc", '~> 1.4.0',                        require: false if Gem::Requirement.create(['>= 2.7.0', '< 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   gem "deep_merge", '~> 1.2.2',                  require: false
-  gem "voxpupuli-puppet-lint-plugins", '~> 5.0', require: false
+  gem "voxpupuli-puppet-lint-plugins", '~> 7.0', require: false
   gem "facterdb", '~> 2.1',                      require: false if Gem::Requirement.create(['< 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   gem "facterdb", '~> 3.0',                      require: false if Gem::Requirement.create(['>= 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   gem "metadata-json-lint", '~> 4.0',            require: false
@@ -38,12 +38,16 @@ group :development do
 end
 group :development, :release_prep do
   gem "puppet-strings", '~> 4.0',         require: false
-  gem "puppetlabs_spec_helper", '~> 8.0', require: false
+  # puppetlabs_spec_helper 9.0.0 relaxed its puppet-lint pin to ~> 5.0, which is what
+  # voxpupuli-puppet-lint-plugins ~> 7.0 (above) needs for Puppet 9 / Ruby 4. It also renamed
+  # its puppet-syntax dependency to puppetlabs-syntax -- see Rakefile.
+  gem "puppetlabs_spec_helper", '~> 9.0', require: false
   gem "puppet-blacksmith", '~> 7.0',      require: false
 end
 group :system_tests do
-  gem "puppet_litmus", '~> 2.0',   require: false, platforms: [:ruby, :x64_mingw] if !ENV['PUPPET_FORGE_TOKEN'].to_s.empty?
-  gem "puppet_litmus", '~> 1.0',   require: false, platforms: [:ruby, :x64_mingw] if ENV['PUPPET_FORGE_TOKEN'].to_s.empty?
+  # puppet_litmus 2.8.0 is the first released version with --collection-platform-exclude
+  # support for matrix_from_metadata_v3, used by ci.yml/nightly.yml's Acceptance flags.
+  gem "puppet_litmus", '~> 2.8', require: false, platforms: [:ruby, :x64_mingw]
   gem "CFPropertyList", '< 3.0.7', require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "serverspec", '~> 2.41',     require: false
 end
@@ -56,8 +60,13 @@ hiera_version = ENV.fetch('HIERA_GEM_VERSION', nil)
 # If PUPPET_FORGE_TOKEN is set then use authenticated source for both puppet and facter, since facter is a transitive dependency of puppet
 # Otherwise, do as before and use location_for to fetch gems from the default source
 if !ENV['PUPPET_FORGE_TOKEN'].to_s.empty?
-  gems['puppet'] = ['~> 8.11', { require: false, source: 'https://rubygems-puppetcore.puppet.com' }]
-  gems['facter'] = ['~> 4.11', { require: false, source: 'https://rubygems-puppetcore.puppet.com' }]
+  # Puppet 9.0.0 is a released gem on the standard puppetcore source (confirmed via
+  # puppetlabs-vcsrepo#659 and puppetlabs-windows_eventlog#100's CI resolving `puppet
+  # (9.0.0)` directly) -- no separate 8.99.x prerelease-matching branch or alternate
+  # source is needed for it anymore; whatever PUPPET_GEM_VERSION is requested resolves
+  # the same way regardless of major version.
+  gems['puppet'] = [puppet_version.to_s.empty? ? '~> 8.11' : puppet_version, { require: false, source: 'https://rubygems-puppetcore.puppet.com' }]
+  gems['facter'] = [facter_version.to_s.empty? ? '~> 4.11' : facter_version, { require: false, source: 'https://rubygems-puppetcore.puppet.com' }]
 else
   gems['puppet'] = location_for(puppet_version)
   gems['facter'] = location_for(facter_version) if facter_version
