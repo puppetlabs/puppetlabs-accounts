@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v9.1.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v9.1.0) - 2026-09-04
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v9.0.0...v9.1.0)
+
+### Added
+
+- (MODULES-11699) Add Puppet 9 support [#515](https://github.com/puppetlabs/puppetlabs-accounts/pull/515) ([skyamgarp](https://github.com/skyamgarp))
+
 ## [v9.0.0](https://github.com/puppetlabs/puppetlabs-accounts/tree/v9.0.0) - 2026-06-29
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-accounts/compare/v8.3.1...v9.0.0)
