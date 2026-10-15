@@ -41,6 +41,8 @@ hd_accounts_define = hd_defaults.merge(
       'groups' => ['root'],
       'password' => 'hi',
       'password_max_age' => 60,
+      'password_min_age' => 1,
+      'password_warn_age' => 7,
       'shell' => '/bin/true',
       'home' => '/test/hunner',
       'managevim' => false,
@@ -64,6 +66,8 @@ hd_accounts_with_custom_key_path_define = hd_defaults.merge(
       'groups' => ['root'],
       'password' => 'hi',
       'password_max_age' => 60,
+      'password_min_age' => 1,
+      'password_warn_age' => 7,
       'shell' => '/bin/true',
       'home' => '/test/hunner',
       'managevim' => false,
@@ -324,6 +328,8 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
       expect(user('hunner')).to have_home_directory '/test/hunner'
       expect(user('hunner')).to contain_password 'hi' unless os[:family] == 'solaris'
       expect(user('hunner').maximum_days_between_password_change).to match 60
+      expect(user('hunner').minimum_days_between_password_change).to match 1
+      expect(user('hunner').warning_days_before_password_expiration).to match 7
 
       expect(file('/test/hunner')).to be_directory
       expect(file('/test/hunner')).to be_mode 700

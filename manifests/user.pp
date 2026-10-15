@@ -130,6 +130,18 @@
 #   [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_max_age)
 #   resource.
 #
+# @param password_min_age
+#   Minimum number of days a password must be used before it can be changed.
+#   Allows any integer from `-1` to `99999`. See the
+#   [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_min_age)
+#   resource.
+#
+# @param password_warn_days
+#   Number of days before password expiration that the user is warned.
+#   Allows any integer from `-1` to `99999`. See the
+#   [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_warn_days)
+#   resource.
+#
 # @param purge_sshkeys
 #   Whether keys not included in sshkeys should be removed from the user. If
 #   purge_sshkeys is true and sshkeys is an empty array, all SSH keys will be
@@ -204,7 +216,9 @@ define accounts::user (
   Boolean                                  $managevim                = true,
   Enum['inclusive','minimum']              $membership               = 'minimum',
   Variant[String, Sensitive[String]]       $password                 = '!!',
-  Optional[Accounts::User::PasswordMaxAge] $password_max_age         = undef,
+  Optional[Accounts::User::PasswordAge]    $password_max_age         = undef,
+  Optional[Accounts::User::PasswordAge]    $password_min_age         = undef,
+  Optional[Accounts::User::PasswordDays]   $password_warn_days       = undef,
   Boolean                                  $purge_sshkeys            = false,
   Boolean                                  $purge_user_home          = false,
   Optional[String]                         $salt                     = undef,
@@ -294,24 +308,26 @@ define accounts::user (
       default => $shell,
     }
     user { $name:
-      ensure           => 'present',
-      allowdupe        => $allowdupe,
-      comment          => String($comment),
-      expiry           => $expiry,
-      forcelocal       => $forcelocal,
-      gid              => $group,
-      groups           => $groups,
-      home             => $_home,
-      iterations       => $iterations,
-      managehome       => $managehome,
-      membership       => $membership,
-      password         => $_password,
-      password_max_age => $password_max_age,
-      purge_ssh_keys   => $_purge_sshkeys,
-      salt             => $salt,
-      shell            => $_shell,
-      system           => $system,
-      uid              => $uid,
+      ensure             => 'present',
+      allowdupe          => $allowdupe,
+      comment            => String($comment),
+      expiry             => $expiry,
+      forcelocal         => $forcelocal,
+      gid                => $group,
+      groups             => $groups,
+      home               => $_home,
+      iterations         => $iterations,
+      managehome         => $managehome,
+      membership         => $membership,
+      password           => $_password,
+      password_max_age   => $password_max_age,
+      password_min_age   => $password_min_age,
+      password_warn_days => $password_warn_days,
+      purge_ssh_keys     => $_purge_sshkeys,
+      salt               => $salt,
+      shell              => $_shell,
+      system             => $system,
+      uid                => $uid,
     }
     if $managehome {
       accounts::home_dir { $_home:
