@@ -218,7 +218,7 @@ define accounts::user (
   Variant[String, Sensitive[String]]       $password                 = '!!',
   Optional[Accounts::User::PasswordAge]    $password_max_age         = undef,
   Optional[Accounts::User::PasswordAge]    $password_min_age         = undef,
-  Optional[Accounts::User::PasswordDays]   $password_warn_days       = undef,
+  Optional[Accounts::User::PasswordAge]    $password_warn_days       = undef,
   Boolean                                  $purge_sshkeys            = false,
   Boolean                                  $purge_user_home          = false,
   Optional[String]                         $salt                     = undef,
