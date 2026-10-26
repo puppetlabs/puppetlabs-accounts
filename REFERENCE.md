@@ -36,7 +36,8 @@ homedir, .ssh/authorized_keys files, and directories.
 * [`Accounts::User::Hash`](#Accounts--User--Hash): A hash of user resources, keyed by user name.
 * [`Accounts::User::Iterations`](#Accounts--User--Iterations): Chained computation iterations for the PBKDF2 password hash.
 * [`Accounts::User::Name`](#Accounts--User--Name): Each user or group should have a unique alphanumeric name.
-* [`Accounts::User::PasswordMaxAge`](#Accounts--User--PasswordMaxAge): Maximum days between password changes.
+* [`Accounts::User::PasswordMaxAge`](#Accounts--User--PasswordMaxAge): Maximum/Minimum days between password changes.
+* [`Accounts::User::PasswordWarn`](#Accounts--User--PasswordWarn): Number of days before password expiration that a warning is given.
 * [`Accounts::User::Resource`](#Accounts--User--Resource): A hash of user attributes.
 * [`Accounts::User::Uid`](#Accounts--User--Uid): Each user on a system should have a unique numeric uid.
 
@@ -178,6 +179,8 @@ The following parameters are available in the `accounts::user` defined type:
 * [`name`](#-accounts--user--name)
 * [`password`](#-accounts--user--password)
 * [`password_max_age`](#-accounts--user--password_max_age)
+* [`password_min_age`](#-accounts--user--password_min_age)
+* [`password_warn_days`](#-accounts--user--password_warn_days)
 * [`purge_sshkeys`](#-accounts--user--purge_sshkeys)
 * [`purge_user_home`](#-accounts--user--purge_user_home)
 * [`salt`](#-accounts--user--salt)
@@ -430,6 +433,28 @@ Data type: `Optional[Accounts::User::PasswordMaxAge]`
 Maximum number of days a password may be used before it must be changed.
 Allows any integer from `-1` to `99999`. See the
 [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_max_age)
+resource.
+
+Default value: `undef`
+
+##### <a name="-accounts--user--password_min_age"></a>`password_min_age`
+
+Data type: `Optional[Accounts::User::PasswordMaxAge]`
+
+Minimum number of days a password must be used before it can be changed.
+Allows any integer from `-1` to `99999`. See the
+[`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_min_age)
+resource.
+
+Default value: `undef`
+
+##### <a name="-accounts--user--password_warn_days"></a>`password_warn_days`
+
+Data type: `Optional[Accounts::User::PasswordWarn]`
+
+Number of days before password expiration that the user is warned.
+Allows any integer from `-1` to `99999`. See the
+[`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_warn_days)
 resource.
 
 Default value: `undef`
@@ -699,6 +724,13 @@ effectively disables password aging.
 
 Alias of `Integer[-1, 99999]`
 
+### <a name="Accounts--User--PasswordWarn"></a>`Accounts::User::PasswordWarn`
+
+Password warning days.
+On most systems, the default value of 7 is common.
+
+Alias of `Integer[0, 99999]`
+
 ### <a name="Accounts--User--Resource"></a>`Accounts::User::Resource`
 
 User attributes hash.
@@ -733,6 +765,8 @@ Struct[{ Optional[ensure]                   => Enum['absent','present'],
     Optional[membership]               => Enum['inclusive','minimum'],
     Optional[password]                 => Variant[String, Sensitive[String]],
     Optional[password_max_age]         => Accounts::User::PasswordMaxAge,
+    Optional[password_min_age]         => Accounts::User::PasswordMaxAge,
+    Optional[password_warn_days]       => Accounts::User::PasswordWarn,
     Optional[purge_sshkeys]            => Boolean,
     Optional[purge_user_home]          => Boolean,
     Optional[salt]                     => String,
