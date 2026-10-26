@@ -1,33 +1,19 @@
 # accounts
 
 #### Table of Contents
-- [accounts](#accounts)
-      - [Table of Contents](#table-of-contents)
-  - [Description](#description)
-  - [Setup](#setup)
-    - [Beginning with accounts](#beginning-with-accounts)
-  - [Usage](#usage)
-    - [Declare user accounts](#declare-user-accounts)
-    - [Customize the home directory](#customize-the-home-directory)
-    - [Lock accounts](#lock-accounts)
-    - [Manage SSH keys](#manage-ssh-keys)
-    - [Data in Hiera](#data-in-hiera)
-  - [Reference](#reference)
-    - [Data types](#data-types)
-      - [`Accounts::Group::Hash`](#accountsgrouphash)
-      - [`Accounts::Group::Provider`](#accountsgroupprovider)
-      - [`Accounts::Group::Resource`](#accountsgroupresource)
-      - [`Accounts::User::Expiry`](#accountsuserexpiry)
-      - [`Accounts::User::Hash`](#accountsuserhash)
-      - [`Accounts::User::Iterations`](#accountsuseriterations)
-      - [`Accounts::User::Name`](#accountsusername)
-      - [`Accounts::User::PasswordAge`](#accountsuserpasswordage)
-      - [`Accounts::User::Resource`](#accountsuserresource)
-      - [`Accounts::User::Uid`](#accountsuseruid)
-  - [Limitations](#limitations)
-    - [Changes from pe\_accounts](#changes-from-pe_accounts)
-  - [License](#license)
-  - [Development](#development)
+1. [Description](#description)
+2. [Setup - The basics of getting started with accounts](#setup)
+3. [Usage - Configuration options and additional functionality](#usage)
+	* [Declare user accounts](#declare-user-accounts)
+	* [Customize the home directory](#customize-the-home-directory)
+	* [Lock accounts](#lock-accounts)
+	* [Manage SSH keys](#manage-ssh-keys)
+	* [Data in hiera](#data-in-hiera)
+4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+        * [Data Types](#data-types)
+5. [Limitations - OS compatibility, etc.](#limitations)
+6. [License](#license)
+7. [Development - Guide for contributing to the module](#development)
 
 
 ## Description
@@ -230,9 +216,9 @@ The [`iterations`](https://puppet.com/docs/puppet/latest/types/user.html#user-at
 
 Allows strings up to 32 characters long that begin with a lower case letter or underscore, followed by lower case letters, digits, underscores, or dashes, and optionally ending in a dollar sign.  See [`useradd(8)`](http://manpages.ubuntu.com/manpages/precise/man8/useradd.8.html#caveats)
 
-#### `Accounts::User::PasswordAge`
+#### `Accounts::User::PasswordMaxAge`
 
-Maximum number of days a password may be used before it must be changed. Allows any integer from `-1` to `99999`. See [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_age) resource.
+Maximum number of days a password may be used before it must be changed. Allows any integer from `-1` to `99999`. See [`user`](https://puppet.com/docs/puppet/latest/types/user.html#user-attribute-password_max_age) resource.
 
 #### `Accounts::User::Resource`
 
