@@ -329,7 +329,7 @@ describe 'accounts invoke', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) 
       expect(user('hunner')).to contain_password 'hi' unless os[:family] == 'solaris'
       expect(user('hunner').maximum_days_between_password_change).to match 60
       expect(user('hunner').minimum_days_between_password_change).to match 1
-      expect(command("chage -l hunner | sed -n 's/^Warning.*: //p'").stdout.strip).to eq('7')
+      expect(command("chage -l hunner | sed -n 's/^Number.*: //p'").stdout.strip).to eq('7')
 
       expect(file('/test/hunner')).to be_directory
       expect(file('/test/hunner')).to be_mode 700
