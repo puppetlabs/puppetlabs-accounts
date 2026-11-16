@@ -5,6 +5,8 @@
 type Accounts::User::Resource = Struct[
   { Optional[ensure]                   => Enum['absent','present'],
     Optional[allowdupe]                => Boolean,
+    Optional[bash_aliases_content]     => String,
+    Optional[bash_aliases_source]      => Stdlib::Filesource,
     Optional[bash_profile_content]     => String,
     Optional[bash_profile_source]      => Stdlib::Filesource,
     Optional[bashrc_content]           => String,

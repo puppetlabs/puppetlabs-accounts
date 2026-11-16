@@ -154,6 +154,8 @@ The following parameters are available in the `accounts::user` defined type:
 
 * [`ensure`](#-accounts--user--ensure)
 * [`allowdupe`](#-accounts--user--allowdupe)
+* [`bash_aliases_content`](#-accounts--user--bash_aliases_content)
+* [`bash_aliases_source`](#-accounts--user--bash_aliases_source)
 * [`bash_profile_content`](#-accounts--user--bash_profile_content)
 * [`bash_profile_source`](#-accounts--user--bash_profile_source)
 * [`bashrc_content`](#-accounts--user--bashrc_content)
@@ -207,6 +209,24 @@ Data type: `Boolean`
 Whether to allow duplicate UIDs. By default false
 
 Default value: `false`
+
+##### <a name="-accounts--user--bash_aliases_content"></a>`bash_aliases_content`
+
+Data type: `Optional[String]`
+
+The content to place in the user's ~/.bash_aliases file. Mutually exclusive to
+bash_aliases_source.
+
+Default value: `undef`
+
+##### <a name="-accounts--user--bash_aliases_source"></a>`bash_aliases_source`
+
+Data type: `Optional[Stdlib::Filesource]`
+
+A source file containing the content to place in the user's ~/.bash_aliases
+file. Mutually exclusive to bash_aliases_content.
+
+Default value: `undef`
 
 ##### <a name="-accounts--user--bash_profile_content"></a>`bash_profile_content`
 
@@ -709,6 +729,8 @@ Alias of
 ```puppet
 Struct[{ Optional[ensure]                   => Enum['absent','present'],
     Optional[allowdupe]                => Boolean,
+    Optional[bash_aliases_content]     => String,
+    Optional[bash_aliases_source]      => Stdlib::Filesource,
     Optional[bash_profile_content]     => String,
     Optional[bash_profile_source]      => Stdlib::Filesource,
     Optional[bashrc_content]           => String,

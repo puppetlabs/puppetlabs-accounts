@@ -38,6 +38,7 @@ describe 'accounts::user' do
             expect(subject).to contain_user(title).with('groups'       => [])
             expect(subject).to contain_user(title).with('allowdupe'    => false)
             expect(subject).to contain_user(title).with('managehome'   => true)
+            expect(subject).not_to contain_file("#{user_vars[:dan_home]}/.bash_aliases")
           end
 
           it do
@@ -51,6 +52,7 @@ describe 'accounts::user' do
             {
               ensure: 'present',
               allowdupe: true,
+              bash_aliases_content: "alias ll='ls -alF'",
               comment: 'comment',
               expiry: '2018-06-22',
               gid: 456,
@@ -83,8 +85,21 @@ describe 'accounts::user' do
           it { is_expected.to contain_group(params[:group]).that_comes_before("User[#{title}]") }
 
           it do
-            expect(subject).to contain_accounts__home_dir(params[:home]).with('user' => title,
-                                                                              'mode' => params[:home_mode])
+            expect(subject).to contain_accounts__home_dir(params[:home]).with(
+              'user' => title,
+              'mode' => params[:home_mode],
+              'bash_aliases_content' => params[:bash_aliases_content],
+            )
+          end
+
+          it do
+            expect(subject).to contain_file("#{params[:home]}/.bash_aliases").with(
+              ensure: 'file',
+              owner: title,
+              group: params[:group],
+              mode: '0644',
+              content: params[:bash_aliases_content],
+            )
           end
 
           it { is_expected.to contain_accounts__key_management("#{title}_key_management").with('sshkeys' => params[:sshkeys]) }
@@ -92,6 +107,26 @@ describe 'accounts::user' do
           it { is_expected.to contain_ssh_authorized_key("#{params[:sshkey_owner]}_ssh-dss_dan key2_6e9b8958712502a8b31e1c283b6e6fce") }
           it { is_expected.to contain_ssh_authorized_key("#{params[:sshkey_owner]}_ecdsa-sha2-nistp521_vagrant2_8c32d1183251df9828f929b935ae0419") }
           it { is_expected.to contain_file("#{params[:home]}/.ssh") }
+        end
+
+        describe 'when setting bash_aliases_source' do
+          let(:params) { { bash_aliases_source: '/etc/defaults/bash_aliases' } }
+
+          it do
+            expect(subject).to contain_file("#{user_vars[:dan_home]}/.bash_aliases").with(
+              ensure: 'file',
+              owner: title,
+              group: title,
+              mode: '0644',
+              source: params[:bash_aliases_source],
+            )
+          end
+        end
+
+        describe 'with empty bash_aliases_content' do
+          let(:params) { { bash_aliases_content: '' } }
+
+          it { is_expected.to contain_file("#{user_vars[:dan_home]}/.bash_aliases").with(content: '') }
         end
 
         describe 'when locking users' do
