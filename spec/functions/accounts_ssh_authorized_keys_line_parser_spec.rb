@@ -22,6 +22,12 @@ describe 'accounts_ssh_authorized_keys_line_parser' do
   }
 
   it {
+    expect(subject).to run.with_params('ed25519-sk AAAA...== jane@example.net').and_return( \
+      ['', 'ed25519-sk', 'AAAA...==', 'jane@example.net'],
+    )
+  }
+
+  it {
     expect(subject).to run.with_params('"options with arguments",moreoptions,"moreoptions with arguments" ecdsa-xyz key name with spaces').and_return( \
       ['"options with arguments",moreoptions,"moreoptions with arguments"', 'ecdsa-xyz', 'key', 'name with spaces'],
     )

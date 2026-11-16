@@ -16,7 +16,7 @@ Puppet::Functions.create_function(:accounts_ssh_authorized_keys_line_parser) do
   end
 
   def accounts_ssh_authorized_keys_line_parser_string(str)
-    matched = str.match(%r{((sk-ssh-ed25519|sk-ecdsa-|ssh-|ecdsa-)[^\s]+)\s+([^\s]+)\s+(.*)$})
+    matched = str.match(%r{((sk-ssh-ed25519|sk-ecdsa-|ssh-|ecdsa-)[^\s]+|ed25519-sk)\s+([^\s]+)\s+(.*)$})
 
     raise ArgumentError, "Wrong Keyline format! Got nil after applying regex to'#{str}'" unless matched
     unless matched.length == 5
