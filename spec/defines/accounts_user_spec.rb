@@ -61,6 +61,8 @@ describe 'accounts::user' do
               membership: 'inclusive',
               password: 'foo',
               password_max_age: 60,
+              password_min_age: 1,
+              password_warn_days: 7,
               shell: '/bin/csh',
               sshkey_owner: 'dan',
               sshkeys: ['ssh-rsa AAAAB3Nza...LiPk== dan@example1.net',
@@ -71,7 +73,7 @@ describe 'accounts::user' do
           end
 
           [:ensure, :allowdupe, :comment, :expiry, :groups, :home,
-           :membership, :password, :password_max_age].each do |param|
+           :membership, :password, :password_max_age, :password_min_age, :password_warn_days].each do |param|
             it { is_expected.to contain_user(title).with(param.to_s => params[param]) }
           end
           it do
