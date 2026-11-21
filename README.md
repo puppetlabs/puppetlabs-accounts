@@ -236,7 +236,17 @@ For an extensive list of supported operating systems, see [metadata.json](https:
 
 The accounts module is designed to take the place of the pe\_accounts module that shipped with PE versions 2015.2 and earlier. Some of the changes include the removal of the base class, improving the validation, and allowing more flexibility regarding which files should or should not be managed in a user's home directory.
 
-For example, the .bashrc and .bash\_profile files are not managed by default but allow custom content to be passed in using the `bashrc_content` and `bash_profile_content` parameters. The content for these two files as managed by pe\_accounts can continue to be used by passing `bashrc_content => file('accounts/shell/bashrc')` and `bash_profile_content => file('accounts/shell/bash_profile')` to the `accounts::user` defined type.
+For example, the `.bashrc` and `.bash_profile` files are not managed by default but allow custom content to be passed in using the `bashrc_content` and `bash_profile_content` parameters. The content for these two files as managed by pe\_accounts can continue to be used by passing `bashrc_content => file('accounts/shell/bashrc')` and `bash_profile_content => file('accounts/shell/bash_profile')` to the `accounts::user` defined type.
+
+The `bash_aliases_content` and `bash_aliases_source` parameters can optionally manage a user's `~/.bash_aliases` file:
+
+~~~puppet
+accounts::user { 'alice':
+  bash_aliases_content => "alias ll='ls -alF'\nalias la='ls -A'",
+}
+~~~
+
+Bash does not load this file automatically; the user's `.bashrc` must source it. Debian and Ubuntu's default Bash startup files do so, but other platforms may require explicit shell configuration. This feature does not install Bash or modify `.bashrc`.
 
 ## License
 

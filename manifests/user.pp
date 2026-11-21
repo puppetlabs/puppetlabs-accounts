@@ -20,6 +20,14 @@
 # @param allowdupe
 #   Whether to allow duplicate UIDs. By default false
 #
+# @param bash_aliases_content
+#   The content to place in the user's ~/.bash_aliases file. Mutually exclusive
+#   to bash_aliases_source.
+#
+# @param bash_aliases_source
+#   A source file containing the content to place in the user's ~/.bash_aliases
+#   file. Mutually exclusive to bash_aliases_content.
+#
 # @param bash_profile_content
 #   The content to place in the user's ~/.bash_profile file. Mutually exclusive
 #   to bash_profile_source.
@@ -182,6 +190,8 @@
 define accounts::user (
   Enum['absent','present']                 $ensure                   = 'present',
   Boolean                                  $allowdupe                = false,
+  Optional[String]                         $bash_aliases_content     = undef,
+  Optional[Stdlib::Filesource]             $bash_aliases_source      = undef,
   Optional[String]                         $bash_profile_content     = undef,
   Optional[Stdlib::Filesource]             $bash_profile_source      = undef,
   Optional[String]                         $bashrc_content           = undef,
@@ -318,6 +328,8 @@ define accounts::user (
         ensure               => 'present',
         mode                 => $home_mode,
         managevim            => $managevim,
+        bash_aliases_content => $bash_aliases_content,
+        bash_aliases_source  => $bash_aliases_source,
         bashrc_content       => $bashrc_content,
         bashrc_source        => $bashrc_source,
         bash_profile_content => $bash_profile_content,

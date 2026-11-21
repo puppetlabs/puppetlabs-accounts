@@ -27,9 +27,10 @@ pp_accounts_define = <<-PUPPETCODE
     shell                => '/bin/true',
     home                 => '/test/hunner',
     home_mode            => '0700',
-    managevim            => false,
-    bashrc_content       => file('accounts/shell/bashrc'),
-    bash_profile_content => file('accounts/shell/bash_profile'),
+    managevim              => false,
+    bashrc_content         => file('accounts/shell/bashrc'),
+    bash_aliases_content   => "alias ll='ls -alF'",
+    bash_profile_content   => file('accounts/shell/bash_profile'),
     sshkeys              => $key_test,
   }
 PUPPETCODE
@@ -254,8 +255,14 @@ describe 'accounts::user define', unless: UNSUPPORTED_PLATFORMS.include?(os[:fam
 
       expect(file('/test/hunner/.bash_profile')).to be_file
       expect(file('/test/hunner/.bash_profile').content).to match %r{Get the aliases and functions}
+      expect(file('/test/hunner/.bash_aliases')).to be_file
+      expect(file('/test/hunner/.bash_aliases')).to be_owned_by 'hunner'
+      expect(file('/test/hunner/.bash_aliases')).to be_grouped_into 'hunner'
+      expect(file('/test/hunner/.bash_aliases')).to be_mode 644
+      expect(file('/test/hunner/.bash_aliases').content).to match %r{alias ll='ls -alF'}
 
       expect(file('/test/hunner/.vim')).not_to exist
+      apply_manifest(pp_accounts_define, catch_changes: true)
     end
   end
 
