@@ -5,8 +5,10 @@ require 'spec_helper'
 describe 'Accounts::User::Hash' do
   describe 'Valid user hash values' do
     [
-      { 'jdoe' => { 'comment'         => 'Jane Doe'                 } },
-      { 'rroe' => { 'forward_content' => 'richard.roe@example.com'  } },
+      { 'jdoe' => { 'comment'               => 'Jane Doe'                 } },
+      { 'rroe' => { 'forward_content'       => 'richard.roe@example.com'  } },
+      { 'alice' => { 'bash_aliases_content' => 'alias ll="ls -l"'         } },
+      { 'alice_source' => { 'bash_aliases_source' => '/etc/defaults/bash_aliases' } },
     ].each do |value|
       describe value.inspect do
         it { is_expected.to allow_value(value) }
@@ -51,6 +53,8 @@ describe 'Accounts::User::Hash' do
       { '_5' => { 'sshkeys'                  => {}          } },
       { '_6' => { 'system'                   => 'Linux'     } },
       { '_7' => { 'uid'                      => -1          } },
+      { 'bad_alias_content' => { 'bash_aliases_content' => false } },
+      { 'bad_alias_source'  => { 'bash_aliases_source'  => []    } },
     ].each do |value|
       describe value.inspect do
         it { is_expected.not_to allow_value(value) }

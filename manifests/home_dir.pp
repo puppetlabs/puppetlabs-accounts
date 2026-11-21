@@ -6,6 +6,14 @@
 #   exist. Valid values are 'present' and 'absent'. Note that when a user is
 #   created, a group with the same name as the user is also created.
 #
+# @param bash_aliases_content
+#   The content to place in the user's ~/.bash_aliases file. Mutually exclusive
+#   to bash_aliases_source.
+#
+# @param bash_aliases_source
+#   A source file containing the content to place in the user's ~/.bash_aliases
+#   file. Mutually exclusive to bash_aliases_content.
+#
 # @param bash_profile_content
 #   The content to place in the user's ~/.bash_profile file. Mutually exclusive
 #   to bash_profile_source.
@@ -50,8 +58,10 @@
 # @api private
 #
 define accounts::home_dir (
-  Enum['absent','present']       $ensure               = 'present',
-  Optional[String]               $bash_profile_content = undef,
+  Enum['absent','present']       $ensure                 = 'present',
+  Optional[String]               $bash_aliases_content   = undef,
+  Optional[Stdlib::Filesource]   $bash_aliases_source    = undef,
+  Optional[String]               $bash_profile_content   = undef,
   Optional[Stdlib::Filesource]   $bash_profile_source  = undef,
   Optional[String]               $bashrc_content       = undef,
   Optional[Stdlib::Filesource]   $bashrc_source        = undef,
@@ -102,6 +112,24 @@ define accounts::home_dir (
       if $bashrc_source {
         File["${name}/.bashrc"] {
           source => $bashrc_source,
+        }
+      }
+    }
+    if $bash_aliases_content or $bash_aliases_source {
+      file { "${name}/.bash_aliases":
+        ensure => file,
+        owner  => $user,
+        group  => $group,
+        mode   => '0644',
+      }
+      if $bash_aliases_content {
+        File["${name}/.bash_aliases"] {
+          content => $bash_aliases_content,
+        }
+      }
+      if $bash_aliases_source {
+        File["${name}/.bash_aliases"] {
+          source => $bash_aliases_source,
         }
       }
     }
